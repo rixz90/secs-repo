@@ -20,6 +20,12 @@
                     </svg>
                     <a class="link" href="./admin.php">Manage</a>
                 </div>
+                <div class="nav_item">
+                    <svg class="nav_icon">
+                        <use xlink:href="img/sprite.svg#icon-menu">
+                    </svg>
+                    <a class="link" href="./admin_setting.php">Setting</a>
+                </div>
             </div>
            
             <div class="nav_item">

@@ -6,30 +6,19 @@
     //include autoloader classes
     include '../includes/autoloader.php';
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        //Connect Database
-        $db = new Db();
-        $conn = $db->connect();
-        $query = "SELECT password from admin where username = :username";
-        $stid = oci_parse($conn, $query);
-        
-        //  Bind the input parameter
-        oci_bind_by_name($stid,':username',$username,32);
-
-        // collect value of input field
-        $username = trim($_POST['username']);
-        
-        oci_execute($stid);
-        $r = oci_fetch_array($stid, OCI_ASSOC);
-        
-        $hash = $r['PASSWORD'];
+    if (isset($_POST['submit'])) {
+        $user = trim($_POST['username']);
         $pass = trim($_POST['password']);
+        
+        if(!(empty($user) && empty($pass))){
+            $auth = new Auth();
 
-        if (password_verify($pass, $hash)) {
-            $_SESSION['username'] = $username;
-            header("Location: ./admin.php");
-        } else {
-            echo 'Invalid password.';
+            if ($auth->verify($user, $pass)) {
+                $_SESSION['username'] = $user;
+                header("Location: ./admin.php");
+            } else {
+                echo 'Invalid password.';
+            }
         }
     }
 
