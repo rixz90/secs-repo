@@ -38,8 +38,26 @@
                                 echo '</tr>';
                             }
                             ?>
+                        </table>
+                        <div class="panel">
+                            <form class="registration-form" >
+                            <table class="register-table">
+                                <tr>
+                                    <td><label for="branch_id">Branch ID: </td>
+                                    <td><input type="text" name="branch_id" id="branch_id" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="branch_name">Branch Name: </td>
+                                    <td><input type="text" name="branch_name" id="branch_name" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="right">
+                                    <input type="submit" class="button-submit" value="ADD">
+                                    </td>
+                                </tr>
                             </table>
-                        </form>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="panel">
@@ -59,12 +77,30 @@
                                 echo '</tr>';
                             }
                             ?>
+                        </table>
+                        <div class="panel">
+                            <form class="registration-form" >
+                            <table class="register-table">
+                                <tr>
+                                    <td><label for="branch_id">Category ID: </td>
+                                    <td><input type="text" name="branch_id" id="branch_id" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="branch_name">Category Name: </td>
+                                    <td><input type="text" name="branch_name" id="branch_name" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="right">
+                                    <input type="submit" class="button-submit" value="ADD">
+                                    </td>
+                                </tr>
                             </table>
-                        </form>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="panel">
-                        <h2>Loaction</h2>
+                        <h2>Location</h2>
                         <table class="table">
                             <tr>
                                 <th>Location ID</th>
@@ -80,8 +116,75 @@
                                 echo '</tr>';
                             }
                             ?>
+                        </table>
+                        <div class="panel">
+                            <form class="registration-form" >
+                            <table class="register-table">
+                                <tr>
+                                    <td><label for="branch_id">Location ID: </td>
+                                    <td><input type="text" name="branch_id" id="branch_id" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="branch_name">Location Name: </td>
+                                    <td><input type="text" name="branch_name" id="branch_name" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="right">
+                                    <input type="submit" class="button-submit" value="ADD">
+                                    </td>
+                                </tr>
                             </table>
-                        </form>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>Administrator</h2>
+                        <table class="table">
+                            <tr>
+                                <th>ID</th>
+                                <th>Access Type</th>
+                                <th>Password</th>
+                            </tr>
+                            <?php 
+                            $q = new Query('SELECT * FROM admin');
+                            $r = $q->fetch_array();
+                            for ($i = 0; $i < sizeof($r); $i++) {
+                                echo '<tr>';
+                                echo '<td>'.$r[$i][0].'</td>';
+                                echo '<td>'.$r[$i][1].'</td>';
+                                echo '<td>'.$r[$i][2].'</td>';
+                                echo '</tr>';
+                            }
+                            ?>
+                        </table>
+                        <div class="panel">
+                            <form class="registration-form" >
+                            <table class="register-table">
+                                <tr>
+                                    <td><label for="branch_id">ID: </td>
+                                    <td><input type="text" name="branch_id" id="branch_id" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="branch_name">ACCESS TYPE: </td>
+                                    <td><input type="text" name="branch_name" id="branch_name" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="branch_name">PASSWORD: </td>
+                                    <td><input type="text" name="branch_name" id="branch_name" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="branch_name">PASSWORD2: </td>
+                                    <td><input type="text" name="branch_name" id="branch_name" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="right">
+                                    <input type="submit" class="button-submit" value="ADD">
+                                    </td>
+                                </tr>
+                            </table>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </main>
