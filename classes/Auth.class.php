@@ -8,7 +8,6 @@
         }
 
         public function verify($username, $pass){
-
             $query = "SELECT password from admin where username = :username";
             $stid = oci_parse($this->conn, $query);
         
@@ -21,8 +20,9 @@
             $hash = $r['PASSWORD'];
 
             if (password_verify($pass, $hash)) 
-                return true; 
-            return false;
+                return true;
+            else 
+                return false;
         }
     }
 
