@@ -20,9 +20,8 @@
             $hash = $r['PASSWORD'];
 
             if (password_verify($pass, $hash)) 
-                return true;
-            else 
-                return false;
+                return true; 
+            return false;
         }
     }
 
