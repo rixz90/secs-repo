@@ -1,0 +1,99 @@
+<?php 
+    //include autoloader classes
+    include '../includes/autoloader.php';
+?>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet">
+        <title>SCES</title>
+    </head>
+    <body>
+        <?php include 'header/default_header.php'; ?>
+
+        <div class="content">
+            <main class="review-view">
+                <h1 class="title">Semakan Aduan / Check Lodge</h1>
+                <form class="review-form">
+                    <table class="review-table">
+                        <tr>
+                            <td><label for="staff">User Type : </label></td>
+                            <td class="input-radio" style="margin-left: 1rem;">
+                                <div class=item>
+                                    <input type="radio" name="userType" id="staff" value="staff">
+                                    <label for="staff">Staff</label>
+                                </div>
+                                <div class=item>
+                                    <input type="radio" name="userType" id="student" value="student">
+                                    <label for="student">Student</label>
+                                </div>
+                                <div class=item>
+                                    <input type="radio" name="userType" id="guest" value="guest">
+                                    <label for="guest">Guest</label>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="staffId">Staff ID : </td>
+                                <td><input type="text" name="staffId" id="staffId" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="studentId">Student ID : </td>
+                                <td><input type="text" name="studentId" id="studentId" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="center" style="margin-top: 2rem;">
+                                    <input type="submit" class="button-submit" value="Search">
+                                    <input type="reset" class="button-reset" value="Reset">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+                <table class="table" style="margin-top: 3rem;">
+                    <tr>
+                        <th>No.</th>
+                        <th>Compain ID</th>
+                        <th>Date Report</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Complete Date</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr class="option">
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                    </tr>
+                    <tr class="option">
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                    </tr>
+                    <tr class="option">
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                        <td>No.</td>
+                    </tr>
+                </table>
+
+            </main>
+        </div>
+    </body>
+</html>
