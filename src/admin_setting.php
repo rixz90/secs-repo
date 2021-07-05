@@ -33,7 +33,7 @@
                             $q = new Query('SELECT * FROM branch');
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
-                                echo '<tr>';
+                                echo '<tr class="option">';
                                 echo '<td>'.$r[$i][0].'</td>';
                                 echo '<td>'.$r[$i][1].'</td>';
                                 echo '</tr>';
@@ -81,7 +81,7 @@
                             $q = new Query('SELECT * FROM category');
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
-                                echo '<tr>';
+                                echo '<tr class="option">';
                                 echo '<td>'.$r[$i][0].'</td>';
                                 echo '<td>'.$r[$i][1].'</td>';
                                 echo '</tr>';
@@ -129,7 +129,7 @@
                             $q = new Query('SELECT * FROM location');
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
-                                echo '<tr>';
+                                echo '<tr class="option">';
                                 echo '<td>'.$r[$i][0].'</td>';
                                 echo '<td>'.$r[$i][1].'</td>';
                                 echo '</tr>';
@@ -178,7 +178,7 @@
                             $q = new Query('SELECT * FROM admin');
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
-                                echo '<tr>';
+                                echo '<tr class="option">';
                                 echo '<td>'.$r[$i][0].'</td>';
                                 echo '<td>'.$r[$i][1].'</td>';
                                 echo '<td>'.$r[$i][2].'</td>';
