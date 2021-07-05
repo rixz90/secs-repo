@@ -23,6 +23,10 @@
                 return true; 
             return false;
         }
+
+        static function hashPassword($str){
+            return password_hash($str, PASSWORD_DEFAULT);
+        }
     }
 
 ?>
