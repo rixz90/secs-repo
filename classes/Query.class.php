@@ -8,9 +8,6 @@
             $this->statement = $st;
         }
 
-        public function getQuery(){return $this->statement;}
-        public function setQuery($st){$this->statement = $st;}
-
         public function fetch_array(){
 
             $stid = oci_parse($this->conn, $this->statement);
@@ -24,6 +21,27 @@
 
             return $arr;
         }
+
+        public function insertInto($par){
+            if(strlen($this->statement) == 0 || empty($par)){
+                return false;
+            }
+
+            $stid = oci_parse($this->conn, $this->statement);
+
+
+            // Bind the input parameter
+            foreach($par as $key => $value) {
+                oci_bind_by_name($stid, $key ,$par[$key]);
+            }
+            return oci_execute($stid);
+            
+        }
+
+        public function getQuery(){return $this->statement;}
+        public function setQuery($st){$this->statement = $st;}
+        public function close(){oci_close($this->conn);}
+
 
     }
 ?>
