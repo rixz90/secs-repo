@@ -30,10 +30,15 @@ body {
 
 .right {
   float: right;
+  text-align: right;
 }
 
 .flex {
   display: flex;
+}
+
+.baseline {
+  align-items: center;
 }
 
 .flex-axis-center {
@@ -98,6 +103,21 @@ body {
 
 .button-remove {
   background-color: #d84a38;
+  border: none;
+  color: white;
+  border-radius: 0.2rem;
+  padding: 1rem 3rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 1rem;
+  padding: 1rem;
+}
+
+.button-update {
+  background-color: #0078e7;
   border: none;
   color: white;
   border-radius: 0.2rem;
@@ -247,6 +267,30 @@ body {
 
 .admin-nav {
   justify-content: space-between;
+}
+
+fieldset {
+  margin-bottom: 2rem;
+}
+fieldset legend {
+  font-size: 1.5rem;
+}
+
+.ad-table {
+  margin: 1rem;
+}
+.ad-table td:nth-child(odd) {
+  width: 30%;
+}
+
+.f-table {
+  margin: 1rem;
+}
+.f-table tr {
+  text-align: right;
+}
+.f-table .flex {
+  margin-top: 1rem;
 }
 
 /*# sourceMappingURL=styles.css.map */

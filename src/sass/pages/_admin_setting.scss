@@ -1,0 +1,29 @@
+/////////////////////////////////////////////////////
+// Setting Admin Panel Page
+
+fieldset {
+    margin-bottom: 2rem;
+    legend {
+        font-size: 1.5rem;
+    }
+}
+
+.ad-table {
+    margin: 1rem;
+    td:nth-child(odd) {
+        width: 30%;
+    }
+}
+
+.f-table {
+
+    margin: 1rem;
+    
+    tr{
+        text-align: right;
+    }
+
+    .flex {
+        margin-top: 1rem;
+    }
+}
