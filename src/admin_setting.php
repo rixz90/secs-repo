@@ -10,7 +10,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" 
+        <link   href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" 
                 rel="stylesheet">
         <title>SCES</title>
     </head>
@@ -41,45 +41,44 @@
                             ?>
                         </table>
                         <div class="panel">
-                            <form class="registration-form" action="./add.php" method="POST">
-                                <fieldset>
-                                    <legend>Insert Branch:</legend>
-                                    <table class="f-table">
-                                        <tr>
-                                            <td><label for="branch_id">Branch ID: </td>
-                                            <td><input  type="text"
-                                                        id="branch_id" 
-                                                        name="id" 
-                                                        class="form-control"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="branch_name">Branch Name: </td>
-                                            <td><input  type="text"  
-                                                        id="branch_name"
-                                                        name="name" 
-                                                        class="form-control"/></td>
-                                        </tr>
-                                        <tr>
-                                        
-                                        <td colspan="2">
-                                            <div class="flex">
-                                                <input  type = "submit"
-                                                        name = "ADD_BRA"
-                                                        class = "button-submit" 
-                                                        value = "ADD"/>
-                                                <input  type = "submit"
-                                                        name = "UP_BRA"
-                                                        class = "button-update" 
-                                                        value = "UPDATE"/>
-                                                <input  type = "submit"
-                                                        name = "DEL_BRA"
-                                                        class = "button-remove" 
-                                                        value = "DELETE"/>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                    </table>
-                                </fieldset>
+                            <form class="registration-form f-table" action="./add.php" method="POST">
+                            <fieldset>
+                                <legend>Insert Branch:</legend>
+                                <table>
+                                <tr>
+                                    <td><label for="branch_id">Branch ID: </td>
+                                    <td><input  type="text"
+                                                id="branch_id" 
+                                                name="id" 
+                                                class="form-control"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="branch_name">Branch Name: </td>
+                                    <td><input  type="text"  
+                                                id="branch_name"
+                                                name="name" 
+                                                class="form-control"/></td>
+                                </tr>
+                                <tr>        
+                                    <td colspan="2">
+                                    <div class="flex">
+                                        <input  type = "submit"
+                                                name = "ADD_BRA"
+                                                class = "button-submit" 
+                                                value = "ADD"/>
+                                        <input  type = "submit"
+                                                name = "UP_BRA"
+                                                class = "button-update" 
+                                                value = "UPDATE"/>
+                                        <input  type = "submit"
+                                                name = "DEL_BRA"
+                                                class = "button-remove" 
+                                                value = "DELETE"/>
+                                    </div>
+                                    </td>
+                                </tr>
+                                </table>
+                            </fieldset>
                             </form>
                         </div>
                     </div>
@@ -103,42 +102,42 @@
                             ?>
                         </table>
                         <div class="panel">
-                            <form class="registration-form" action="./add.php" method="POST">
+                            <form class="registration-form f-table" action="./add.php" method="POST">
                                 <fieldset>
                                     <legend>Insert Category:</legend>
-                                    <table class="f-table">
-                                        <tr>
-                                            <td><label for="cat_id">Category ID: </td>
-                                            <td><input  type="text" 
-                                                        name="id" 
-                                                        id="cat_id" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="cat_name">Category Name: </td>
-                                            <td><input  type="text" 
-                                                        name="name" 
-                                                        id="cat_name" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                            <div class="flex">
-                                                <input  type = "submit"
-                                                        name = "ADD_CAT"
-                                                        class = "button-submit" 
-                                                        value = "ADD"/>
-                                                <input  type = "submit"
-                                                        name = "UP_CAT"
-                                                        class = "button-update" 
-                                                        value = "UPDATE"/>
-                                                <input  type = "submit"
-                                                        name = "DEL_CAT"
-                                                        class = "button-remove" 
-                                                        value = "DELETE"/>
-                                            </div>
-                                            </td>
-                                        </tr>
+                                    <table>
+                                    <tr>
+                                        <td><label for="cat_id">Category ID: </td>
+                                        <td><input  type="text" 
+                                                    name="id" 
+                                                    id="cat_id" 
+                                                    class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="cat_name">Category Name: </td>
+                                        <td><input  type="text" 
+                                                    name="name" 
+                                                    id="cat_name" 
+                                                    class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                        <div class="flex">
+                                            <input  type = "submit"
+                                                    name = "ADD_CAT"
+                                                    class = "button-submit" 
+                                                    value = "ADD"/>
+                                            <input  type = "submit"
+                                                    name = "UP_CAT"
+                                                    class = "button-update" 
+                                                    value = "UPDATE"/>
+                                            <input  type = "submit"
+                                                    name = "DEL_CAT"
+                                                    class = "button-remove" 
+                                                    value = "DELETE"/>
+                                        </div>
+                                        </td>
+                                    </tr>
                                     </table>
                                 </fieldset>
                             </form>
@@ -164,44 +163,45 @@
                             ?>
                         </table>
                         <div class="panel">
-                            <form class="registration-form" action="./add.php" method="POST">
+                            <form class="registration-form f-table" action="./add.php" method="POST">
                             <fieldset>
-                                    <legend>Insert Location:</legend>
-                                    <table class="f-table">
-                                        <tr>
-                                            <td><label for="loc_id">Location ID: </td>
-                                            <td><input  type="text" 
-                                                        name="id" 
-                                                        id="loc_id" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="loc_name">Location Name: </td>
-                                            <td><input  type="text" 
-                                                        name="name" 
-                                                        id="loc_name" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                            <div class="flex">
-                                                <input  type = "submit"
-                                                        name = "ADD_LOC"
-                                                        class = "button-submit" 
-                                                        value = "ADD"/>
-                                                <input  type = "submit"
-                                                        name = "UP_LOC"
-                                                        class = "button-update" 
-                                                        value = "UPDATE"/>
-                                                <input  type = "submit"
-                                                        name = "DEL_LOC"
-                                                        class = "button-remove" 
-                                                        value = "DELETE"/>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </fieldset>
+                                <legend>Insert Location:</legend>
+                                <table>
+                                <tr>
+                                    <td><label for="loc_id">Location ID: </td>
+                                    <td><input  type="text" 
+                                                name="id" 
+                                                id="loc_id" 
+                                                class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="loc_name">Location Name: </td>
+                                    <td><input  type="text" 
+                                                name="name" 
+                                                id="loc_name" 
+                                                class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                    <div class="flex">
+                                        <input  type = "submit"
+                                                name = "ADD_LOC"
+                                                class = "button-submit" 
+                                                value = "ADD"/>
+                                        <input  type = "submit"
+                                                name = "UP_LOC"
+                                                class = "button-update" 
+                                                value = "UPDATE"/>
+                                        <input  type = "submit"
+                                                name = "DEL_LOC"
+                                                class = "button-remove" 
+                                                value = "DELETE"/>
+                                    </div>
+                                    </td>
+                                </tr>
+                                </table>
+                            </fieldset>
+                            </form>
                         </div>
                     </div>
 
@@ -226,57 +226,57 @@
                             ?>
                         </table>
                         <div class="panel">
-                            <form class="registration-form" action="./add.php" method="POST">
+                            <form class="registration-form f-table" action="./add.php" method="POST">
                             <fieldset>
-                                    <legend>Insert Administrator:</legend>
-                                    <table class="f-table ad-table">
-                                        <tr>
-                                            <td><label for="admin_id">ID: </td>
-                                            <td><input  type="text" 
-                                                        name="id" 
-                                                        id="admin_id" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="admin_type">ACCESS TYPE: </td>
-                                            <td><input  type="text" 
-                                                        name="type" 
-                                                        id="admin_type" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="pass">PASSWORD: </td>
-                                            <td><input  type="text" 
-                                                        name="pass" 
-                                                        id="pass" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="c_pass">CONFORM PASSWORD: </td>
-                                            <td><input  type="text" 
-                                                        name="c_pass" 
-                                                        id="c_pass" 
-                                                        class="form-control"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                            <div class="flex">
-                                                <input  type = "submit"
-                                                        name = "ADD_ADMIN"
-                                                        class = "button-submit" 
-                                                        value = "ADD"/>
-                                                <input  type = "submit"
-                                                        name = "UP_ADMIN"
-                                                        class = "button-update" 
-                                                        value = "UPDATE"/>
-                                                <input  type = "submit"
-                                                        name = "DEL_ADMIN"
-                                                        class = "button-remove" 
-                                                        value = "DELETE"/>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                <legend>Insert Administrator:</legend>
+                                <table>
+                                <tr>
+                                    <td><label for="admin_id">ID: </td>
+                                    <td><input  type="text" 
+                                                name="id" 
+                                                id="admin_id" 
+                                                class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="admin_type">ACCESS TYPE: </td>
+                                    <td><input  type="text" 
+                                                name="type" 
+                                                id="admin_type" 
+                                                class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="pass">PASSWORD: </td>
+                                    <td><input  type="text" 
+                                                name="pass" 
+                                                id="pass" 
+                                                class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="c_pass">CONFORM PASSWORD: </td>
+                                    <td><input  type="text" 
+                                                name="c_pass" 
+                                                id="c_pass" 
+                                                class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                    <div class="flex">
+                                        <input  type = "submit"
+                                                name = "ADD_ADMIN"
+                                                class = "button-submit" 
+                                                value = "ADD"/>
+                                        <input  type = "submit"
+                                                name = "UP_ADMIN"
+                                                class = "button-update" 
+                                                value = "UPDATE"/>
+                                        <input  type = "submit"
+                                                name = "DEL_ADMIN"
+                                                class = "button-remove" 
+                                                value = "DELETE"/>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </table>
                             </fieldset>
                             </form>
                         </div>
@@ -284,5 +284,7 @@
                 </div>
             </main>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/admin_setting.js"></script>
     </body>
 </html>
