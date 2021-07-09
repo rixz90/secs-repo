@@ -76,12 +76,14 @@
 .button-remove{  
     @include button(#d84a38);
     margin-left:1rem;
+    visibility: hidden;
     padding: 1rem;
 }
 
 .button-update{  
     @include button(#0078e7);
     margin-left:1rem;
+    visibility: hidden;
     padding: 1rem;
 }
 
@@ -131,6 +133,13 @@
         border-color: #4b8df8;
         outline: none;
     }
+
+    &:disabled {
+        background-image: none;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        color: #495057
+    }
 }
 
 .textarea {
@@ -167,3 +176,9 @@
 
 }
 
+/////////////////////////////////////////////////////
+// jquery-confirm
+.jconfirm-box-container {
+    margin: auto;
+    max-width: 30%;
+}

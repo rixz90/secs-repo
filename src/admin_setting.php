@@ -10,20 +10,26 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles.css">
-        <link   href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" 
-                rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
         <title>SCES</title>
     </head>
     <body>
         <?php include 'header/admin_header.php'; ?>
 
         <div class="content">
-            <main class="admin-view">
-                <h1 class="title">Setting</h1>
+            <main class="adminSet-view">
+                <nav class="admin-sidenav">
+                    <ul>
+                        <li id="nav_bra"><a>Branch</a></li>
+                        <li id="nav_cat"><a>Category</a></li>
+                        <li id="nav_loc"><a>Location</a></li>
+                        <li id="nav_adm"><a>Administator</a></li>
+                    </ul>
+                </nav>
                 <div class="main">
-                    
-                    <div class="panel">
-                        <h2>Branch</h2>
+                    <div class="panel" id="branchPanel">
+                        <h1 class="title">Branch</h1>
                         <table class="table">
                             <tr>
                                 <th>Branch ID</th>
@@ -42,6 +48,7 @@
                         </table>
                         <div class="panel">
                             <form class="registration-form f-table" action="./add.php" method="POST">
+                            <input type="hidden" name="type" value="BRA">
                             <fieldset>
                                 <legend>Insert Branch:</legend>
                                 <table>
@@ -50,14 +57,16 @@
                                     <td><input  type="text"
                                                 id="branch_id" 
                                                 name="id" 
-                                                class="form-control"/></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>
                                     <td><label for="branch_name">Branch Name: </td>
                                     <td><input  type="text"  
                                                 id="branch_name"
                                                 name="name" 
-                                                class="form-control"/></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>        
                                     <td colspan="2">
@@ -83,7 +92,7 @@
                         </div>
                     </div>
 
-                    <div class="panel">
+                    <div class="panel" id="categoryPanel">
                         <h2>Categories</h2>
                         <table class="table">
                             <tr>
@@ -103,6 +112,7 @@
                         </table>
                         <div class="panel">
                             <form class="registration-form f-table" action="./add.php" method="POST">
+                            <input type="hidden" name="type" value="CAT">
                                 <fieldset>
                                     <legend>Insert Category:</legend>
                                     <table>
@@ -111,14 +121,16 @@
                                         <td><input  type="text" 
                                                     name="id" 
                                                     id="cat_id" 
-                                                    class="form-control"></td>
+                                                    class="form-control"
+                                                    required></td>
                                     </tr>
                                     <tr>
                                         <td><label for="cat_name">Category Name: </td>
                                         <td><input  type="text" 
                                                     name="name" 
                                                     id="cat_name" 
-                                                    class="form-control"></td>
+                                                    class="form-control"
+                                                    required></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">
@@ -144,7 +156,7 @@
                         </div>
                     </div>
 
-                    <div class="panel">
+                    <div class="panel" id="locationPanel">
                         <h2>Location</h2>
                         <table class="table">
                             <tr>
@@ -164,6 +176,7 @@
                         </table>
                         <div class="panel">
                             <form class="registration-form f-table" action="./add.php" method="POST">
+                            <input type="hidden" name="type" value="LOC">
                             <fieldset>
                                 <legend>Insert Location:</legend>
                                 <table>
@@ -172,14 +185,16 @@
                                     <td><input  type="text" 
                                                 name="id" 
                                                 id="loc_id" 
-                                                class="form-control"></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>
                                     <td><label for="loc_name">Location Name: </td>
                                     <td><input  type="text" 
                                                 name="name" 
                                                 id="loc_name" 
-                                                class="form-control"></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -205,7 +220,7 @@
                         </div>
                     </div>
 
-                    <div class="panel">
+                    <div class="panel" id="adminPanel">
                         <h2>Administrator</h2>
                         <table class="table">
                             <tr>
@@ -220,13 +235,14 @@
                                 echo '<tr class="option">';
                                 echo '<td>'.$r[$i][0].'</td>';
                                 echo '<td>'.$r[$i][1].'</td>';
-                                echo '<td>'.$r[$i][2].'</td>';
+                                echo '<td>'.substr($r[$i][2],0,20).'</td>';
                                 echo '</tr>';
                             }
                             ?>
                         </table>
                         <div class="panel">
                             <form class="registration-form f-table" action="./add.php" method="POST">
+                            <input type="hidden" name="type" value="ADM">
                             <fieldset>
                                 <legend>Insert Administrator:</legend>
                                 <table>
@@ -235,28 +251,32 @@
                                     <td><input  type="text" 
                                                 name="id" 
                                                 id="admin_id" 
-                                                class="form-control"></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>
                                     <td><label for="admin_type">ACCESS TYPE: </td>
                                     <td><input  type="text" 
-                                                name="type" 
+                                                name="access" 
                                                 id="admin_type" 
-                                                class="form-control"></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>
                                     <td><label for="pass">PASSWORD: </td>
                                     <td><input  type="text" 
                                                 name="pass" 
                                                 id="pass" 
-                                                class="form-control"></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>
                                     <td><label for="c_pass">CONFORM PASSWORD: </td>
                                     <td><input  type="text" 
                                                 name="c_pass" 
                                                 id="c_pass" 
-                                                class="form-control"></td>
+                                                class="form-control"
+                                                required/></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -285,6 +305,7 @@
             </main>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
         <script src="js/admin_setting.js"></script>
     </body>
 </html>

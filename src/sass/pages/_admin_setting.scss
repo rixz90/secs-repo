@@ -1,29 +1,78 @@
 /////////////////////////////////////////////////////
 // Setting Admin Panel Page
 
-fieldset {
-    margin-bottom: 2rem;
-    legend {
-        font-size: 1.5rem;
+
+.adminSet-view {
+    display: flex;
+    height: 100%;
+
+    .main {
+        margin-top: 3rem;
+        margin-left: 3rem;
+
+        .title{
+            margin: 0 0 3rem 1rem;
+            text-align: left;
+        }
     }
-}
 
-.ad-table {
-    margin: 1rem;
-    td:nth-child(odd) {
-        width: 30%;
-    }
-}
-
-.f-table {
-
-    margin: 1rem;
     
-    tr{
-        text-align: right;
+
+    .admin-sidenav {
+        font-size: 2rem;
+        background-color: #f1f1f1;
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 200px;
+          }
+          
+          li a {
+            cursor: pointer;
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+          }
+          
+          /* Change the link color on hover */
+          li a:hover {
+            background-color: #04AA6D;
+            color: white;
+          }
+
+          .active {
+            background-color: #04AA6D;
+            a{
+                    color: white;
+                }
+          }
     }
 
-    .flex {
-        margin-top: 1rem;
+    fieldset {
+        legend {
+            font-size: 1.5rem;
+        }
+    }
+    
+    .ad-table {
+        margin: 1rem;
+        td:nth-child(odd) {
+            width: 30%;
+        }
+    }
+    
+    .f-table {
+    
+        margin: 1rem;
+        
+        tr{
+            text-align: right;
+        }
+    
+        .flex {
+            margin-top: 1rem;
+        }
     }
 }

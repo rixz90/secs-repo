@@ -22,7 +22,7 @@
                 </div>
                 <div class="nav_item">
                     <svg class="nav_icon">
-                        <use xlink:href="img/sprite.svg#icon-menu">
+                        <use xlink:href="img/sprite.svg#icon-cog">
                     </svg>
                     <a class="link" href="./admin_setting.php">Setting</a>
                 </div>

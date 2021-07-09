@@ -11,8 +11,10 @@
     $param = "";
     $status = false;
 
-    if(isset($_POST['ADD_BRA'])){
-        $query->setQuery("INSERT INTO BRANCH VALUES(:id,:name)");
+    if($_POST['type'] == "BRA"){
+        $query->setQuery("UPDATE BRANCH SET 
+            BRANCH_NAME = :name 
+            WHERE BRANCH_ID = :id");
 
         $param = array(
             ":id" => trim($_POST['id']),
@@ -20,29 +22,36 @@
         );
     }
 
-    else if(isset($_POST['ADD_CAT'])){
-        $query->setQuery("INSERT INTO CATEGORY VALUES(:id,:name)");
+    else if($_POST['type'] == "CAT"){
+        $query->setQuery("UPDATE CATEGORY SET 
+            CATEGORY_NAME = :name 
+            WHERE CATEGORY_ID = :id");
         $param = array(
             ":id" => trim($_POST['id']),
             ":name" => trim($_POST['name'])
         );
     }
 
-    else if(isset($_POST['ADD_LOC'])){
-        $query->setQuery("INSERT INTO LOCATION VALUES(:id,:name)");
+    else if($_POST['type'] == "LOC"){
+        $query->setQuery("UPDATE LOCATION SET 
+            LOCATION_NAME = :name 
+            WHERE LOCATION_ID = :id");
         $param = array(
             ":id" => trim($_POST['id']),
             ":name" => trim($_POST['name'])
         );
     }
 
-    else if(isset($_POST['ADD_ADMIN'])){
+    else if($_POST['type'] == "ADM"){
         $pass = trim($_POST['pass']);
         $c_pass = trim($_POST['c_pass']);
 
         if(strcmp($pass,$c_pass) == 0 ){
 
-            $query->setQuery("INSERT INTO ADMIN VALUES(:id,:type,:pass)");
+            $query->setQuery("UPDATE ADMIN SET
+                ADMIN_TYPE = :type,
+                PASSWORD = :pass 
+                WHERE USERNAME = :id");
             $param = array(
                 ":id" => trim($_POST['id']),
                 ":type" => trim($_POST['access']),
@@ -56,5 +65,5 @@
     if($status)
         header("Location: ./admin_setting.php?status=success");
     else
-        echo "Failed to add to DB";
+        echo "Failed to update data from DB";
 ?>
