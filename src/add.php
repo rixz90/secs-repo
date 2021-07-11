@@ -30,9 +30,22 @@
 
     else if(isset($_POST['ADD_LOC'])){
         $query->setQuery("INSERT INTO LOCATION VALUES(:id,:name)");
+        $id = trim($_POST['id']);
         $param = array(
-            ":id" => trim($_POST['id']),
+            ":id" => $id,
             ":name" => trim($_POST['name'])
+        );
+        $query->insertInto($param);
+
+        $query->setQuery("SELECT * FROM LOCATION WHERE LOCATION_ID = ${id}");
+        if($query->fetch_array() <= 0){
+            exit("no data found");
+        } 
+
+        $query->setQuery("INSERT INTO LOCATION_BRANCH VALUES(:loc_id,:bra_id)");
+        $param = array(
+            ":loc_id" => $id,
+            ":bra_id" => trim($_POST['bra_id'])
         );
     }
 

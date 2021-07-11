@@ -162,14 +162,20 @@
                             <tr>
                                 <th>Location ID</th>
                                 <th>Location Name</th>
+                                <th>Branch Name</th>
                             </tr>
                             <?php 
-                            $q = new Query('SELECT * FROM location');
+                            $q = new Query('SELECT L.LOCATION_ID, L.LOCATION_NAME, B.BRANCH_NAME   
+                                            FROM (LOCATION L JOIN LOCATION_BRANCH M
+                                            ON (L.LOCATION_ID = M.LOCATION_ID)) 
+                                            JOIN BRANCH B 
+                                            ON (M.BRANCH_ID = B.BRANCH_ID)');
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
                                 echo '<tr class="option">';
                                 echo '<td>'.$r[$i][0].'</td>';
                                 echo '<td>'.$r[$i][1].'</td>';
+                                echo '<td>'.$r[$i][2].'</td>';
                                 echo '</tr>';
                             }
                             ?>
@@ -195,6 +201,21 @@
                                                 id="loc_name" 
                                                 class="form-control"
                                                 required/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="bra_id">Branch: </td>
+                                    <td>
+                                        <select name="bra_id" id="bra_id"  class="form-control">
+                                        <option disabled selected>Choose Branch</option>
+                                        <?php 
+                                            $q = new Query("SELECT * FROM BRANCH");
+                                            $r = $q->fetch_array();
+                                            for ($i = 0; $i < sizeof($r); $i++) {
+                                                echo "<option value='".$r[$i][0]."'>".$r[$i][1]."</option>";
+                                            }
+                                        ?>
+                                </select>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">

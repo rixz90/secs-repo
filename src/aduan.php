@@ -1,6 +1,26 @@
 <?php 
+    session_start();
+
     //include autoloader classes
     include '../includes/autoloader.php';
+    
+    if(isset($_GET['branch'])){  
+        echo '<select name="location" id="location"  class="form-control">';
+        echo '<option value="" disabled selected>Choose Location</option>';
+
+        $q = new Query("SELECT L.LOCATION_ID, L.LOCATION_NAME  
+                        FROM LOCATION L 
+                        JOIN LOCATION_BRANCH M 
+                        ON (M.LOCATION_ID = L.LOCATION_ID) 
+                        WHERE M.BRANCH_ID = '".trim($_GET['branch']).'\'');
+        $r = $q->fetch_array();
+        for ($i = 0; $i < sizeof($r); $i++) {
+            echo "<option value='".$r[$i][0]."'>".$r[$i][1]."</option>";
+        }
+        echo '</select>';
+        exit();
+    }
+    
 ?>
 
 <html>
@@ -10,19 +30,23 @@
         <title>SCES</title>
     </head>
     <body>    
-        <?php include 'header/default_header.php'; ?>
+        <?php include 'header/default_header.php';?>
             
         <div class="content">
             <main class="register-view">
                 <h1 class="title">Daftar Aduan/Lodge Complaint</h1>
-                <form class="registration-form" >
+                <form   class="registration-form" 
+                        id="form" 
+                        action="./add_complain.php" 
+                        method="POST"
+                        enctype="multipart/form-data">
                     <table class="register-table">
                         <tr>
                             <td style="height: 2rem;"><label>Complaint ID : </label></td>
                             <td>1001</td>
                         </tr>
                         <tr>
-                            <td><label for="staff">User Type : </label></td>
+                            <td><label for="">User Type : </label></td>
                             <td class="input-radio">
                                 <div class=item>
                                     <input type="radio" name="userType" id="staff" value="staff">
@@ -38,17 +62,26 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr id="staff_id">
                             <td><label for="staffId">Staff ID : </td>
                             <td><input type="text" name="staffId" id="staffId" class="form-control"></td>
                         </tr>
-                        <tr>
+                        <tr id="student_id">
                             <td><label for="studentId">Student ID : </td>
                             <td><input type="text" name="studentId" id="studentId" class="form-control"></td>
                         </tr>
+                        <tbody id="other">
                         <tr>
-                            <td><label for="guestName">Guest Name : </td>
-                            <td><input type="text" name="guestName" id="guestName" class="form-control"></td>
+                            <td><label for="name">Name : </td>
+                            <td><input type="text" name="name" id="name" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email">Email: </td>
+                            <td><input type="text" name="email" id="email" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="phone_no">Phone Number: </td>
+                            <td><input type="text" name="phone_no" id="phone_no" class="form-control"></td>
                         </tr>
                         <tr>
                             <td><h3 class="h3">Complaint Information</h3></td>
@@ -58,26 +91,36 @@
                             <td>
                                 <select name="branch" id="branch"  class="form-control">
                                     <option value="" disabled selected>Choose Branch</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
+                                    <?php 
+                                        $q = new Query("SELECT * FROM BRANCH");
+                                        $r = $q->fetch_array();
+                                        for ($i = 0; $i < sizeof($r); $i++) {
+                                            echo "<option value='".$r[$i][0]."'>".$r[$i][1]."</option>";
+                                        }
+                                    ?>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td><label for="location">Location Details : </td>
-                            <td><input type="text" name="location" id="location"  class="form-control"></td>
+                            <td>
+                                <select name="location" id="location"  class="form-control">
+                                <option value="" disabled selected>Choose Location</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td><label for="category">Category: </td>
                             <td>
                                 <select name="category" id="category"  class="form-control">
                                     <option value="" disabled selected>Choose Category</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
+                                    <?php 
+                                        $q = new Query("SELECT * FROM CATEGORY");
+                                        $r = $q->fetch_array();
+                                        for ($i = 0; $i < sizeof($r); $i++) {
+                                            echo "<option value='".$r[$i][0]."'>".$r[$i][1]."</option>";
+                                        }
+                                    ?>
                                 </select>
                             </td>
                         </tr>
@@ -91,7 +134,7 @@
                             <td><label for="attachment">Attachment : </td>
                             <td>
                                 <div class="flex">
-                                    <input type="file" name="attachment" id="attachment" class="form-control file">
+                                    <input type="file" name="fileToUpload" id="attachment" class="form-control file">
                                     <button class="button-remove">Remove</button>
                                 </div>
                                 <p style="font-size: small;">*Format PDF or Image(jpg, png, jpeg)only</p>
@@ -100,14 +143,17 @@
                         <tr>
                             <td colspan="2">
                                 <div class="center" style="margin-top: 4rem;">
-                                    <input type="submit" class="button-submit" value="Submit">
+                                    <input type="submit" name="submit" class="button-submit" value="Submit">
                                     <input type="reset" class="button-reset" value="Reset">
                                 </div>
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                 </form>
             </main>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/aduan.js"></script>
     </body>
 </html>
