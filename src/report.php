@@ -62,24 +62,34 @@
                             <th>Name</th>
                             <th>Branch</th>
                             <th>Date Report</th>
-                            <th>Details</th>
                             <th>Category</th>
                             <th>Status</th>
                             <th>Complete Date</th>
                             <th>Detail</th>
                         </tr>
                         <tr>
-                            <td>1</td>
-                            <td>1001</td>
-                            <td>2020866623</td>
-                            <td>Ahmad</td>
-                            <td>Unit Integrity</td>
-                            <td>21/2/2012</td>
-                            <td>Details</td>
-                            <td>Category</td>
-                            <td>Complete</td>
-                            <td>22/3/2012</td>
-                            <td><a href="./detail.php">detail</a></td>
+                        <?php $q = new Query("SELECT c.COMPLAINT_ID,u.USER_ID,u.NAME,b.BRANCH_NAME,
+                         c.DATE_REPORT,ca.CATEGORY_NAME, c.comp_status, NVL(to_char(c.date_complete),'STILL REVIEW')
+                                            FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID) 
+                                            JOIN COMP_USER u ON(u.USER_ID = c.USER_ID) 
+                                            JOIN BRANCH b ON(b.BRANCH_ID = c.BRANCH_ID)");
+                            $r = $q->fetch_array();
+                            for ($i = 0; $i < sizeof($r); $i++) {
+                                $k = $i+1;
+                                echo "<tr class='option'>";
+                                echo "<td>".$k."</td>";
+                                echo "<td>".$r[$i][0]."</td>";
+                                echo "<td>".$r[$i][1]."</td>";
+                                echo "<td>".$r[$i][2]."</td>";
+                                echo "<td>".$r[$i][3]."</td>";
+                                echo "<td>".$r[$i][4]."</td>";
+                                echo "<td>".$r[$i][5]."</td>";
+                                echo "<td>".$r[$i][6]."</td>";
+                                echo "<td>".$r[$i][7]."</td>";
+                                echo "<td><a href='./detail.php?id=".$r[$i][0]."'>detail</a></td>";
+                                echo "</tr>";
+                            }
+                        ?>
                         </tr>
                         <tr>
                             <td colspan="8">

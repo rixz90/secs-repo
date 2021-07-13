@@ -51,6 +51,15 @@ $(document).ready(function(){
             var value = $(this).children()[i].innerHTML;
             target.find('input[type="text"]:eq('+i+')').val(value);
         }
+    
+
+        if(target.find('select').length > 0){
+            let text = $(this).children()[2].innerHTML;
+            console.log(text);
+            target.find("select").children(':eq(0)').text(text);
+            
+        }
+
         target.find(".button-submit").hide();
         target.find(".button-update,.button-remove").css("visibility","visible");
         target.find("input[name=id]").prop( "disabled", true );
@@ -84,7 +93,7 @@ $(document).ready(function(){
             "id" : target.find("input[name='id']").val(),
             "type" : target.find("input[name='type']").val()
         };
-        console.log(target.find("input[name='type']").length);
+    
         if(target.find("input[name='type']").length > 0){
             let temp = {
                 "pass" : target.find("input[name='pass']").val(),

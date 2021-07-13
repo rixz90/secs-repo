@@ -37,7 +37,7 @@ body {
   display: flex;
 }
 
-.baseline {
+.flex-center {
   align-items: center;
 }
 
@@ -116,6 +116,12 @@ body {
   visibility: hidden;
   padding: 1rem;
 }
+.button-remove a {
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0.9;
+}
 
 .button-update {
   background-color: #0078e7;
@@ -132,6 +138,12 @@ body {
   visibility: hidden;
   padding: 1rem;
 }
+.button-update a {
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0.9;
+}
 
 .button-submit {
   background-color: #4CAF50;
@@ -146,6 +158,32 @@ body {
   cursor: pointer;
   padding: 1rem;
 }
+.button-submit a {
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.button-print {
+  background-color: #0d6efd;
+  border: none;
+  color: white;
+  border-radius: 0.2rem;
+  padding: 1rem 3rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 1rem;
+}
+.button-print a {
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0.9;
+}
 
 .button-reset {
   background-color: #4b8df8;
@@ -159,6 +197,12 @@ body {
   font-size: 16px;
   cursor: pointer;
   padding: 1rem;
+}
+.button-reset a {
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0.9;
 }
 
 .form label {

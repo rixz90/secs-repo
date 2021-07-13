@@ -42,12 +42,8 @@
                         enctype="multipart/form-data">
                     <table class="register-table">
                         <tr>
-                            <td style="height: 2rem;"><label>Complaint ID : </label></td>
-                            <td>1001</td>
-                        </tr>
-                        <tr>
                             <td><label for="">User Type : </label></td>
-                            <td class="input-radio">
+                            <td class="input-radio" style="margin-left:10px;">
                                 <div class=item>
                                     <input type="radio" name="userType" id="staff" value="staff">
                                     <label for="staff">Staff</label>

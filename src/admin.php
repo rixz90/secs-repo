@@ -10,6 +10,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet">
         <title>SCES</title>
     </head>
@@ -26,8 +27,6 @@
                                 <tr>
                                     <td><label for="id">Complaint ID:</label></td>
                                     <td><input type="text" class="form-control" name="id" id="id"></td>
-                                </tr>
-                                <tr>
                                     <td><button class="button-submit">Search</button></td>
                                 </tr>
                             </table>
@@ -39,27 +38,38 @@
                             <th>Bil</th>
                             <th>Complaint ID</th>
                             <th>Date Report</th>
-                            <th>Details</th>
                             <th>Category</th>
-                            <th>Status</th>
                             <th>Complete Date</th>
+                            <th>Status</th>
                             <th>Details</th>
                         </tr>
-                        <tr class="option">
-                            <td>1</td>
-                            <td>1001</td>
-                            <td>21/2/2012</td>
-                            <td>Details</td>
-                            <td>Category</td>
-                            <td>Complete</td>
-                            <td>22/3/2012</td>
-                            <td><a href="./detail.php">detail</a></td>
-                        </tr>
+                        <?php $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
+                                            FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID)");
+                            $r = $q->fetch_array();
+                            for ($i = 0; $i < sizeof($r); $i++) {
+                                $k = $i+1;
+                                echo "<tr class='option'>";
+                                echo "<td>".$k."</td>";
+                                echo "<td id='id'>".$r[$i][0]."</td>";
+                                echo "<td>".$r[$i][1]."</td>";
+                                echo "<td>".$r[$i][2]."</td>";
+                                echo "<td>".$r[$i][3]."</td>";
+                                echo "<td>".$r[$i][4]."</td>";
+                                echo "<td><a href='./detail.php?id=".$r[$i][0]."'>detail</a></td>";
+                                echo "</tr>";
+                            }
+                        ?>
                         <tr>
                             <td colspan="8">
-                                <div class="right" style="margin-top: 4rem;">
-                                    <input type="submit" class="button-submit" value="Update">
-                                    <input type="reset" class="button-remove" value="Delete">
+                                <div class="right" style="display:flex">
+                                    <form action="./update_complaint.php" id="form_up" method="GET">
+                                        <input type="hidden" name="id"/>
+                                        <input type="submit" class="button-update" id="update" value="Update"/>
+                                    </form>
+                                    <form action="./delete_complaint.php" id="form_del" method="GET">
+                                        <input type="hidden" name="id"/>
+                                        <input type="submit" class="button-remove" id="remove" value="Delete"/>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -68,5 +78,8 @@
                 </div>
             </main>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+        <script src="js/admin.js"></script>
     </body>
 </html>
