@@ -21,12 +21,20 @@
         exit();
     }
     if(isset($_POST['submit'])){
+
+        if($_POST['status'] == 'COMPLETE'){
+            $complete_date = date("j-M-y");
+        }else{
+            $complete_date = null;
+        }
+
         $query = new Query("UPDATE COMPLAINT SET 
         COMP_DETAIL = :detail,
         BRANCH_ID = :branch_id,
         LOCATION_ID = :loc_id,
         CATEGORY_ID = :category_id,
-        COMP_STATUS = :status
+        COMP_STATUS = :status,
+        DATE_COMPLETE = :complete_date 
         WHERE COMPLAINT_ID = :id");
         $param = array(
             ":detail" => trim($_POST['details']),
@@ -34,11 +42,12 @@
             ":loc_id" => trim($_POST['location']),
             ":category_id" => trim($_POST['category_id']),
             ":id" => trim($_POST['id']),
-            ":status" => trim($_POST['status'])
+            ":status" => trim($_POST['status']),
+            ":complete_date" => $complete_date
         );
 
         $result = $query->insertInto($param);
-        var_dump($result);
+
         if($result){
             $query->setQuery("UPDATE COMP_USER SET 
             NAME = :name 
@@ -156,14 +165,14 @@
                                     <select name="status" class="form-control">
                                         <?php
                                             echo "<option disable selected>".$r[0][12]."</option>";
-                                            if($r[0][12] != "IN_PROCESS"){
+                                            if($r[0][12] != "IN PROCESS"){
                                                 echo "<option value='IN PROCESS'>IN PROCESS</option>";
                                             }
                                             if($r[0][12] != "REPORTED"){
                                                 echo "<option value='REPORTED'>REPORTED</option>";
                                             }
-                                            if($r[0][12] != "UNDER_INVESTIGATION"){
-                                                echo "<option value='UNDER INVESTIGATION'>INVESTIGATION</option>";
+                                            if($r[0][12] != "INVESTIGATION"){
+                                                echo "<option value='INVESTIGATION'>INVESTIGATION</option>";
                                             }
                                             if($r[0][12] != "COMPLETE"){
                                                 echo "<option value='COMPLETE'>COMPLETE</option>";

@@ -29,7 +29,11 @@
         <title>SCES</title>
     </head>
     <body>    
-        <?php include 'header/admin_header.php'; ?>
+        <script>
+            function printPage(){
+                window.print();
+            }
+        </script>
             
         <div class="content">
             <main class="register-view">
@@ -101,7 +105,7 @@
                         </tr>
                         <tr>
                             <td><label for="attachment">Attachment : </td>
-                            <td><?php echo $r[0][7]; ?></td>
+                            <td><a href="<?php echo $r[0][7]; ?>">File/Image</a></td>
                         </tr>
                         <tr>
                             <td colspan="2">
@@ -114,12 +118,12 @@
                                             <a href="./admin.php">Back</a>
                                         </div>
                                     </button>
-                                    <button class="button-print" style="height:3.8rem;">
+                                    <button onclick="printPage()" class="button-print" style="height:3.8rem;">
                                         <div class="flex flex-center" style="height: -webkit-fill-available;">
                                             <svg class="nav_icon" style="margin-right:5px;">
                                                 <use xlink:href="img/sprite.svg#icon-print">
                                             </svg>
-                                            <a href="">Print</a>
+                                            Print
                                         </div>
                                     </button>
                                 </div>

@@ -5,6 +5,26 @@
 
     //include autoloader classes
     include '../includes/autoloader.php';
+
+
+    if(!isset($_GET['search'])){
+        $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, 
+        ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
+        FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID)");
+
+        $r = $q->fetch_array();
+    }else{
+        $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, 
+        ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
+        FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID) 
+        WHERE c.COMPLAINT_ID = :id");
+
+        $param = array(
+            ":id" => trim($_GET['id'])
+        );
+
+        $r = $q->fetch_array_with_param($param);
+    }
 ?>
 
 <html>
@@ -22,12 +42,13 @@
                 <h1 class="title">Management Complaints</h1>
                 <div class="main">
                     <div class="panel">
-                        <form class="admin-form">
+                        <form class="admin-form" action="./admin.php" method="GET">
                             <table class="admin-table">
                                 <tr>
                                     <td><label for="id">Complaint ID:</label></td>
                                     <td><input type="text" class="form-control" name="id" id="id"></td>
-                                    <td><button class="button-submit">Search</button></td>
+                                    <td><input type="submit" class="button-submit" name="search" id="search" value="Search"></td>
+                                    <td><a href="./admin.php" class="button-reset">Reset</a></td>
                                 </tr>
                             </table>
                         </form>
@@ -43,9 +64,8 @@
                             <th>Status</th>
                             <th>Details</th>
                         </tr>
-                        <?php $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
-                                            FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID)");
-                            $r = $q->fetch_array();
+                        <?php 
+                            
                             for ($i = 0; $i < sizeof($r); $i++) {
                                 $k = $i+1;
                                 echo "<tr class='option'>";

@@ -205,7 +205,7 @@
                                 <tr>
                                     <td><label for="bra_id">Branch: </td>
                                     <td>
-                                        <select name="bra_id" id="bra_id"  class="form-control">
+                                        <select name="bra_id" id="branch"  class="form-control">
                                         <option disabled selected>Choose Branch</option>
                                         <?php 
                                             $q = new Query("SELECT * FROM BRANCH");

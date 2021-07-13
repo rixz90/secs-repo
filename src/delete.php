@@ -12,6 +12,15 @@
     $status = false;
 
     if($_POST['type'] == "BRA"){
+        $query->setQuery("DELETE FROM LOCATION_BRANCH   
+            WHERE BRANCH_ID = :id");
+
+        $param = array(
+            ":id" => trim($_POST['id'])
+        );
+
+        $status = $query->insertInto($param);
+        
         $query->setQuery("DELETE FROM BRANCH   
             WHERE BRANCH_ID = :id");
 
@@ -29,6 +38,14 @@
     }
 
     else if($_POST['type'] == "LOC"){
+        $query->setQuery("DELETE FROM LOCATION_BRANCH  
+            WHERE LOCATION_ID = :id");
+        $param = array(
+            ":id" => trim($_POST['id'])
+        );
+
+        $status = $query->insertInto($param);
+        
         $query->setQuery("DELETE FROM LOCATION 
             WHERE LOCATION_ID = :id");
         $param = array(
