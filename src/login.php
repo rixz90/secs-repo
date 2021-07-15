@@ -10,7 +10,7 @@
         $user = trim($_POST['username']);
         $pass = trim($_POST['password']);
         
-        if(!(empty($user) && empty($pass))){
+        if($user != null && $pass != null){
             $auth = new Auth();
 
             if ($auth->verify($user, $pass)) {
@@ -19,6 +19,8 @@
             } else {
                 $_SESSION['errMsg'] = "<span style='color:red;font-size:2rem;'>*Invalid password or Username</span>";
             }
+        } else {
+            $_SESSION['errMsg'] = "<span style='color:red;font-size:2rem;'>*Invalid password or Username</span>";
         }
     }
 
@@ -42,11 +44,19 @@
                         <table class="login-table">
                             <tr>
                                 <td><label for="username">ID Pengguna / Username :</label></td>
-                                <td><input type="username" name="username" id="username" class="form-control" required></td>
+                                <td><input  type="text" 
+                                            name="username" 
+                                            id="username" 
+                                            class="form-control"
+                                            autocomplete = "username" required></td>
                             </tr>
                             <tr>
                                 <td><label for="password">Katalaluan / Password : </label></td>
-                                <td><input type="password" name="password" id="password" class="form-control" autocomplete = "new-password" required></td>
+                                <td><input  type="password" 
+                                            name="password" 
+                                            id="password" 
+                                            class="form-control" 
+                                            autocomplete = "new-password" required></td>
                             </tr>
                             <tr>
                                 <td colspan="2">

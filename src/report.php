@@ -43,8 +43,8 @@
                                     <td><input type="date" class="form-control" name="date" id="date"></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="name">User Name:</label></td>
-                                    <td><input type="text" class="form-control" name="name" id="name"></td>
+                                    <td><label for="name">User ID:</label></td>
+                                    <td><input type="text" class="form-control" name="user_id" id="user_id"></td>
                                 </tr>
                                 <tr>
                                     <td><label for="branch">Branch:</label></td>

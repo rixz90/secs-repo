@@ -7,7 +7,7 @@ $(document).ready(function(){
             data : {
                 "report" : true,
                 "date" : $("#date").val(),
-                "name" : $("#name").val(),
+                "user_id" : $("#user_id").val(),
                 "branch" : $("#branch").val(),
                 "status" : $("#status").val(),
             },

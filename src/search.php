@@ -25,14 +25,14 @@
            $param[':date_report'] = $time;
         }
 
-        if(!empty($_GET['name']) || $_GET['name']!=0){
+        if(!empty($_GET['user_id']) || $_GET['user_id']!= null){
             $flag = true;
-            $sql.="u.NAME LIKE '%' || :name || '%' OR ";
+            $sql.="u.USER_ID = :user_id OR ";
 
-            $param['name'] = trim($_GET['name']);
+            $param['user_id'] = trim($_GET['user_id']);
         }
 
-        if(!empty($_GET['branch']) || $_GET['branch']!=0){
+        if(!empty($_GET['branch']) || $_GET['branch']!= null){
             $flag = true;
             $sql.="b.BRANCH_ID = :branch OR ";
 
