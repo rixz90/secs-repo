@@ -60,7 +60,7 @@
                 <table class="table" style="margin-top: 3rem;">
                     <tr>
                         <th>No.</th>
-                        <th>Compain ID</th>
+                        <th>Complaint ID</th>
                         <th>Date Report</th>
                         <th>Category</th>
                         <th>Complete Date</th>

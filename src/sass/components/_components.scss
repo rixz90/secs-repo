@@ -57,6 +57,24 @@
     padding: 1rem;
 }
 
+fieldset {
+    padding: 2.5rem;
+    position: relative;
+
+    .close{
+        position: absolute;
+        background-color: #d34e3c;
+        top: 0;
+        right: 9px;
+        width: 20px;
+        height: 20px;
+        border: none;
+        color: white;
+        border-radius: 0.2rem;
+        visibility: hidden;
+    }
+}
+
 /////////////////////////////////////////////////////
 // BUTTON
 

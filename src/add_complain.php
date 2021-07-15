@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 
     //include autoloader classes
     include '../includes/autoloader.php';
@@ -8,10 +8,28 @@
     $status = false;
 
     if(isset($_POST['submit'])){
+        
+        $error = [];
+        $email = trim($_POST['email']);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            array_push($error,"*Invalid email format");
+        }
+
+        $name = trim($_POST['name']);
+        if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
+            array_push($error,"*Only letters and white space allowed");
+        }
 
         $phone_no = trim($_POST['phone_no']);
-        $email = trim($_POST['email']);
-        $name = trim($_POST['name']);
+        if(!Auth::validate_phone_number($phone_no)){
+            array_push($error,"*Invalid phone number");
+        }
+
+        if(!empty($error)){
+            $_SESSION['errorMsg'] = $error;
+            header("Location: ./aduan.php?status=failed");
+            exit();
+        }
 
         //check if user in database
         $query->setQuery("SELECT USER_ID FROM COMP_USER 

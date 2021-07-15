@@ -2,6 +2,7 @@ $(document).ready(function(){
 
     $('#categoryPanel').hide();
     $('#locationPanel').hide();
+    $('#relationPanel').hide();
     $('#adminPanel').hide();
 
     $('#nav_bra').click(function(){
@@ -16,9 +17,12 @@ $(document).ready(function(){
     $('#nav_adm').click(function(){
         show('#adminPanel');
     });
+    $('#nav_re').click(function(){
+        show('#relationPanel');
+    });
 
     function show(panel){
-        let arr = ['#branchPanel','#categoryPanel','#locationPanel','#adminPanel'];
+        let arr = ['#branchPanel','#categoryPanel','#locationPanel','#adminPanel','#relationPanel'];
         arr.forEach(p => {
             if(panel == p) {
                 $(p).show();
@@ -47,24 +51,40 @@ $(document).ready(function(){
         }
 
         var c = $(this).children().length;
-        for(var i=0; i<c; i++){
-            var value = $(this).children()[i].innerHTML;
-            target.find('input[type="text"]:eq('+i+')').val(value);
-        }
-    
 
+        //If in relation table
         if(target.find('select').length > 0){
-            let text = $(this).children()[2].innerHTML;
-            console.log(text);
-            target.find("select").children(':eq(0)').text(text);
             
-        }
+            let value = $(this).children()[0].innerHTML;
+            $("select:eq(0)").val(value).change();
+            $("#init_loc").val(value).change();
+            value = $(this).children()[3].innerHTML;
+            $("select:eq(1)").val(value).change();
+            $("#init_bra").val(value).change();
+            
+        } else {
+            for(let i=0; i<c; i++){
+                let value = $(this).children()[i].innerHTML;
+                target.find('input[type="text"]:eq('+i+')').val(value);
+            }
+        }  
+
 
         target.find(".button-submit").hide();
         target.find(".button-update,.button-remove").css("visibility","visible");
         target.find("input[name=id]").prop( "disabled", true );
-
         target.find("input[name='pass']").val("");
+
+        target.find("button.close").css("visibility","visible");
+    });
+
+    $("button.close").click(function(e){
+        e.preventDefault();
+        target.find(".button-submit").show();
+        target.find(".button-update,.button-remove").css("visibility","hidden");
+        target.find("input[name=id]").prop( "disabled", false );
+        target.find("input[type=text],input[type=password]").val("");
+        target.find("select").val(0).change();
     });
 
     //Click update button
@@ -74,6 +94,10 @@ $(document).ready(function(){
 
         const params = {};
         
+        let v = target.children()[0].value;
+        Object.assign(params,{"type":v});
+        
+        //text input event
         for(var i=0; i<len; i++){
             let key = target.find("input[type='text']:eq("+i+")").attr("name");
             let value = target.find("input[type='text']:eq("+i+")").val();
@@ -81,25 +105,59 @@ $(document).ready(function(){
             temp[key] = value;
             Object.assign(params,temp);
         }
-        let type = target.children()[0].value;
-        Object.assign(params,{type:type});
 
+        //select input event
+        if(target.find("select").length > 0){
+            for(let i=0;i<2;i++){
+                let key = target.find("select:eq("+i+")").attr("name");
+                let value = target.find("select:eq("+i+")").val();
+                let temp = {}
+                temp[key] = value;
+                Object.assign(params,temp);
+            }
+
+            v = target.children()[1].value;
+            Object.assign(params,{"init_loc_id":v});
+            v = target.children()[2].value;
+            Object.assign(params,{"init_bra_id":v});
+            
+        };
+
+        //password input event
+        if(target.find("input[type='password']").length > 0){
+            let passVal = target.find("#pass").val();
+            Object.assign(params,{"pass":passVal});
+            
+            let cPassVal = target.find("#c_pass").val();
+            Object.assign(params,{"c_pass":cPassVal});
+        };
         confirmUpdate(params);
     });
 
     $('.button-remove').click(function(e){
         e.preventDefault();
-        let params = {
-            "id" : target.find("input[name='id']").val(),
-            "type" : target.find("input[name='type']").val()
-        };
-    
-        if(target.find("input[name='type']").length > 0){
-            let temp = {
-                "pass" : target.find("input[name='pass']").val(),
-                "c_pass" : target.find("input[name='c_pass']").val()
+        
+        var params = {};
+
+        if(target.find("select").length > 0){
+            params = {
+                "loc_id" : $("input[name='init_loc_id']").val(),
+                "bra_id" : $("input[name='init_bra_id']").val(),
+                "type" : target.find("input[name='type']").val()
+            }
+        }else {
+            params = {
+                "id" : target.find("input[name='id']").val(),
+                "type" : target.find("input[name='type']").val()
             };
-            Object.assign(params,temp);
+        
+            if(target.find("input[name='type']").length > 0){
+                let temp = {
+                    "pass" : target.find("input[name='pass']").val(),
+                    "c_pass" : target.find("input[name='c_pass']").val()
+                };
+                Object.assign(params,temp);
+            }
         }
 
         confirmDelete(params);
@@ -119,20 +177,8 @@ $(document).ready(function(){
                         data : params,
                         dataType : "text",
                         async : false,
-                        success : function(){
-                            $.alert({
-                                title: '<h4>Delete successful!</h4>',
-                                content: 'Simple alert!',
-                                buttons: {
-                                    OK : function(e){ location.reload(); }
-                                }
-                            });
-                        },
-                        error : function(e){
-                            $.alert({
-                                title: "Error Occur!",
-                                content: "<p style='font-size:2rem'>"+e.responseText+"</p>"
-                            })
+                        success : function(e){
+                            popUpMsg(e);
                         }
                     });
                 },
@@ -155,16 +201,9 @@ $(document).ready(function(){
                         data : params,
                         dataType : "text",
                         async : false,
-                        success : function(){
-                            $.alert({
-                                title: '<h4>Update successful!</h4>',
-                                content: 'Simple alert!',
-                                buttons: {
-                                    OK : function(e){ 
-                                        location.reload(); 
-                                    }
-                                }
-                            });
+                        success : function(e){
+                            popUpMsg(e)
+                            
                         },
                         error : function(e){
                             $.alert({
@@ -177,6 +216,49 @@ $(document).ready(function(){
                 cancel: function () { $.alert('<h2>Canceled!</h2>');}
             }
         });
+    }
+
+    function popUpMsg(e){
+        if(e == "DependecyErr"){
+            $.alert({
+                title: "<h4>Error</h4>",
+                content: "<p style='font-size:2rem'>Cannot edit this Data! Depandency Issue.</p>",
+                buttons: {
+                    OK : function(){ }
+                }
+            });
+        }else if(e == "notFillErr"){
+            $.alert({
+                title: "<h4>Error</h4>",
+                content: "<p style='font-size:2rem'>One of the input is empty</p>",
+                buttons: {
+                    OK : function(){ }
+                }
+            });
+        }else if(e == "passError"){
+            $.alert({
+                title: "<h4>Error</h4>",
+                content: "<p>Wrong Password!</p>",
+                buttons: {
+                    OK : function(){ }
+                }
+            });
+        } else if(e == "OK") {
+            $.alert({
+                title: "<h4>Database</h4>",
+                content: "<p style='font-size:2rem'>Database has been modified</p>",
+                buttons: {
+                    OK : function(e){ 
+                        location.reload(); 
+                    }
+                }
+            });
+        } else {
+            $.alert({
+                title: "Error Occur!",
+                content: "<p style='font-size:2rem'>"+e+"</p>"
+            })
+        }
     }
 });
 

@@ -27,6 +27,14 @@
             ":name" => trim($_POST['name'])
         );
     }
+    
+    else if(isset($_POST['ADD_REL'])){
+        $query->setQuery("INSERT INTO LOCATION_BRANCH VALUES(:loc_id,:bra_id)");
+        $param = array(
+            ":loc_id" => trim($_POST['loc_id']),
+            ":bra_id" => trim($_POST['bra_id'])
+        );
+    }
 
     else if(isset($_POST['ADD_LOC'])){
         $query->setQuery("INSERT INTO LOCATION VALUES(:id,:name)");
@@ -55,11 +63,13 @@
 
         if(strcmp($pass,$c_pass) == 0 ){
 
-            $query->setQuery("INSERT INTO ADMIN VALUES(:id,:type,:pass)");
+            $query->setQuery("INSERT INTO ADMIN VALUES(:id,:type,:pass, :department, :name)");
             $param = array(
                 ":id" => trim($_POST['id']),
                 ":type" => trim($_POST['access']),
-                ":pass" => Auth::hashPassword(trim($_POST['pass']))
+                ":pass" => Auth::hashPassword(trim($_POST['pass'])),
+                "department" => trim($_POST['department']),
+                "name" => trim($_POST['name']),
             );
         }
     }

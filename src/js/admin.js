@@ -16,7 +16,7 @@ $(document).ready(function(){
 
     $('#remove').click(function(e){
         e.preventDefault();
-        console.log($("input[type=hidden]:eq(1)").val());
+        
         let params = {
             "id" : $("input[type=hidden]:eq(1)").val(),
             "submit" : "submit"

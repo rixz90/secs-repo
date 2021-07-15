@@ -6,20 +6,6 @@
     //include autoloader classes
     include '../includes/autoloader.php';
 
-    if(isset($_GET['branch'])){  
-        echo '<option id=location value="'.$_GET['defaultVal'].'" disable>Choose Location</option>';
-        $q = new Query("SELECT L.LOCATION_ID, L.LOCATION_NAME  
-                        FROM LOCATION L 
-                        JOIN LOCATION_BRANCH M 
-                        ON (M.LOCATION_ID = L.LOCATION_ID) 
-                        WHERE M.BRANCH_ID = '".trim($_GET['branch'])."'");
-        $r = $q->fetch_array();
-        for ($i = 0; $i < sizeof($r); $i++) {
-            echo "<option value='".$r[$i][0]."'>".$r[$i][1]."</option>";
-        }
-        echo '</select>';
-        exit();
-    }
     if(isset($_POST['submit'])){
 
         if($_POST['status'] == 'COMPLETE'){
@@ -29,18 +15,10 @@
         }
 
         $query = new Query("UPDATE COMPLAINT SET 
-        COMP_DETAIL = :detail,
-        BRANCH_ID = :branch_id,
-        LOCATION_ID = :loc_id,
-        CATEGORY_ID = :category_id,
         COMP_STATUS = :status,
         DATE_COMPLETE = :complete_date 
         WHERE COMPLAINT_ID = :id");
         $param = array(
-            ":detail" => trim($_POST['details']),
-            ":branch_id" => trim($_POST['branch']),
-            ":loc_id" => trim($_POST['location']),
-            ":category_id" => trim($_POST['category_id']),
             ":id" => trim($_POST['id']),
             ":status" => trim($_POST['status']),
             ":complete_date" => $complete_date
@@ -49,47 +27,17 @@
         $result = $query->insertInto($param);
 
         if($result){
-            $query->setQuery("UPDATE COMP_USER SET 
-            NAME = :name 
-            WHERE USER_ID = :userId");
-            $param = array(
-                ":name" => trim($_POST['name']),
-                ":userId" => trim($_POST['userId'])
-            );
-            $query->insertInto($param);
-
-            if(isset($_POST['matrix_id'])){
-                $query->setQuery("UPDATE STUDENT SET 
-                MATRIX_ID = :matrix_id 
-                WHERE USER_ID = :userId");
-                $param = array(
-                    ":matrix_id" => trim($_POST['matrix_id']),
-                    ":userId" => trim($_POST['userId'])
-                );
-                $query->insertInto($param);
-            } else if(isset($_POST['staff_id'])){
-                $query->setQuery("UPDATE STAFF SET 
-                STAFF_ID = :staff_id 
-                WHERE USER_ID = :userId");
-                $param = array(
-                    ":staff_id" => trim($_POST['staff_id']),
-                    ":userId" => trim($_POST['userId'])
-                );
-                $result = $query->insertInto($param);
-            }
-        } else {
-            die("error");
-        }
-        if($result){
             header("Location: ./admin.php?status=success");
+        } else {
+            die("Error");
         }
         
-        die();
+        
     }
 
-    $query = new Query("SELECT c.COMPLAINT_ID, u.USER_TYPE, u.USER_ID, 
-    b.BRANCH_NAME, b.BRANCH_ID, l.LOCATION_NAME, l.LOCATION_ID, ca.CATEGORY_NAME, 
-    ca.CATEGORY_ID, c.COMP_DETAIL, NVL(TO_CHAR(c.URL_ATTACHMENT),'NO_FILE'), u.NAME, c.COMP_STATUS  
+    $query = new Query("SELECT c.COMPLAINT_ID, u.USER_TYPE, u.USER_ID, u.NAME, c.COMP_STATUS,    
+     l.LOCATION_NAME, b.BRANCH_NAME, ca.CATEGORY_NAME, c.COMP_DETAIL,  
+    NVL(TO_CHAR(c.URL_ATTACHMENT),'NO_FILE') 
     FROM COMPLAINT c JOIN BRANCH b ON(c.BRANCH_ID = b.BRANCH_ID) 
     JOIN COMP_USER u ON(c.USER_ID = u.USER_ID) 
     JOIN LOCATION l ON(c.LOCATION_ID = l.LOCATION_ID) 
@@ -97,7 +45,6 @@
     WHERE c.COMPLAINT_ID = '".$_GET["id"]."'");
 
     $r = $query->fetch_array();
-
     if(empty($r)){
         echo "<p>NOT FOUND</p>";
     }
@@ -123,7 +70,7 @@
                         </tr>
                         <tr>
                             <td><label>Complaint ID : </label></td>
-                            <td><?php echo $r[0][0] ?></td>
+                            <td><?php echo $r[0][0]; ?><input type="hidden" name="id" value="<?php echo $r[0][0]; ?>"></td>
                         </tr>
                         <tr>
                             <td><label for="userType">User Type : </label></td>
@@ -136,7 +83,7 @@
                             
                             echo "<tr>";
                             echo "<td><label>Staff ID : </td>";
-                            echo "<td><input type='text' name='staff_id' value='".$r2[0][0]."'/></td>";
+                            echo "<td>".$r2[0][0]."</td>";
                             echo "</tr>";
 
                         } ?>
@@ -148,15 +95,14 @@
                         
                             echo "<tr>";
                             echo "<td><label>Student ID : </td>";
-                            echo "<td><input type='text' class='form-control' name='matrix_id' value='".$r2[0][0]."'/></td>";
+                            echo "<td>".$r2[0][0]."</td>";
                             echo "</tr>";
 
                         } ?>
                     
                             <tr>
                                 <td><label>NAME : </td>
-                                <td><input type='text' class='form-control' name='name' value="<?php echo $r[0][11]; ?>"/></td>
-                                <input type="hidden" name="userId" value="<?php echo $r[0][2]; ?>">
+                                <td><?php echo $r[0][3]; ?></td>
                             </tr>
 
                             <tr>
@@ -164,7 +110,7 @@
                                 <td>
                                     <select name="status" class="form-control">
                                         <?php
-                                            echo "<option disable selected>".$r[0][12]."</option>";
+                                            echo "<option disable selected>".$r[0][4]."</option>";
                                             if($r[0][12] != "IN PROCESS"){
                                                 echo "<option value='IN PROCESS'>IN PROCESS</option>";
                                             }
@@ -187,51 +133,23 @@
                         </tr>
                         <tr>
                             <td><label for="branch">UiTM Branch: </td>
-                            <td>
-                                <select name="branch" id="branch_id"  class="form-control">
-                                    <option value="<?php echo $r[0][4]; ?>" selected><?php echo $r[0][3]; ?></option>
-                                    <?php 
-                                        $q = new Query("SELECT * FROM BRANCH WHERE BRANCH_ID NOT LIKE '".$r[0][4]."'");
-                                        $s = $q->fetch_array();
-                                        for ($i = 0; $i < sizeof($s); $i++) {
-                                            echo "<option value='".$s[$i][0]."'>".$s[$i][1]."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </td>
+                            <td><?php echo $r[0][5]; ?></td>
                         </tr>
                         <tr>
                             <td><label for="location">Location Details : </td>
-                            <td>
-                                <select name="location"  class="form-control">
-                                    <option id="location" value="<?php echo $r[0][6]; ?>" selected><?php echo $r[0][5]; ?></option>
-                                </select>
-                            </td>
+                            <td><?php echo $r[0][6]; ?></td>
                         </tr>
                         <tr>
                             <td><label for="category">Category: </td>
-                            <td>
-                                <select name="category_id" id="category"  class="form-control">
-                                    <option value="<?php echo $r[0][8]; ?>" selected><?php echo $r[0][7]; ?></option>
-                                    <?php 
-                                        $q = new Query("SELECT * FROM CATEGORY WHERE CATEGORY_ID NOT LIKE '".$r[0][8]."'");
-                                        $s = $q->fetch_array();
-                                        for ($i = 0; $i < sizeof($s); $i++) {
-                                            echo "<option value='".$s[$i][0]."'>".$s[$i][1]."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </td>
+                            <td><?php echo $r[0][7]; ?></td>
                         </tr>
                         <tr>
                             <td><label for="details">Details : </td>
-                            <td>
-                                <textarea name="details" id="details" cols="30" rows="10"  class="form-control textarea"><?php echo $r[0][9]; ?></textarea>
-                            </td>
+                            <td><p><?php echo $r[0][8]; ?></p></td>
                         </tr>
                         <tr>
                             <td><label for="attachment">Attachment : </td>
-                            <td><?php echo $r[0][10]; ?></td>
+                            <td><a href="<?php echo $r[0][9]; ?>">File/Image</a></td>
                         </tr>
                         <tr>
                             <td colspan="2">

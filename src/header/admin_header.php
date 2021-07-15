@@ -1,11 +1,5 @@
 <header class="header admin-nav">
             <div class="nav_item">
-                <svg class="nav_icon">
-                    <use xlink:href="img/sprite.svg#icon-home">
-                </svg>
-                <a class="link" href="./index.php
-                ">Utama</a>
-
                 <div class="nav_item">
                     <svg class="nav_icon">
                         <use xlink:href="img/sprite.svg#icon-print">

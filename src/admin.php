@@ -8,22 +8,29 @@
 
 
     if(!isset($_GET['search'])){
+
         $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, 
         ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
         FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID)");
 
         $r = $q->fetch_array();
     }else{
-        $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, 
-        ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
-        FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID) 
-        WHERE c.COMPLAINT_ID = :id");
 
-        $param = array(
-            ":id" => trim($_GET['id'])
-        );
-
-        $r = $q->fetch_array_with_param($param);
+        if(isset($_GET['id']) && $_GET['id'] == null){
+            $_SESSION['errMsg'] = "*Input is empty";
+            $r = 0;
+        } else {
+            $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, 
+            ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
+            FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID) 
+            WHERE c.COMPLAINT_ID = :id");
+    
+            $param = array(
+                ":id" => trim($_GET['id'])
+            );
+    
+            $r = $q->fetch_array_with_param($param);
+        }        
     }
 ?>
 
@@ -49,6 +56,12 @@
                                     <td><input type="text" class="form-control" name="id" id="id"></td>
                                     <td><input type="submit" class="button-submit" name="search" id="search" value="Search"></td>
                                     <td><a href="./admin.php" class="button-reset">Reset</a></td>
+                                <?php 
+                                    if(isset($_SESSION['errMsg'])){
+                                        echo "<td><p style='color:red'>".$_SESSION['errMsg']."</p></td>";
+                                        unset($_SESSION['errMsg']);
+                                    }
+                                ?>
                                 </tr>
                             </table>
                         </form>
@@ -65,19 +78,23 @@
                             <th>Details</th>
                         </tr>
                         <?php 
-                            
-                            for ($i = 0; $i < sizeof($r); $i++) {
-                                $k = $i+1;
-                                echo "<tr class='option'>";
-                                echo "<td>".$k."</td>";
-                                echo "<td id='id'>".$r[$i][0]."</td>";
-                                echo "<td>".$r[$i][1]."</td>";
-                                echo "<td>".$r[$i][2]."</td>";
-                                echo "<td>".$r[$i][3]."</td>";
-                                echo "<td>".$r[$i][4]."</td>";
-                                echo "<td><a href='./detail.php?id=".$r[$i][0]."'>detail</a></td>";
-                                echo "</tr>";
+                            if($r != null){
+                                for ($i = 0; $i < sizeof($r); $i++) {
+                                    $k = $i+1;
+                                    echo "<tr class='option'>";
+                                    echo "<td>".$k."</td>";
+                                    echo "<td id='id'>".$r[$i][0]."</td>";
+                                    echo "<td>".$r[$i][1]."</td>";
+                                    echo "<td>".$r[$i][2]."</td>";
+                                    echo "<td>".$r[$i][3]."</td>";
+                                    echo "<td>".$r[$i][4]."</td>";
+                                    echo "<td><a href='./detail.php?id=".$r[$i][0]."'>detail</a></td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan=7><center>Not Found</center></td></tr>";
                             }
+                            
                         ?>
                         <tr>
                             <td colspan="8">
