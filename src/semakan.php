@@ -1,4 +1,4 @@
-<?php 
+<?php session_start();
     //include autoloader classes
     include '../includes/autoloader.php';
 ?>
@@ -14,7 +14,11 @@
 
         <div class="content">
             <main class="review-view">
+            
                 <h1 class="title">Semakan Aduan / Check Lodge</h1>
+                <?php if(isset($_SESSION["success"])) {
+                    echo "<p style='color:green; font-size:2rem;'>".$_SESSION["success"]."</p>";
+                } ?>
                 <form class="review-form" id="form" action="./semakan.php" method="POST">
                     <table class="review-table">
                         <tr>

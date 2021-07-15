@@ -13,7 +13,13 @@ $(document).ready(function(){
             },
             dataType : "text",
           }).done(function(e) {
-            $(e).replaceAll('#location');
+              console.log(e);
+              if(e != "NullInput"){
+                $(e).replaceAll('#location');
+              } else {
+                  $("#error").text("*Search is empty");
+              }
+                
         });
     });
 });

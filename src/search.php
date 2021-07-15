@@ -60,7 +60,7 @@
         }
         
         else {
-            echo "<tbody id='location'><tr><td colspan=9><center>Not Found</center></td></tr></tbody>";
+            die("NullInput");
         }
         
         

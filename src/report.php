@@ -74,7 +74,9 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                <tr>
                                     <td><button name="submit" class="button-submit">Generate</button></td>
+                                    <td><p id="error" style="color:red;font-size:2rem"></p></td>
                                 </tr>
                             </table>
                     </div>

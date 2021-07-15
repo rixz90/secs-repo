@@ -39,7 +39,9 @@ $(document).ready(function(){
                         data : params,
                         dataType : "text",
                         async : false,
-                        success : function(){
+                        success : function(e){
+                            console.log(e);
+                            
                             $.alert({
                                 title: '<h4>Delete successful!</h4>',
                                 content: 'Simple alert!',

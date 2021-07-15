@@ -6,7 +6,8 @@
     //include autoloader classes
     include '../includes/autoloader.php';
 
-    $query = new Query("SELECT c.COMPLAINT_ID, u.USER_TYPE,u.USER_ID, b.BRANCH_NAME, l.LOCATION_NAME, CATEGORY_NAME, c.COMP_DETAIL, NVL(TO_CHAR(c.URL_ATTACHMENT),'NO_FILE') 
+    $query = new Query("SELECT c.COMPLAINT_ID, u.USER_TYPE,u.USER_ID, u.PHONE_NO, u.EMAIL, b.BRANCH_NAME, 
+    l.LOCATION_NAME, CATEGORY_NAME, c.COMP_DETAIL, c.URL_ATTACHMENT  
     FROM COMPLAINT c JOIN BRANCH b ON(c.BRANCH_ID = b.BRANCH_ID) 
     JOIN COMP_USER u ON(c.USER_ID = u.USER_ID) 
     JOIN LOCATION l ON(c.LOCATION_ID = l.LOCATION_ID)
@@ -83,29 +84,45 @@
                             echo "</tr>";
 
                          ?>
+
+                        <tr>
+                            <td><label for="userType">Email : </label></td>
+                            <td><?php echo $r[0][3] ?></td>    
+                        </tr>
+                        
+                        <tr>
+                            <td><label for="userType">Phone Number : </label></td>
+                            <td><?php echo $r[0][4] ?></td>    
+                        </tr>
                         
                         <tr>
                             <td><h3 class="h3">Complaint Information</h3></td>
                         </tr>
                         <tr>
                             <td><label for="branch">UiTM Branch: </td>
-                            <td><?php echo $r[0][3]; ?></td>
-                        </tr>
-                        <tr>
-                            <td><label for="location">Location Details : </td>
-                            <td><?php echo $r[0][4]; ?></td>
-                        </tr>
-                        <tr>
-                            <td><label for="category">Category: </td>
                             <td><?php echo $r[0][5]; ?></td>
                         </tr>
                         <tr>
-                            <td><label for="details">Details : </td>
+                            <td><label for="location">Location Details : </td>
                             <td><?php echo $r[0][6]; ?></td>
                         </tr>
                         <tr>
+                            <td><label for="category">Category: </td>
+                            <td><?php echo $r[0][7]; ?></td>
+                        </tr>
+                        <tr>
+                            <td><label for="details">Details : </td>
+                            <td><?php echo $r[0][8]; ?></td>
+                        </tr>
+                        <tr>
                             <td><label for="attachment">Attachment : </td>
-                            <td><a href="<?php echo $r[0][7]; ?>">File/Image</a></td>
+                            <td>
+                                <?php if(empty($r[0][9])){
+                                    echo "";
+                                } else {
+                                    echo "<a href=".$r[0][9].">".$r[0][9]."</a>";
+                                } ?>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2">

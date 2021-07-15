@@ -64,7 +64,7 @@
                     ":type" => 'STUDENT'
                 );
                 
-            } else {
+            } else if($userType == 'guest') {
                 $query->setQuery("INSERT INTO COMP_USER (PHONE_NO,EMAIL,NAME,USER_TYPE) VALUES(:phone_no, :email, :name, :type)");
                 $param = array(
                     ":phone_no" => $phone_no,
@@ -72,12 +72,25 @@
                     ":name" => $name,
                     ":type" => 'GUEST'
                 );
+            } else {
+                die("NO USERTYPE FOUND");
             }
             $status = $query->insertInto($param);
 
             $query->setQuery("SELECT USER_ID FROM COMP_USER 
-                            WHERE PHONE_NO = '$phone_no' AND EMAIL = '$email' AND NAME = '$name'");
-            $user_id = $query->fetch_array()[0][0];
+                            WHERE PHONE_NO = :phone_no AND EMAIL = :email AND NAME = :name ");
+
+            $param = array(
+                ":phone_no" => $phone_no,
+                ":email" => $email,
+                ":name" => $name,
+                ":type" => $userType
+            );
+
+            $r = $query->fetch_array_with_param($param);
+            $user_id = $r[0][0];
+
+            var_dump($user_id);
 
             if($userType == 'staff'){
                 $staffId = trim($_POST['staffId']);
@@ -99,11 +112,6 @@
             }
         }
 
-        $query->setQuery("INSERT INTO COMPLAINT 
-                        (COMP_DETAIL,URL_ATTACHMENT,BRANCH_ID,LOCATION_ID,CATEGORY_ID,USER_ID,COMP_STATUS,DATE_REPORT,DATE_COMPLETE) 
-                        VALUES( :comp_detail,:url_attachment,
-                                :branch_id,:location_id,:category_id,:user_id,:status,:date_report,:date_complete)");
-
         if($_FILES['fileToUpload']['name'] != ""){
             $FILE = new File($_FILES['fileToUpload']);
             $FILE->upload();
@@ -111,6 +119,11 @@
         } else {
             $file = null;
         }
+
+        $query->setQuery("INSERT INTO COMPLAINT 
+                        (COMP_DETAIL,URL_ATTACHMENT,BRANCH_ID,LOCATION_ID,CATEGORY_ID,USER_ID,COMP_STATUS,DATE_REPORT,DATE_COMPLETE) 
+                        VALUES( :comp_detail,:url_attachment,
+                                :branch_id,:location_id,:category_id,:user_id,:status,:date_report,:date_complete)");
         
         $param = array(
             ":comp_detail" => trim($_POST['details']),
@@ -127,9 +140,19 @@
         $status = $query->insertInto($param);
     }
 
-    if($status)
-        header("Location: ./aduan.php?status=success");
-    else
+    if($status) {
+        $_SESSION["success"] = 'Your respond has been record, Please check using: ';
+        if($userType == 'staff'){
+            $_SESSION["success"] .= trim($_POST['staffId']);
+        }
+        
+        else if($userType == 'student'){
+            $_SESSION["success"] .= trim($_POST['studentId']);
+        } else {
+            $_SESSION["success"] .= trim($_POST['name']);
+        }
+        header("Location: ./semakan.php");
+    } else{
         echo "Failed to add to DB";
-
+    }     
 ?>
