@@ -131,6 +131,9 @@ $(document).ready(function(){
             let cPassVal = target.find("#c_pass").val();
             Object.assign(params,{"c_pass":cPassVal});
         };
+
+        console.log(params);
+
         confirmUpdate(params);
     });
 
@@ -248,7 +251,7 @@ $(document).ready(function(){
                 title: "<h4>Database</h4>",
                 content: "<p style='font-size:2rem'>Database has been modified</p>",
                 buttons: {
-                    OK : function(e){ 
+                    OK : function(){ 
                         location.reload(); 
                     }
                 }

@@ -15,7 +15,6 @@
     </head>
     <body>
         <?php include 'header/admin_header.php'; ?>
-
         <div class="content">
             <main class="admin-view">
                 <h1 class="title">Complaints Report</h1>
@@ -76,14 +75,14 @@
                                 <tr>
                                 <tr>
                                     <td><button name="submit" class="button-submit">Generate</button></td>
-                                    <td><p id="error" style="color:red;font-size:2rem"></p></td>
                                 </tr>
                             </table>
+                            <p id="error" style="color:red;font-size:2rem"></p>
                     </div>
                     <div class="panel">
                     <table class="table">
                         <tr>
-                            <th>Bil</th>
+                            <th>User ID</th>
                             <th>Complaint ID</th>
                             <th>Name</th>
                             <th>Branch</th>
@@ -94,17 +93,16 @@
                             <th>Detail</th>
                         </tr>
                         <tbody id=location>
-                            <?php $q = new Query("SELECT c.COMPLAINT_ID,u.USER_ID,u.NAME,b.BRANCH_NAME,
+                            <?php $q = new Query("SELECT c.USER_ID,c.COMPLAINT_ID,u.NAME,b.BRANCH_NAME,
                             c.DATE_REPORT,ca.CATEGORY_NAME, c.comp_status, NVL(to_char(c.date_complete),'STILL REVIEW')
                                                 FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID) 
                                                 JOIN COMP_USER u ON(u.USER_ID = c.USER_ID) 
                                                 JOIN BRANCH b ON(b.BRANCH_ID = c.BRANCH_ID)");
                                 $r = $q->fetch_array();
                                 for ($i = 0; $i < sizeof($r); $i++) {
-                                    $k = $i+1;
                                     echo "<tr>";
-                                    echo "<td>".$k."</td>";
                                     echo "<td>".$r[$i][0]."</td>";
+                                    echo "<td>".$r[$i][1]."</td>";
                                     echo "<td>".$r[$i][2]."</td>";
                                     echo "<td>".$r[$i][3]."</td>";
                                     echo "<td>".$r[$i][4]."</td>";
@@ -124,4 +122,5 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/report.js"></script>
     </body>
+    <?php include 'footer/footer.php'; ?>
 </html>

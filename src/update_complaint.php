@@ -111,16 +111,16 @@
                                     <select name="status" class="form-control">
                                         <?php
                                             echo "<option disable selected>".$r[0][4]."</option>";
-                                            if($r[0][12] != "IN PROCESS"){
+                                            if($r[0][4] != "IN PROCESS"){
                                                 echo "<option value='IN PROCESS'>IN PROCESS</option>";
                                             }
-                                            if($r[0][12] != "REPORTED"){
+                                            if($r[0][4] != "REPORTED"){
                                                 echo "<option value='REPORTED'>REPORTED</option>";
                                             }
-                                            if($r[0][12] != "INVESTIGATION"){
+                                            if($r[0][4] != "INVESTIGATION"){
                                                 echo "<option value='INVESTIGATION'>INVESTIGATION</option>";
                                             }
-                                            if($r[0][12] != "COMPLETE"){
+                                            if($r[0][4] != "COMPLETE"){
                                                 echo "<option value='COMPLETE'>COMPLETE</option>";
                                             }
                                         ?>
@@ -149,7 +149,14 @@
                         </tr>
                         <tr>
                             <td><label for="attachment">Attachment : </td>
-                            <td><a href="<?php echo $r[0][9]; ?>">File/Image</a></td>
+                            <td>
+                            <?php if($r[0][9] == 'NO_FILE'){
+                                    echo "";
+                                } else {
+                                    echo "<a href=".$r[0][9].">File/Image</a>";
+                                } ?>
+
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2">

@@ -8,7 +8,7 @@
     include '../includes/autoloader.php';
 
     if(isset($_GET['report'])){
-        $sql ="SELECT c.COMPLAINT_ID,u.USER_ID,u.NAME,b.BRANCH_NAME,
+        $sql ="SELECT c.USER_ID,c.COMPLAINT_ID,u.NAME,b.BRANCH_NAME,
         c.DATE_REPORT,ca.CATEGORY_NAME, c.COMP_STATUS, NVL(to_char(c.DATE_COMPLETE),'STILL REVIEW')
         FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID) 
         JOIN COMP_USER u ON(u.USER_ID = c.USER_ID) 
@@ -26,8 +26,13 @@
         }
 
         if(!empty($_GET['user_id']) || $_GET['user_id']!= null){
+
+            if(!is_numeric($_GET['user_id'])){
+                die("NotInteger");
+            }
+
             $flag = true;
-            $sql.="u.USER_ID = :user_id OR ";
+            $sql.="c.USER_ID = :user_id OR ";
 
             $param['user_id'] = trim($_GET['user_id']);
         }
@@ -66,10 +71,9 @@
         
         echo "<tbody id='location'>";
         for ($i = 0; $i < sizeof($r); $i++) {
-            $k = $i+1;
             echo "<tr class='option'>";
-            echo "<td>".$k."</td>";
             echo "<td>".$r[$i][0]."</td>";
+            echo "<td>".$r[$i][1]."</td>";
             echo "<td>".$r[$i][2]."</td>";
             echo "<td>".$r[$i][3]."</td>";
             echo "<td>".$r[$i][4]."</td>";

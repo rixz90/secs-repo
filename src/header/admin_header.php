@@ -2,18 +2,19 @@
             <div class="nav_item">
                 <div class="nav_item">
                     <svg class="nav_icon">
+                        <use xlink:href="img/sprite.svg#icon-menu">
+                    </svg>
+                    <a class="link" href="./admin.php">Manage</a>
+                </div>
+                
+                <div class="nav_item">
+                    <svg class="nav_icon">
                         <use xlink:href="img/sprite.svg#icon-print">
                     </svg>
                     <a class="link" href="./report.php
                     ">Report</a>
                 </div>
 
-                <div class="nav_item">
-                    <svg class="nav_icon">
-                        <use xlink:href="img/sprite.svg#icon-menu">
-                    </svg>
-                    <a class="link" href="./admin.php">Manage</a>
-                </div>
                 <div class="nav_item">
                     <svg class="nav_icon">
                         <use xlink:href="img/sprite.svg#icon-cog">

@@ -38,7 +38,7 @@
                                 <th>Branch Name</th>
                             </tr>
                             <?php 
-                            $q = new Query('SELECT * FROM branch');
+                            $q = new Query('SELECT * FROM branch ORDER BY BRANCH_ID');
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
                                 echo '<tr class="option">';
@@ -103,7 +103,7 @@
                                 <th>Category Name</th>
                             </tr>
                             <?php 
-                            $q = new Query('SELECT * FROM category');
+                            $q = new Query('SELECT * FROM category ORDER BY CATEGORY_ID');
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
                                 echo '<tr class="option">';
@@ -168,7 +168,7 @@
                                 <th>Location Name</th>
                             </tr>
                             <?php 
-                            $q = new Query("SELECT * FROM LOCATION");
+                            $q = new Query("SELECT * FROM LOCATION ORDER BY TO_NUMBER(LOCATION_ID) ASC");
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
                                 echo '<tr class="option">';
@@ -229,18 +229,18 @@
                     <div class="panel" id="relationPanel">
                         <h2>Relation</h2>
                         <table class="table">
-                            <tr>
+                            <tr><th>Branch ID</th>
+                                <th>Branch Name</th>
+                                <th>--></th>
                                 <th>Location ID</th>
                                 <th>Location Name</th>
-                                <th>--></th>
-                                <th>Branch ID</th>
-                                <th>Branch Name</th>
                             </tr>
                             <?php 
-                           $q = new Query("SELECT L.LOCATION_ID, L.LOCATION_NAME, B.BRANCH_ID, B.BRANCH_NAME 
+                           $q = new Query("SELECT B.BRANCH_ID, B.BRANCH_NAME, L.LOCATION_ID, L.LOCATION_NAME 
                                             FROM (LOCATION L JOIN LOCATION_BRANCH M
                                             ON (L.LOCATION_ID = M.LOCATION_ID)) 
-                                            JOIN BRANCH B ON (M.BRANCH_ID = B.BRANCH_ID)");
+                                            JOIN BRANCH B ON (M.BRANCH_ID = B.BRANCH_ID) 
+                                            ORDER BY BRANCH_ID ASC");
                             $r = $q->fetch_array();
                             for ($i = 0; $i < sizeof($r); $i++) {
                                 echo '<tr class="option">';
@@ -263,12 +263,12 @@
                                 <legend>Insert Relation:</legend>
                                 <table>
                                 <tr>
-                                    <td><label for="loc_id">Location Change: </td>
+                                    <td><label for="bra_id">Branch Change: </td>
                                     <td>
-                                        <select name="loc_id" id="rel_loc"  class="form-control">
+                                        <select name="bra_id" id="rel_branch"  class="form-control">
                                         <option value="0" disable selected>--</option>
                                         <?php 
-                                            $q = new Query("SELECT * FROM LOCATION");
+                                            $q = new Query("SELECT * FROM BRANCH");
                                             $r = $q->fetch_array();
                                             
                                             for ($i = 0; $i < sizeof($r); $i++) {
@@ -279,12 +279,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><label for="bra_id">Branch Change: </td>
+                                    <td><label for="loc_id">Location Change: </td>
                                     <td>
-                                        <select name="bra_id" id="rel_branch"  class="form-control">
+                                        <select name="loc_id" id="rel_loc"  class="form-control">
                                         <option value="0" disable selected>--</option>
                                         <?php 
-                                            $q = new Query("SELECT * FROM BRANCH");
+                                            $q = new Query("SELECT * FROM LOCATION");
                                             $r = $q->fetch_array();
                                             
                                             for ($i = 0; $i < sizeof($r); $i++) {

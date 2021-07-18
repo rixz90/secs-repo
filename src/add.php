@@ -24,7 +24,7 @@
         $query->setQuery("INSERT INTO CATEGORY VALUES(:id,:name)");
         $param = array(
             ":id" => trim($_POST['id']),
-            ":name" => trim($_POST['name'])
+            ":name" => strtoupper(trim($_POST['name']))
         );
     }
     
@@ -41,7 +41,7 @@
         $id = trim($_POST['id']);
         $param = array(
             ":id" => $id,
-            ":name" => trim($_POST['name'])
+            ":name" => strtoupper(trim($_POST['name']))
         );
         $query->insertInto($param);
 
@@ -49,12 +49,6 @@
         if($query->fetch_array() <= 0){
             exit("no data found");
         } 
-
-        $query->setQuery("INSERT INTO LOCATION_BRANCH VALUES(:loc_id,:bra_id)");
-        $param = array(
-            ":loc_id" => $id,
-            ":bra_id" => trim($_POST['bra_id'])
-        );
     }
 
     else if(isset($_POST['ADD_ADMIN'])){

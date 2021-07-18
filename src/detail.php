@@ -150,4 +150,5 @@
             </main>
         </div>
     </body>
+    <?php include 'footer/footer.php'; ?>
 </html>

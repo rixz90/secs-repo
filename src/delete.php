@@ -19,8 +19,9 @@
         );
         $r = $query->fetch_array_with_param($param);
 
+
         //if not use by other complaint row continue
-        if($r[0][0] == 0){
+        if(!isset($r[0][0])){
             $query->setQuery("DELETE FROM LOCATION_BRANCH   
             WHERE BRANCH_ID = :id");
 
@@ -53,7 +54,7 @@
         $r = $query->fetch_array_with_param($param);
 
         //if not use by other complaint row continue
-        if($r[0][0] == 0){
+        if(!isset($r[0][0])){
             $query->setQuery("DELETE FROM CATEGORY  
                 WHERE CATEGORY_ID = :id");
             

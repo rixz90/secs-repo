@@ -22,6 +22,16 @@ body {
   color: #222;
 }
 
+footer {
+  display: block;
+  padding: 32px;
+  border-top: 1px solid #20202046;
+  margin-top: 10rem;
+  height: 9rem;
+  max-width: 95%;
+  margin: 50px auto 0 auto;
+}
+
 .center {
   margin: auto;
   width: 50%;
@@ -86,6 +96,10 @@ body {
 .nav_icon {
   fill: honeydew;
   width: 2rem;
+}
+
+.content {
+  min-height: 50rem;
 }
 
 .title {

@@ -116,13 +116,17 @@
             if($access[0][0] == 'SYS'){
                 $query->setQuery("UPDATE ADMIN SET
                 ADMIN_TYPE = :type,
-                PASSWORD = :pass 
+                PASSWORD = :pass,
+                DEPARTMENT = :department,
+                ADMIN_NAME = :name 
                 WHERE USERNAME = :id");
                 
                 $param = array(
-                ":id" => trim($_POST['id']),
-                ":type" => trim($_POST['access']),
-                ":pass" => Auth::hashPassword(trim($_POST['pass']))
+                    ":id" => trim($_POST['id']),
+                    ":type" => trim($_POST['access']),
+                    ":pass" => Auth::hashPassword(trim($_POST['pass'])),
+                    ":department" => trim($_POST['department']),
+                    ":name" => trim($_POST['name'])
                 );
                 
                 $status = $query->insertInto($param);
@@ -130,6 +134,8 @@
                 die("Dont have access to modify database! Please refer to management.");
             }
             
+        }else {
+            die("passNotMatch");
         }
     }
     

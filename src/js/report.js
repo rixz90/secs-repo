@@ -13,11 +13,12 @@ $(document).ready(function(){
             },
             dataType : "text",
           }).done(function(e) {
-              console.log(e);
-              if(e != "NullInput"){
-                $(e).replaceAll('#location');
-              } else {
-                  $("#error").text("*Search is empty");
+                if(e == "NullInput"){
+                    $("#error").text("*Search is empty");
+              } else if(e == "NotInteger"){
+                    $("#error").text("*User Id must be Integer");
+              } else{
+                    $(e).replaceAll('#location');
               }
                 
         });
