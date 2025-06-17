@@ -35,6 +35,13 @@
         <div class="content">
             <main class="register-view">
                 <h1 class="title">Daftar Aduan/Lodge Complaint</h1>
+                <?php if(isset($_SESSION['errorMsg'])){
+                    $errMsg = $_SESSION['errorMsg'];
+                    foreach ($errMsg as $e){
+                        echo "<span class='error'>".$e."</span>";
+                    }
+                    unset($_SESSION['errorMsg']);
+                } ?>
                 <form   class="registration-form" 
                         id="form" 
                         action="./add_complain.php" 
@@ -69,15 +76,15 @@
                         <tbody id="other">
                         <tr>
                             <td><label for="name">Name : </td>
-                            <td><input type="text" name="name" id="name" class="form-control"></td>
+                            <td><input type="text" name="name" id="name" class="form-control" required></td>
                         </tr>
                         <tr>
                             <td><label for="email">Email: </td>
-                            <td><input type="text" name="email" id="email" class="form-control"></td>
+                            <td><input type="text" name="email" id="email" class="form-control" required></td>
                         </tr>
                         <tr>
                             <td><label for="phone_no">Phone Number: </td>
-                            <td><input type="text" name="phone_no" id="phone_no" class="form-control"></td>
+                            <td><input type="text" name="phone_no" id="phone_no" class="form-control" required></td>
                         </tr>
                         <tr>
                             <td><h3 class="h3">Complaint Information</h3></td>
@@ -85,7 +92,7 @@
                         <tr>
                             <td><label for="branch">UiTM Branch: </td>
                             <td>
-                                <select name="branch" id="branch"  class="form-control">
+                                <select name="branch" id="branch"  class="form-control" required>
                                     <option value="" disabled selected>Choose Branch</option>
                                     <?php 
                                         $q = new Query("SELECT * FROM BRANCH");
@@ -100,7 +107,7 @@
                         <tr>
                             <td><label for="location">Location Details : </td>
                             <td>
-                                <select name="location" id="location"  class="form-control">
+                                <select name="location" id="location"  class="form-control" required>
                                 <option value="" disabled selected>Choose Location</option>
                                 </select>
                             </td>
@@ -108,7 +115,7 @@
                         <tr>
                             <td><label for="category">Category: </td>
                             <td>
-                                <select name="category" id="category"  class="form-control">
+                                <select name="category" id="category"  class="form-control" required>
                                     <option value="" disabled selected>Choose Category</option>
                                     <?php 
                                         $q = new Query("SELECT * FROM CATEGORY");
@@ -123,7 +130,7 @@
                         <tr>
                             <td><label for="details">Details : </td>
                             <td>
-                                <textarea name="details" id="details" cols="30" rows="10"  class="form-control textarea"></textarea>
+                                <textarea name="details" id="details" cols="30" rows="10"  class="form-control textarea" required></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -152,4 +159,5 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/aduan.js"></script>
     </body>
+    <?php include 'footer/footer.php'; ?>
 </html>

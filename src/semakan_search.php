@@ -45,7 +45,13 @@
     }
 
     $r = $sql->fetch_array_with_param($param);
+
     echo "<tbody id=location>";
+
+    if($r == null){
+        echo "<tr><td colspan=6><center>Not Found</center></td></tr>";
+    }
+
     for ($i = 0; $i < sizeof($r); $i++) {
         $j = $i+1;
         echo "<tr>";

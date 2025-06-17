@@ -8,7 +8,6 @@
     $status = false;
 
     if(isset($_POST['submit'])){
-        
         $error = [];
         $email = trim($_POST['email']);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -90,7 +89,6 @@
             $r = $query->fetch_array_with_param($param);
             $user_id = $r[0][0];
 
-            var_dump($user_id);
 
             if($userType == 'staff'){
                 $staffId = trim($_POST['staffId']);
@@ -123,21 +121,27 @@
         $query->setQuery("INSERT INTO COMPLAINT 
                         (COMP_DETAIL,URL_ATTACHMENT,BRANCH_ID,LOCATION_ID,CATEGORY_ID,USER_ID,COMP_STATUS,DATE_REPORT,DATE_COMPLETE) 
                         VALUES( :comp_detail,:url_attachment,
-                                :branch_id,:location_id,:category_id,:user_id)");
-
-        $file = new File($_FILES['fileToUpload']);
-
+                                :branch_id,:location_id,:category_id,:user_id,:status,:date_report,:date_complete)");
+        
         $param = array(
             ":comp_detail" => trim($_POST['details']),
-            ":url_attachment" => $file->getFileUrl(),
+            ":url_attachment" => $fileUrl,
             ":branch_id" => trim($_POST['branch']),
             ":location_id" => trim($_POST['location']),
             ":category_id" => trim($_POST['category']),
-            ":user_id" => $user_id
+            ":user_id" => $user_id,
+            ":status" => "IN PROCESS",
+            ":date_report" => date("j-M-y"),
+            ":date_complete" => null
+
         ); 
         $status = $query->insertInto($param);
-        if($status){
-            $file->upload();
+    }
+
+    if($status) {
+        $_SESSION["success"] = 'Your respond has been record, Please check using: ';
+        if($userType == 'staff'){
+            $_SESSION["success"] .= trim($_POST['staffId']);
         }
     }
 

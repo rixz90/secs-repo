@@ -1,3 +1,8 @@
+<?php session_start();
+    //include autoloader classes
+    include '../includes/autoloader.php';
+?>
+
 <html>
     <head>
         <link rel="stylesheet" href="/src/styles/styles.css">
@@ -9,7 +14,11 @@
 
         <div class="content">
             <main class="review-view">
+            
                 <h1 class="title">Semakan Aduan / Check Lodge</h1>
+                <?php if(isset($_SESSION["success"])) {
+                    echo "<p style='color:green; font-size:2rem;'>".$_SESSION["success"]."</p>";
+                } ?>
                 <form class="review-form" id="form" action="./semakan.php" method="POST">
                     <table class="review-table">
                         <tr>
@@ -55,7 +64,7 @@
                 <table class="table" style="margin-top: 3rem;">
                     <tr>
                         <th>No.</th>
-                        <th>Compain ID</th>
+                        <th>Complaint ID</th>
                         <th>Date Report</th>
                         <th>Category</th>
                         <th>Complete Date</th>
@@ -68,6 +77,7 @@
             </main>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="/src/scripts/semakan.js"></script>
+        <script src="js/semakan.js"></script>
     </body>
+    <?php include 'footer/footer.php'; ?>
 </html>
