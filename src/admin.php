@@ -39,25 +39,30 @@
                             <th>Bil</th>
                             <th>Complaint ID</th>
                             <th>Date Report</th>
-                            <th>Details</th>
                             <th>Category</th>
-                            <th>Status</th>
                             <th>Complete Date</th>
+                            <th>Status</th>
                             <th>Details</th>
                         </tr>
-                        <tr class="option">
-                            <td>1</td>
-                            <td>1001</td>
-                            <td>21/2/2012</td>
-                            <td>Details</td>
-                            <td>Category</td>
-                            <td>Complete</td>
-                            <td>22/3/2012</td>
-                            <td><a href="./detail.php">detail</a></td>
-                        </tr>
+                        <?php $q = new Query("SELECT c.COMPLAINT_ID, c.DATE_REPORT, ca.CATEGORY_NAME, NVL(to_char(c.date_complete),'STILL REVIEW'), c.comp_status
+                                            FROM COMPLAINT c JOIN CATEGORY ca ON(c.CATEGORY_ID = ca.CATEGORY_ID)");
+                            $r = $q->fetch_array();
+                            for ($i = 0; $i < sizeof($r); $i++) {
+                                $k = $i+1;
+                                echo "<tr class='option'>";
+                                echo "<td>".$k."</td>";
+                                echo "<td>".$r[$i][0]."</td>";
+                                echo "<td>".$r[$i][1]."</td>";
+                                echo "<td>".$r[$i][2]."</td>";
+                                echo "<td>".$r[$i][3]."</td>";
+                                echo "<td>".$r[$i][4]."</td>";
+                                echo "<td><a href=''>detail</a></td>";
+                                echo "</tr>";
+                            }
+                        ?>
                         <tr>
                             <td colspan="8">
-                                <div class="right" style="margin-top: 4rem;">
+                                <div class="right">
                                     <input type="submit" class="button-submit" value="Update">
                                     <input type="reset" class="button-remove" value="Delete">
                                 </div>

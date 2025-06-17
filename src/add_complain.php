@@ -1,7 +1,7 @@
 <?php
 
     //include autoloader classes
-    include '../includes/autoloader.php';
+    include '/includes/autoloader.php';
 
     $query = new Query("");
     $param = "";
@@ -62,28 +62,35 @@
         }
 
         $query->setQuery("INSERT INTO COMPLAINT 
-                        (COMP_DETAIL,URL_ATTACHMENT,BRANCH_ID,LOCATION_ID,CATEGORY_ID,USER_ID) 
+                        (COMP_DETAIL,URL_ATTACHMENT,BRANCH_ID,LOCATION_ID,CATEGORY_ID,USER_ID,COMP_STATUS,DATE_REPORT,DATE_COMPLETE) 
                         VALUES( :comp_detail,:url_attachment,
-                                :branch_id,:location_id,:category_id,:user_id)");
+                                :branch_id,:location_id,:category_id,:user_id,:status,:date_report,:date_complete)");
 
-        $file = new File($_FILES['fileToUpload']);
-
+        if($_FILES['fileToUpload']['name'] != ""){
+            $FILE = new File($_FILES['fileToUpload']);
+            $file = $FILE ->getFileUrl();
+            $file->upload();
+        } else {
+            $file = null;
+        }
+        
         $param = array(
             ":comp_detail" => trim($_POST['details']),
-            ":url_attachment" => $file->getFileUrl(),
+            ":url_attachment" => $file,
             ":branch_id" => trim($_POST['branch']),
             ":location_id" => trim($_POST['location']),
             ":category_id" => trim($_POST['category']),
-            ":user_id" => $user_id
+            ":user_id" => $user_id,
+            ":status" => "IN PROGRESS",
+            ":date_report" => date("j-M-y"),
+            ":date_complete" => null
+
         ); 
         $status = $query->insertInto($param);
-        if($status){
-            $file->upload();
-        }
     }
 
     if($status)
-        echo 'pass';//header("Location: ./aduan.php?status=success");
+        header("Location: ./aduan.php?status=success");
     else
         echo "Failed to add to DB";
 
