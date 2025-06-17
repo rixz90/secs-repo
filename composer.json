@@ -1,0 +1,14 @@
+{
+  "require": {
+    "doctrine/migrations": "^3.9",
+    "phroute/phroute": "^2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Utils\\": "utils/"
+    },
+    "files": [
+      "utils/helper/helper.php"
+    ]
+  }
+}
