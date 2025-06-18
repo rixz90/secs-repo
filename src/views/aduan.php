@@ -2,7 +2,7 @@
     session_start();
 
     //include autoloader classes
-    include '../includes/autoloader.php';
+    include dirname(__FILE__, 3) . '/vendor/autoload.php';
     
     if(isset($_GET['branch'])){  
         echo '<select name="location" id="location"  class="form-control">';
@@ -24,13 +24,9 @@
 ?>
 
 <html>
-    <head>
-        <link rel="stylesheet" href="styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet">
-        <title>SCES</title>
-    </head>
+    <?php include dirname(__FILE__, 2) . '/components/common/_header.php'; ?>
     <body>    
-        <?php include 'header/default_header.php';?>
+        <?php include dirname(__FILE__, 2) . '/components/common/default_nav.php';?>
             
         <div class="content">
             <main class="register-view">
@@ -157,7 +153,6 @@
             </main>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="js/aduan.js"></script>
+        <script src="/public/scripts/aduan.js"></script>
     </body>
-    <?php include 'footer/footer.php'; ?>
 </html>

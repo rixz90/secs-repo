@@ -1,6 +1,6 @@
 <?php
     declare(strict_types=1);
-    require './vendor/autoload.php';
+    require_once '../vendor/autoload.php';
     
     use Phroute\Phroute\RouteCollector;
     use Phroute\Phroute\Dispatcher;
@@ -10,14 +10,18 @@
     $router  = new RouteCollector();
 
     $router->get("/",  function () {
-        include 'src/views/index.php';
+        include '../src/views/index.php';
     });
     $router->get("/index",  function () {
-        include 'src/views/index.php';
+        include '../src/views/index.php';
     });
     $router->get("/semakan",  function () {
-        include 'src/views/semakan.php';
+        include '../src/views/semakan.php';
     });
+    $router->get("/aduan",  function () {
+        include '../src/views/aduan.php';
+    });
+
     
     $dispatcher = new Dispatcher($router->getData());
 
