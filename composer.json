@@ -1,14 +1,12 @@
 {
   "require": {
     "doctrine/migrations": "^3.9",
-    "phroute/phroute": "^2.2"
+    "phroute/phroute": "^2.2",
+    "firebase/php-jwt": "^6.11"
   },
   "autoload": {
     "psr-4": {
-      "Utils\\": "utils/"
-    },
-    "files": [
-      "utils/helper/helper.php"
-    ]
+      "App\\": "src/app/"
+    }
   }
 }

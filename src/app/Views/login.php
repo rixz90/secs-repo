@@ -3,9 +3,6 @@
         header("Location: ./admin.php");
     }
 
-    //include autoloader classes
-    include '../includes/autoloader.php';
-
     if (isset($_POST['submit'])) {
         $user = trim($_POST['username']);
         $pass = trim($_POST['password']);
@@ -27,13 +24,9 @@
 ?>
 
 <html>
-    <head>
-        <link rel="stylesheet" href="styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet">
-        <title>SCES</title>
-    </head>
+    <?php include COMPONENTS_PATH .'/common/_header.php'; ?>
     <body>
-        <?php include 'header/default_header.php'; ?>
+        <?php include COMPONENTS_PATH .'/common/default_nav.php'; ?>
 
         <div class="content">
             <main class="login-view">
@@ -71,5 +64,4 @@
             </main>
         </div>
     </body>
-    <?php include 'footer/footer.php'; ?>
 </html>

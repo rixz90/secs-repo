@@ -1,5 +1,5 @@
 <?php 
-    namespace Utils\Core;
+    namespace App\Core;
     
     class Query extends Db {
         private $conn;

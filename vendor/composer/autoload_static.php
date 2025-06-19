@@ -13,14 +13,9 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        'd4772674f44150755478d82ae4299a17' => __DIR__ . '/../..' . '/utils/helper/helper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'U' => 
-        array (
-            'Utils\\' => 6,
-        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
@@ -40,6 +35,10 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
             'Psr\\Cache\\' => 10,
             'Phroute\\Phroute\\' => 16,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'Doctrine\\Migrations\\' => 20,
@@ -47,13 +46,13 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
             'Doctrine\\DBAL\\' => 14,
             'Doctrine\\Common\\' => 16,
         ),
+        'A' => 
+        array (
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Utils\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/utils',
-        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -106,6 +105,10 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
         array (
             0 => __DIR__ . '/..' . '/phroute/phroute/src/Phroute',
         ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'Doctrine\\Migrations\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/migrations/src',
@@ -121,6 +124,10 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
         'Doctrine\\Common\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/app',
         ),
     );
 

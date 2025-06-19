@@ -1,5 +1,5 @@
 <?php 
-    namespace Utils\Core;
+    namespace App\Core;
 
     class Auth extends Db {
         private $conn;

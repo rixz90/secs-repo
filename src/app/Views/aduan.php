@@ -2,7 +2,7 @@
     session_start();
 
     //include autoloader classes
-    include dirname(__FILE__, 3) . '/vendor/autoload.php';
+    include AUTOLOAD_PATH;
     
     if(isset($_GET['branch'])){  
         echo '<select name="location" id="location"  class="form-control">';
@@ -23,10 +23,10 @@
     
 ?>
 
-<html>
-    <?php include dirname(__FILE__, 2) . '/components/common/_header.php'; ?>
+<html lang="en">
+    <?php include COMPONENTS_PATH.'/common/_header.php'; ?>
     <body>    
-        <?php include dirname(__FILE__, 2) . '/components/common/default_nav.php';?>
+        <?php include COMPONENTS_PATH.'/common/default_nav.php';?>
             
         <div class="content">
             <main class="register-view">
@@ -153,6 +153,6 @@
             </main>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="/public/scripts/aduan.js"></script>
+        <script src="scripts/aduan.js"></script>
     </body>
 </html>

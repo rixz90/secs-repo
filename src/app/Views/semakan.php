@@ -1,11 +1,11 @@
 <?php 
     session_start();
-    include dirname(__FILE__, 3) . '/vendor/autoload.php';
+    include AUTOLOAD_PATH;
 ?>
-<html>
-    <?php include dirname(__FILE__, 2) . '/components/common/_header.php'; ?>
+<html lang="en">
+    <?php include COMPONENTS_PATH.'/common/_header.php'; ?>
     <body>
-        <?php include dirname(__FILE__, 2) . '/components/common/default_nav.php'; ?>
+        <?php include COMPONENTS_PATH.'/common/default_nav.php'; ?>
         <div class="content">
             <main class="review-view">
             
@@ -71,6 +71,6 @@
             </main>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="/src/scripts/semakan.js"></script>
+        <script src="scripts/semakan.js"></script>
     </body>
 </html>
