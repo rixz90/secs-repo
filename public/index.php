@@ -1,11 +1,21 @@
 <?php
-   define('BASE_PATH', dirname(__DIR__));
-   define ("SRC_PATH", BASE_PATH . '/src');
-   define ('PUBLIC_PATH', BASE_PATH . '/public');
-   define ('APP_PATH', SRC_PATH . '/app');
-   define ('VIEW_PATH', APP_PATH . '/Views');
-   define ('CONTROLLER_PATH', APP_PATH . '/Controllers');
-   define ('COMPONENTS_PATH', SRC_PATH . '/components');
-   define('AUTOLOAD_PATH', BASE_PATH . '/vendor/autoload.php');
+require_once('../vendor/autoload.php');
 
-   require '../router.php'; 
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
+
+require_once('../router.php');
+
+use App\App;
+
+(new App(
+    $router,
+    ['uri' => $_SERVER['REQUEST_URI']],
+    [
+        'DB_DRIVER' => $_ENV['DB_DRIVER'] ?? 'mysql',
+        'DB_HOST' => $_ENV['DB_HOST'],
+        'DB_NAME' => $_ENV['DB_NAME'],
+        'DB_USER' => $_ENV['DB_USER'],
+        'DB_PASS' => $_ENV['DB_PASS']
+    ]
+))->run();
