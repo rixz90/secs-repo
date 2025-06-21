@@ -1,5 +1,7 @@
 <html lang="en">
-<?= $this->hello ?>
+<?php if (!(empty($id))): ?>
+    <p><?= $id ?></p>
+<?php endif ?>
 <?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
+use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
-use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 use App\DB;
 use App\View;
-use Exception;
 
 class App
 {
@@ -33,9 +32,9 @@ class App
         } catch (HttpRouteNotFoundException) {
             http_response_code(404);
             echo View::make('404');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             http_response_code(500);
-            throw new Exception(
+            throw new \Exception(
                 'An error occurred while processing your request: ' . $e->getMessage(),
                 0,
                 $e

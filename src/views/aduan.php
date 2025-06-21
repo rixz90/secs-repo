@@ -5,7 +5,7 @@ if (isset($_GET['branch'])) {
     echo '<select name="location" id="location"  class="form-control">';
     echo '<option value="" disabled selected>Choose Location</option>';
 
-    $q = new Query("SELECT L.LOCATION_ID, L.LOCATION_NAME  
+    $q = new App\Core\Query("SELECT L.LOCATION_ID, L.LOCATION_NAME  
                         FROM LOCATION L 
                         JOIN LOCATION_BRANCH M 
                         ON (M.LOCATION_ID = L.LOCATION_ID) 
@@ -91,7 +91,7 @@ if (isset($_GET['branch'])) {
                                 <select name="branch" id="branch" class="form-control" required>
                                     <option value="" disabled selected>Choose Branch</option>
                                     <?php
-                                    $q = new Query("SELECT * FROM BRANCH");
+                                    $q = new App\Core\Query("SELECT * FROM BRANCH");
                                     $r = $q->fetch_array();
                                     for ($i = 0; $i < sizeof($r); $i++) {
                                         echo "<option value='" . $r[$i][0] . "'>" . $r[$i][1] . "</option>";
@@ -114,7 +114,7 @@ if (isset($_GET['branch'])) {
                                 <select name="category" id="category" class="form-control" required>
                                     <option value="" disabled selected>Choose Category</option>
                                     <?php
-                                    $q = new Query("SELECT * FROM CATEGORY");
+                                    $q = new App\Core\Query("SELECT * FROM CATEGORY");
                                     $r = $q->fetch_array();
                                     for ($i = 0; $i < sizeof($r); $i++) {
                                         echo "<option value='" . $r[$i][0] . "'>" . $r[$i][1] . "</option>";

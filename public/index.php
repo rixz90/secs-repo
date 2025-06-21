@@ -1,15 +1,16 @@
 <?php
 require_once('../vendor/autoload.php');
 
+use App\App;
+use App\Route;
+
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
 require_once('../router.php');
 
-use App\App;
-
 (new App(
-    $router,
+    $router->getRouter(),
     ['uri' => $_SERVER['REQUEST_URI']],
     [
         'DB_DRIVER' => $_ENV['DB_DRIVER'] ?? 'mysql',
