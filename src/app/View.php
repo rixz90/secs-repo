@@ -60,7 +60,7 @@ class View
     }
 
     /**
-     * Magic method to get a parameter by name.
+     * Magic method that handle the retrieval of inaccessible or non-existent properties of an object 
      *
      * @param string $name The name of the parameter.
      * @return string|null The value of the parameter or null if not set.

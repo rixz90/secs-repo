@@ -1,5 +1,5 @@
 <html lang="en">
-
+<?= $this->hello ?>
 <?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>

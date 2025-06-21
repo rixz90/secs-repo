@@ -7,14 +7,15 @@ namespace App\Controllers;
 use App\App;
 use App\View;
 
-class HomeController
+class UserController
 {
     public function index(): View
     {
         $db = App::db();
 
-        $db->query('SELECT * FROM users');
 
-        return View::make('index');
+
+
+        return View::make('index', ['hello' => 'Hello World!']);
     }
 }
