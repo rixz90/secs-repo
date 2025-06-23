@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Model;
 
 class Signup extends Model
@@ -21,9 +22,7 @@ class Signup extends Model
             $this->user->create($name, $email);
             $this->db->commit();
         } catch (\Throwable $e) {
-            if ($this->db->inTransaction()) {
-                $this->db->rollBack();
-            }
+            $this->db->rollBack();
             throw $e;
         }
 

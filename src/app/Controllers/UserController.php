@@ -6,7 +6,6 @@ namespace App\Controllers;
 
 use App\View;
 use App\Models\User;
-use App\App;
 use App\Models\Signup;
 
 class UserController

@@ -4,32 +4,32 @@ declare(strict_types=1);
 
 namespace App;
 
-use PDO;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\ORMSetup;
 
 class DB
 {
-    private PDO $pdo;
+    private Connection $conn;
 
     public function __construct(array $config)
     {
-        $defaultOptions = [
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ];
-
-
         try {
-            $this->pdo = new PDO(
-                $config['DB_DRIVER'] . ':host=' . $config['DB_HOST'] . ';dbname=' . $config['DB_NAME'],
-                $config['DB_USER'],
-                $config['DB_PASS'],
-                $config['DB_OPTIONS'] ?? $defaultOptions
-            );
-        } catch (\PDOException $e) {
-            throw new \PDOException(
-                'Database connection failed: ' . $e->getMessage(),
-                (int)$e->getCode()
-            );
+
+            $paths = [$_ENV['ENTITY_PATH']];
+            $isDevMode = (bool) $_ENV['DEV_MODE'] ?? false;
+
+            $dbParams = [
+                'driver'   => $config['DB_DRIVER'] ?? 'pdo_mysql',
+                'user'     => $config['DB_USER'],
+                'password' => $config['DB_PASS'],
+                'dbname'   => $config['DB_NAME'],
+            ];
+
+            $config = ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode);
+            return $this->conn = DriverManager::getConnection($dbParams, $config);
+        } catch (\Exception $e) {
+            throw new \Exception('Database connection failed: ' . $e->getMessage());
         }
     }
 
@@ -42,6 +42,6 @@ class DB
      */
     public function __call(string $name, array $arg): mixed
     {
-        return call_user_func_array([$this->pdo, $name], $arg);
+        return call_user_func_array([$this->conn, $name], $arg);
     }
 }

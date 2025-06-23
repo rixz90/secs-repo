@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use Phroute\Phroute\Exception\HttpRouteNotFoundException;
-use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
 use App\DB;
 use App\View;
@@ -15,7 +14,7 @@ class App
     private static DB $db;
 
     public function __construct(
-        protected RouteCollector $router,
+        protected Route $router,
         protected array $request,
         protected array $config
     ) {

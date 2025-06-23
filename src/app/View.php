@@ -33,7 +33,7 @@ class View
      */
     public function render(): string
     {
-        $viewPath = $_ENV['VIEW_PATH'] . '/' . $this->view . '.php';
+        $viewPath = $_ENV['VIEW_PATH'] . '/' . $this->view . '.View.php';
 
         if (!file_exists($viewPath)) {
             throw new ViewNotFoundException($viewPath);
@@ -65,7 +65,7 @@ class View
      * @param string $name The name of the parameter.
      * @return string|null The value of the parameter or null if not set.
      */
-    public function __get(string $name): string | null
+    public function __get(string $name): ?string
     {
         return $this->params[$name] ?? null;
     }

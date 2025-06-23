@@ -2,20 +2,23 @@
 
 namespace App;
 
-use Phroute\Phroute\RouteCollector;
-
 class Route
 {
-    private RouteCollector $router;
+    private static mixed $router;
 
-    public function __construct()
+    public function __construct(string $routerClass)
     {
-        $this->router = new RouteCollector();
+        static::$router = new $routerClass;
     }
 
-    public function getRouter(): RouteCollector
+    public static function router(): mixed
     {
-        return $this->router;
+        return static::$router;
+    }
+
+    public static function make(string $routerClass): Route
+    {
+        return new static($routerClass);
     }
 
     /**
@@ -27,6 +30,6 @@ class Route
      */
     public function __call(string $name, array $arg): mixed
     {
-        return call_user_func_array([$this->router, $name], $arg);
+        return call_user_func_array([static::$router, $name], $arg);
     }
 }
