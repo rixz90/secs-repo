@@ -58,6 +58,7 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
         'D' => 
         array (
             'Dotenv\\' => 7,
+            'Doctrine\\SqlFormatter\\' => 22,
             'Doctrine\\Persistence\\' => 21,
             'Doctrine\\ORM\\' => 13,
             'Doctrine\\Migrations\\' => 20,
@@ -163,6 +164,10 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Doctrine\\SqlFormatter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/sql-formatter/src',
         ),
         'Doctrine\\Persistence\\' => 
         array (

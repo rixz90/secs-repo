@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\View;
-use App\Models\User;
-use App\Models\Signup;
+use DateTime;
+use Kint\Kint;
 
 class UserController
 {
@@ -15,9 +15,15 @@ class UserController
         $name = 'John Smith21!';
         $email = 'example2223232@com';
 
-        $user = new User();
-        $id = (new Signup($user))->register($name, $email);
+        $user = (new \App\Entities\User())
+            ->setName($name)
+            ->setEmail($email)
+            ->setCreatedAt(new DateTime())
+            ->setUpdatedAt()
+            ->setDeletedAt()
+            ->setIsAdmin(false);
+        Kint::dump($user);
 
-        return View::make('index', ['hello' => 'Hello World Create!', 'id' => (string) $id]);
+        return View::make('index', ['hello' => 'Hello World Create!']);
     }
 }

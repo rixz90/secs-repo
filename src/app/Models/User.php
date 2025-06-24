@@ -8,17 +8,18 @@ use App\Model;
 
 class User extends Model
 {
-    public function create(string $name, string $email, string $password = ''): int
+    public function create(string $name, string $email)
     {
-        $stmt = $this->db->prepare(
-            "INSERT INTO users (name, email) 
-             VALUES (:name, :email)"
-        );
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
 
-        $stmt->execute();
-        return (int) $this->db->lastInsertId();
+        // $stmt = $this->db->prepare(
+        //     "INSERT INTO users (name, email) 
+        //      VALUES (:name, :email)"
+        // );
+        // $stmt->bindParam(':name', $name);
+        // $stmt->bindParam(':email', $email);
+
+        // $stmt->execute();
+        // return (int) $this->db->lastInsertId();
     }
     public function drop()
     {
