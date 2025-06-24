@@ -32,9 +32,7 @@ class User
     private string $email;
 
 
-    #[Column(name: 'created_at', options: [
-        'default' => 'CURRENT_TIMESTAMP'
-    ])]
+    #[Column(name: 'created_at', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTime $createdAt;
 
     #[Column(
@@ -56,9 +54,7 @@ class User
     private ?\DateTime $deletedAt = null;
 
 
-    #[Column(name: 'is_admin', options: [
-        'default' => false
-    ])]
+    #[Column(name: 'is_admin', options: ['default' => false])]
     private bool $isAdmin;
 
 
