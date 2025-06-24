@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping\Id;
 #[Table('users')]
 class User
 {
-
     #[Id]
     #[GeneratedValue]
     #[Column(options: [
@@ -23,14 +22,11 @@ class User
     ])]
     private int $id;
 
-
     #[Column]
     private string $name;
 
-
     #[Column]
     private string $email;
-
 
     #[Column(name: 'created_at', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTime $createdAt;
@@ -53,10 +49,8 @@ class User
     )]
     private ?\DateTime $deletedAt = null;
 
-
     #[Column(name: 'is_admin', options: ['default' => false])]
     private bool $isAdmin;
-
 
     public function getId(): int
     {
