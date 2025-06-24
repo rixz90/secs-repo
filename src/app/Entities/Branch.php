@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity]
 #[Table('branches')]
@@ -38,6 +41,30 @@ class Branch
     public function setCode(string $code): self
     {
         $this->code = $code;
+        return $this;
+    }
+
+    // ...
+    /**
+     * Many Branches have Many Locations.
+     * @var Collection<Location>
+     */
+    #[ManyToMany(targetEntity: Location::class, mappedBy: 'branches')]
+    private Collection $locations;
+
+    public function __construct()
+    {
+        $this->locations = new ArrayCollection();
+    }
+
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        $this->locations[] = $location;
         return $this;
     }
 }

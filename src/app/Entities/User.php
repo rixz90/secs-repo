@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity]
 #[Table('users')]
@@ -29,7 +32,7 @@ class User
     private string $email;
 
     #[Column(name: 'created_at', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private \DateTime $createdAt;
+    private DateTime $createdAt;
 
     #[Column(
         name: 'updated_at',
@@ -38,7 +41,7 @@ class User
             'default' => null
         ]
     )]
-    private ?\DateTime $updatedAt = null;
+    private DateTime|null $updatedAt = null;
 
     #[Column(
         name: 'deleted_at',
@@ -47,10 +50,11 @@ class User
             'default' => null
         ]
     )]
-    private ?\DateTime $deletedAt = null;
+    private DateTime|null $deletedAt = null;
 
     #[Column(name: 'is_admin', options: ['default' => false])]
     private bool $isAdmin;
+
 
     public function getId(): int
     {
@@ -79,34 +83,34 @@ class User
         return $this;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $created_at): User
+    public function setCreatedAt(DateTime $created_at): User
     {
         $this->createdAt = $created_at;
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): DateTime|null
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTime $updated_at = null): User
+    public function setUpdatedAt(DateTime|null $updated_at): User
     {
         $this->updatedAt = $updated_at;
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTime
+    public function getDeletedAt(): DateTime|null
     {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTime $deleted_at = null): User
+    public function setDeletedAt(DateTime|null $deleted_at): User
     {
         $this->deletedAt = $deleted_at;
         return $this;
@@ -120,6 +124,30 @@ class User
     public function setIsAdmin(bool $is_admin = false): User
     {
         $this->isAdmin = $is_admin;
+        return $this;
+    }
+
+    // ...
+    /**
+     * One user can make many complaints. This is the inverse side.
+     * @var Collection<Complaint>
+     */
+    #[OneToMany(targetEntity: Complaint::class, mappedBy: 'users')]
+    private Collection $complaints;
+
+    public function __construct()
+    {
+        $this->complaints = new ArrayCollection();
+    }
+
+    public function getComplaints(): Collection
+    {
+        return $this->complaints;
+    }
+
+    public function addComplaint(Complaint $complaint): self
+    {
+        $this->complaints[] = $complaint;
         return $this;
     }
 }
