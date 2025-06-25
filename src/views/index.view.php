@@ -1,7 +1,4 @@
 <html lang="en">
-<?php if (!(empty($id))): ?>
-    <p><?= $id ?></p>
-<?php endif ?>
 <?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>

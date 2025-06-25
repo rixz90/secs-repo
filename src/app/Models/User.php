@@ -4,28 +4,27 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Entities\User as UserEntity;
 use App\Model;
+use App\App;
+use DateTime;
 
 class User extends Model
 {
-    public function create(string $name, string $email)
+    public function create(string $name, string $email, bool $is_admin): int
     {
+        $user = (new UserEntity())
+            ->setName($name)
+            ->setEmail($email)
+            ->setCreatedAt(new DateTime())
+            ->setIsAdmin($is_admin);
 
-        // $stmt = $this->db->prepare(
-        //     "INSERT INTO users (name, email) 
-        //      VALUES (:name, :email)"
-        // );
-        // $stmt->bindParam(':name', $name);
-        // $stmt->bindParam(':email', $email);
+        $entManager = App::entityManager();
+        $entManager->persist($user);
+        $entManager->flush();
 
-        // $stmt->execute();
-        // return (int) $this->db->lastInsertId();
+        return $user->getId();
     }
-    public function drop()
-    {
-        $stmt = $this->db->prepare(
-            "DELETE FROM users"
-        );
-        $stmt->execute();
-    }
+
+    public function drop() {}
 }

@@ -45,6 +45,10 @@ class Complaint
     #[Column]
     private string $status;
 
+    /** Many complaints have one user. This is the owning side. with foreign key of user */
+    #[ManyToOne(targetEntity: User::class)]
+    private User|null $user = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -137,10 +141,6 @@ class Complaint
         $this->status = $status;
         return $this;
     }
-
-    /** Many complaints have one user. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: User::class)]
-    private User|null $user = null;
 
     public function getUser(): User
     {

@@ -28,7 +28,7 @@ class User
     #[Column]
     private string $name;
 
-    #[Column]
+    #[Column(unique: true)]
     private string $email;
 
     #[Column(name: 'created_at', options: ['default' => 'CURRENT_TIMESTAMP'])]
@@ -53,8 +53,26 @@ class User
     private DateTime|null $deletedAt = null;
 
     #[Column(name: 'is_admin', options: ['default' => false])]
-    private bool $isAdmin;
+    private bool $isAdmin = false;
 
+    #[Column(name: 'is_student', options: ['default' => false])]
+    private bool $isStudent = false;
+
+    #[Column(name: 'is_staff', options: ['default' => false])]
+    private bool $isStaff = false;
+
+
+    /** One user can make many complaints. This is the inverse side.
+     * @var Collection<Complaint>
+     */
+    #[OneToMany(targetEntity: Complaint::class, mappedBy: 'users')]
+    private Collection $complaints;
+
+
+    public function __construct()
+    {
+        $this->complaints = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -88,7 +106,7 @@ class User
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $created_at): User
+    public function setCreatedAt(DateTime $created_at = new DateTime()): User
     {
         $this->createdAt = $created_at;
         return $this;
@@ -99,7 +117,7 @@ class User
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTime|null $updated_at): User
+    public function setUpdatedAt(DateTime|null $updated_at = null): User
     {
         $this->updatedAt = $updated_at;
         return $this;
@@ -110,7 +128,7 @@ class User
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(DateTime|null $deleted_at): User
+    public function setDeletedAt(DateTime|null $deleted_at = null): User
     {
         $this->deletedAt = $deleted_at;
         return $this;
@@ -127,17 +145,26 @@ class User
         return $this;
     }
 
-    // ...
-    /**
-     * One user can make many complaints. This is the inverse side.
-     * @var Collection<Complaint>
-     */
-    #[OneToMany(targetEntity: Complaint::class, mappedBy: 'users')]
-    private Collection $complaints;
-
-    public function __construct()
+    public function isStudent(): bool
     {
-        $this->complaints = new ArrayCollection();
+        return $this->isStudent;
+    }
+
+    public function setIsStudent(bool $is_student = false): User
+    {
+        $this->isStudent = $is_student;
+        return $this;
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->isStaff;
+    }
+
+    public function setIsStaff(bool $is_staff = false): User
+    {
+        $this->isStaff = $is_staff;
+        return $this;
     }
 
     public function getComplaints(): Collection

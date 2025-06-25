@@ -6,19 +6,28 @@ namespace App;
 
 use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 use Phroute\Phroute\Dispatcher;
+use Doctrine\ORM\ORMSetup;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManager;
 use App\DB;
 use App\View;
 
 class App
 {
     private static DB $db;
+    private static EntityManager $entityManager;
 
     public function __construct(
         protected Route $router,
         protected array $request,
-        protected array $config
+        protected array $dbConfig,
+        protected array $entityConfig
     ) {
-        static::$db = new DB($config);
+        $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$_ENV['ENTITY_PATH']], true);
+        $conn = DriverManager::getConnection($entityConfig, $ORMconfig);
+        $manager = new EntityManager($conn, $ORMconfig);
+        static::$entityManager = $manager;
+        static::$db = new DB($dbConfig);
     }
 
     public function run(): void
@@ -44,5 +53,10 @@ class App
     public static function db(): DB
     {
         return static::$db;
+    }
+
+    public static function entityManager(): EntityManager
+    {
+        return static::$entityManager;
     }
 }

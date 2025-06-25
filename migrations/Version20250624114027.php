@@ -14,7 +14,7 @@ final class Version20250624114027 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'create many-to-many for location & branche';
     }
 
     public function up(Schema $schema): void

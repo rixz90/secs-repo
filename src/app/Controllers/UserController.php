@@ -4,26 +4,45 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\View;
-use DateTime;
-use Kint\Kint;
+use Exception;
 
 class UserController
 {
-    public function create(): View
+    public function anyIndex()
     {
-        $name = 'John Smith21!';
-        $email = 'example2223232@com';
+        return 'This is the default page and will respond to /controller and /controller/index';
+    }
 
-        $user = (new \App\Entities\User())
-            ->setName($name)
-            ->setEmail($email)
-            ->setCreatedAt(new DateTime())
-            ->setUpdatedAt()
-            ->setDeletedAt()
-            ->setIsAdmin(false);
-        Kint::dump($user);
+    /**
+     * One required paramter and one optional parameter
+     */
+    public function anyUser(string $param, $param2 = 'default')
+    {
+        return "This will respond to /controller/test/$param/$param2? with any method";
+    }
 
-        return View::make('index', ['hello' => 'Hello World Create!']);
+    public function getUser()
+    {
+        return 'This will respond to /controller/test with only a GET method';
+    }
+
+    public function postUser()
+    {
+        $userId = (new \App\Models\Signup())->register($_POST);
+        if ($userId) {
+            return "created user id : $userId";
+        }
+
+        throw new Exception("Failed to create users");
+    }
+
+    public function putUser()
+    {
+        return 'This will respond to /controller/test with only a PUT method';
+    }
+
+    public function deleteUser()
+    {
+        return 'This will respond to /controller/test with only a DELETE method';
     }
 }

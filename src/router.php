@@ -19,6 +19,4 @@ $router
     ->get("/report",  fn() => View::make('report'))
     ->get("/setting",  fn() => View::make('setting'))
 
-    ->get("/users", [UserController::class, 'indexAll'])
-    ->get("/users/create", [UserController::class, 'create'])
-    ->delete("/users/{id}", [UserController::class, 'delete']);
+    ->controller("/users", UserController::class);

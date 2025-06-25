@@ -6,26 +6,27 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Model;
+use Exception;
 
 class Signup extends Model
 {
-    public function __construct(protected User $user)
+    public function __construct()
     {
         parent::__construct();
     }
 
-    public function register(string $name, string $email, string $password = ''): int
+    public function register(array $request): int|null
     {
-        try {
-            $this->db->beginTransaction();
-            $this->user->drop();
-            $this->user->create($name, $email);
-            $this->db->commit();
-        } catch (\Throwable $e) {
-            $this->db->rollBack();
-            throw $e;
+        if (!isset($request)) {
+            throw new Exception("Post error");
         }
+        var_dump($request);
+        $name = $request['name'];
+        $email = $request['email'];
+        $isAdmin = (bool)$request['is_admin'];
 
-        return (int) $this->db->lastInsertId();
+        $id = (new User())->create($name, $email, $isAdmin);
+
+        return $id;
     }
 }

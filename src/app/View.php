@@ -65,7 +65,7 @@ class View
      * @param string $name The name of the parameter.
      * @return string|null The value of the parameter or null if not set.
      */
-    public function __get(string $name): ?string
+    public function __get(string $name): string | null
     {
         return $this->params[$name] ?? null;
     }
