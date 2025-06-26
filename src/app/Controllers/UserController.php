@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Exception;
+
 
 class UserController
 {
@@ -16,25 +16,19 @@ class UserController
     /**
      * One required paramter and one optional parameter
      */
-    public function anyUser(string $param, $param2 = 'default')
-    {
-        return "This will respond to /controller/test/$param/$param2? with any method";
-    }
+    public function anyUser(string $param) {}
 
     public function getUser()
     {
-        return 'This will respond to /controller/test with only a GET method';
-    }
-
-    public function postUser()
-    {
-        $userId = (new \App\Models\Signup())->register($_POST);
-        if ($userId) {
-            return "created user id : $userId";
+        $res = (new \App\Models\User)->create();
+        if ($res) {
+            return "Failed to get user";
         }
 
-        throw new Exception("Failed to create users");
+        return $res;
     }
+
+    public function postUser() {}
 
     public function putUser()
     {

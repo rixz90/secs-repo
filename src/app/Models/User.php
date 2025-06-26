@@ -11,13 +11,21 @@ use DateTime;
 
 class User extends Model
 {
-    public function create(string $name, string $email, bool $is_admin): int
+    public function create(): int
     {
+        $name = htmlspecialchars($_GET['name'], ENT_QUOTES);
+        $email = filter_input(INPUT_GET, 'email', FILTER_SANITIZE_EMAIL);
+        $isAdmin = filter_var($_GET['is_admin'], FILTER_VALIDATE_BOOLEAN);
+        $isStudent = filter_var($_GET['is_student'], FILTER_VALIDATE_BOOLEAN);
+        $isStaff = filter_var($_GET['is_staff'], FILTER_VALIDATE_BOOLEAN);
+
         $user = (new UserEntity())
             ->setName($name)
             ->setEmail($email)
             ->setCreatedAt(new DateTime())
-            ->setIsAdmin($is_admin);
+            ->setIsAdmin($isAdmin)
+            ->setIsStudent($isStudent)
+            ->setIsStaff($isStaff);
 
         $entManager = App::entityManager();
         $entManager->persist($user);

@@ -23,7 +23,7 @@ class App
         protected array $dbConfig,
         protected array $entityConfig
     ) {
-        $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$_ENV['ENTITY_PATH']], true);
+        $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$_ENV['ENTITY_PATH']], $_ENV['DEV_MODE']);
         $conn = DriverManager::getConnection($entityConfig, $ORMconfig);
         $manager = new EntityManager($conn, $ORMconfig);
         static::$entityManager = $manager;
