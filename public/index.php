@@ -8,6 +8,9 @@ use App\App;
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
+phpinfo();
+exit();
+
 
 require_once('../src/router.php');
 
