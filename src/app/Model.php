@@ -2,9 +2,11 @@
 
 namespace App;
 
+use Doctrine\DBAL\Connection;
+
 abstract class Model
 {
-    protected DB $db;
+    protected Connection $db;
 
     public function __construct()
     {
