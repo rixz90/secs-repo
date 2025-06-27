@@ -20,11 +20,18 @@ class App
     public function __construct(
         protected Route $router,
         protected array $request,
-        protected array $dbConfig,
-        protected array $entityConfig
+        protected array $dbConfig
     ) {
-        $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$_ENV['ENTITY_PATH']], (bool)$_ENV['DEV_MODE']);
-        $conn = DriverManager::getConnection($entityConfig, $ORMconfig);
+
+        $entityPath = $_SERVER['PWD'] . '/' . $_ENV['ENTITY_PATH'];
+
+        if (!is_dir($entityPath)) {
+            throw new \Exception("Directory entities not found");
+            exit();
+        }
+
+        $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$entityPath], (bool)$_ENV['DEV_MODE']);
+        $conn = DriverManager::getConnection($dbConfig, $ORMconfig);
         $manager = new EntityManager($conn, $ORMconfig);
         static::$entityManager = $manager;
         static::$connection = $conn;
