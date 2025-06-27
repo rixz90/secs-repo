@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\User;
+
 
 
 class UserController
@@ -12,19 +14,31 @@ class UserController
 
     public function anyUser(string $param): string
     {
-        $user = (new \App\Models\User)->fetchUserById($param);
-        return json_encode($user);
+        $response = (new User)->fetchUserById($param);
+        return json_encode($response);
     }
 
     public function getUser(): string
     {
-        $user = (new \App\Models\User)->fetchUserById();
-        return json_encode($user);
+        $response = (new User)->fetchUserById();
+        return json_encode($response);
     }
 
-    public function postUser() {}
+    public function postUser(): string
+    {
+        $response = (new User)->createUser();
+        return json_encode($response);
+    }
 
-    public function putUser() {}
+    public function putUser(): string
+    {
+        $response =  (new User)->updateUser();
+        return json_encode($response);
+    }
 
-    public function deleteUser() {}
+    public function deleteUser(): string
+    {
+        $response =  (new User)->softDeleteUser();
+        return json_encode($response);
+    }
 }

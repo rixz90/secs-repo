@@ -10,31 +10,44 @@ use DateTime;
 
 class User extends Model
 {
-    public function createUser(): int
+    public function createUser(): bool | array
     {
-        $name = htmlspecialchars($_GET['name'], ENT_QUOTES);
-        $email = filter_input(INPUT_GET, 'email', FILTER_SANITIZE_EMAIL);
-        $isAdmin = filter_var($_GET['is_admin'], FILTER_VALIDATE_BOOLEAN);
-        $isStudent = filter_var($_GET['is_student'], FILTER_VALIDATE_BOOLEAN);
-        $isStaff = filter_var($_GET['is_staff'], FILTER_VALIDATE_BOOLEAN);
-
-        $user = (new UserEntity())
-            ->setName($name)
-            ->setEmail($email)
-            ->setCreatedAt(new DateTime())
-            ->setIsAdmin($isAdmin)
-            ->setIsStudent($isStudent)
-            ->setIsStaff($isStaff);
-
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user->getId();
+        try {
+            $name = htmlspecialchars($_POST['name'], ENT_QUOTES);
+            $isAdmin = filter_var($_POST['is_admin'], FILTER_VALIDATE_BOOLEAN);
+            $isStudent = filter_var($_POST['is_student'], FILTER_VALIDATE_BOOLEAN);
+            $isStaff = filter_var($_POST['is_staff'], FILTER_VALIDATE_BOOLEAN);
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            if ($email === null || $email == '') {
+                return false;
+            }
+            if ($name === null || $name == '') {
+                return false;
+            }
+            $user = (new UserEntity())
+                ->setName($name)
+                ->setEmail($email)
+                ->setCreatedAt(new DateTime())
+                ->setIsAdmin($isAdmin)
+                ->setIsStudent($isStudent)
+                ->setIsStaff($isStaff);
+            $this->em->persist($user);
+            $this->em->flush();
+            return true;
+        } catch (\Throwable $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
 
-    public function fetchUserById($id = null)
+    public function fetchUserById($param = null): array | null
     {
-        $id =  $id === null ? filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) : filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $id =  $param === null ? filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT)
+            : filter_var($param, FILTER_SANITIZE_NUMBER_INT);
+
+        if (!$id) {
+            return null;
+        }
+
         $user = $this->em->createQueryBuilder()->select('u')
             ->from(UserEntity::class, 'u')
             ->where('u.id=:id')
@@ -45,7 +58,7 @@ class User extends Model
         return $user;
     }
 
-    public function fetchAllUsers()
+    public function fetchAllUsers(): array
     {
         $user = $this->em->createQueryBuilder()->select('u')
             ->from(UserEntity::class, 'u')
@@ -55,7 +68,51 @@ class User extends Model
         return $user;
     }
 
-    public function updateUser() {}
+    public function updateUser(): bool | array
+    {
+        try {
 
-    public function dropUser() {}
+            parse_str(file_get_contents('php://input'), $_PUT);
+            $id = filter_var($_PUT['id'], FILTER_VALIDATE_INT);
+
+            if (!$id) {
+                return false;
+            }
+            $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
+            $isAdmin = filter_var($_GET['is_admin'], FILTER_VALIDATE_BOOLEAN);
+            $isStudent = filter_var($_GET['is_student'], FILTER_VALIDATE_BOOLEAN);
+            $isStaff = filter_var($_GET['is_staff'], FILTER_VALIDATE_BOOLEAN);
+
+            /** @var UserEntity $user */
+            $user = $this->em->find(UserEntity::class, $id);
+            $name != $user->getName() ? $user->setName($name) : '';
+            $isAdmin != $user->isAdmin() ? $user->setIsAdmin($isAdmin) : '';
+            $isStudent != $user->isStudent() ? $user->setIsStudent($isStudent) : '';
+            $isStaff != $user->isStaff() ? $user->setIsStaff($isStaff) : '';
+            $user->setUpdatedAt(new DateTime());
+            $this->em->persist($user);
+            $this->em->flush();
+            return true;
+        } catch (\Throwable $e) {
+            return ['err' => $e->getMessage()];
+        }
+    }
+
+    public function softDeleteUser(): bool
+    {
+        parse_str(file_get_contents('php://input'), $_DELETE);
+        $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
+        if (!$id) {
+            return false;
+        }
+        /** @var UserEntity $user */
+        $user = $this->em->find(UserEntity::class, $id);
+        if ($user === null) {
+            return false;
+        }
+        $user->setDeletedAt(new DateTime());
+        $this->em->persist($user);
+        $this->em->flush();
+        return true;
+    }
 }
