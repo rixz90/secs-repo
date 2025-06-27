@@ -10,7 +10,7 @@ use DateTime;
 
 class User extends Model
 {
-    public function create(): int
+    public function createUser(): int
     {
         $name = htmlspecialchars($_GET['name'], ENT_QUOTES);
         $email = filter_input(INPUT_GET, 'email', FILTER_SANITIZE_EMAIL);
@@ -32,5 +32,30 @@ class User extends Model
         return $user->getId();
     }
 
-    public function drop() {}
+    public function fetchUserById($id = null)
+    {
+        $id =  $id === null ? filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) : filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $user = $this->em->createQueryBuilder()->select('u')
+            ->from(UserEntity::class, 'u')
+            ->where('u.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getArrayResult();
+
+        return $user;
+    }
+
+    public function fetchAllUsers()
+    {
+        $user = $this->em->createQueryBuilder()->select('u')
+            ->from(UserEntity::class, 'u')
+            ->getQuery()
+            ->getArrayResult();
+
+        return $user;
+    }
+
+    public function updateUser() {}
+
+    public function dropUser() {}
 }

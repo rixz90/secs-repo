@@ -25,7 +25,6 @@ class App
 
         if (!is_dir($entityPath)) {
             throw new \Exception("Directory entities not found");
-            exit();
         }
 
         $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$entityPath], (bool)$_ENV['DEV_MODE']);

@@ -19,10 +19,8 @@ class Category
     #[Column(options: ['unsigned' => true])]
     private int $id;
 
-
     #[Column]
     private string $name;
-
 
     public function getId(): int
     {

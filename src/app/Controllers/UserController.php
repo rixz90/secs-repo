@@ -8,35 +8,23 @@ namespace App\Controllers;
 
 class UserController
 {
-    public function anyIndex()
+    public function anyIndex() {}
+
+    public function anyUser(string $param): string
     {
-        return 'This is the default page and will respond to /controller and /controller/index';
+        $user = (new \App\Models\User)->fetchUserById($param);
+        return json_encode($user);
     }
 
-    /**
-     * One required paramter and one optional parameter
-     */
-    public function anyUser(string $param) {}
-
-    public function getUser()
+    public function getUser(): string
     {
-        $res = (new \App\Models\User)->create();
-        if ($res) {
-            return "Failed to get user";
-        }
-
-        return $res;
+        $user = (new \App\Models\User)->fetchUserById();
+        return json_encode($user);
     }
 
     public function postUser() {}
 
-    public function putUser()
-    {
-        return 'This will respond to /controller/test with only a PUT method';
-    }
+    public function putUser() {}
 
-    public function deleteUser()
-    {
-        return 'This will respond to /controller/test with only a DELETE method';
-    }
+    public function deleteUser() {}
 }
