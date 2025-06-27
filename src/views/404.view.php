@@ -27,7 +27,7 @@
 </head>
 
 <body>
-    <?php include($_ENV['COMP_PATH'] . '/common/default_nav.php') ?>
+    <?php include(BASE_ROOT .  $_ENV['COMP_PATH'] . '/common/default_nav.php') ?>
     <div id="notfound">
         <div class="notfound">
             <div class="notfound-404">

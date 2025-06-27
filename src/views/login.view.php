@@ -1,33 +1,8 @@
-<?php session_start();
-if (isset($_SESSION["username"])) {
-    header("Location: ./admin.php");
-}
-
-if (isset($_POST['submit'])) {
-    $user = trim($_POST['username']);
-    $pass = trim($_POST['password']);
-
-    if ($user != null && $pass != null) {
-        $auth = new Auth();
-
-        if ($auth->verify($user, $pass)) {
-            $_SESSION['username'] = $user;
-            header("Location: ./admin.php");
-        } else {
-            $_SESSION['errMsg'] = "<span style='color:red;font-size:2rem;'>*Invalid password or Username</span>";
-        }
-    } else {
-        $_SESSION['errMsg'] = "<span style='color:red;font-size:2rem;'>*Invalid password or Username</span>";
-    }
-}
-
-?>
-
 <html>
-<?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
+<?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>
-    <?php include($_ENV['COMP_PATH'] . '/common/default_nav.php'); ?>
+    <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/default_nav.php'); ?>
 
     <div class="content">
         <main class="login-view">

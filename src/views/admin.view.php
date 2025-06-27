@@ -1,8 +1,8 @@
 <html>
-<?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
+<?php include(BASE_ROOT .  $_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>
-    <?php include($_ENV['COMP_PATH'] . '/common/admin_nav.php'); ?>
+    <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/admin_nav.php'); ?>
     <div class="content">
         <main class="admin-view center">
             <h1 class="title">Management Complaints</h1>

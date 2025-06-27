@@ -1,30 +1,8 @@
-<?php
-session_start();
-
-if (isset($_GET['branch'])) {
-    echo '<select name="location" id="location"  class="form-control">';
-    echo '<option value="" disabled selected>Choose Location</option>';
-
-    $q = new App\Core\Query("SELECT L.LOCATION_ID, L.LOCATION_NAME  
-                        FROM LOCATION L 
-                        JOIN LOCATION_BRANCH M 
-                        ON (M.LOCATION_ID = L.LOCATION_ID) 
-                        WHERE M.BRANCH_ID = '" . trim($_GET['branch']) . '\'');
-    $r = $q->fetch_array();
-    for ($i = 0; $i < sizeof($r); $i++) {
-        echo "<option value='" . $r[$i][0] . "'>" . $r[$i][1] . "</option>";
-    }
-    echo '</select>';
-    exit();
-}
-
-?>
-
 <html lang="en">
-<?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
+<?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>
-    <?php include($_ENV['COMP_PATH'] . '/common/default_nav.php'); ?>
+    <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/default_nav.php'); ?>
 
     <div class="content">
         <main class="register-view">

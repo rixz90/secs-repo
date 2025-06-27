@@ -1,10 +1,10 @@
 <html lang="en">
 
 
-<?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
+<?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>
-    <?php include($_ENV['COMP_PATH'] . '/common/admin_nav.php'); ?>
+    <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/admin_nav.php'); ?>
     <div class="content center">
         <main class="admin-view">
             <h1 class="title">Complaints Report</h1>

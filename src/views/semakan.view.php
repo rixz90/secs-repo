@@ -2,10 +2,10 @@
 session_start();
 ?>
 <html lang="en">
-<?php include($_ENV['COMP_PATH'] . '/common/_header.php'); ?>
+<?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/_header.php'); ?>
 
 <body>
-    <?php include($_ENV['COMP_PATH'] . '/common/default_nav.php'); ?>
+    <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/default_nav.php'); ?>
     <div class="content">
         <main class="review-view">
 

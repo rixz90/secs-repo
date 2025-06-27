@@ -33,7 +33,8 @@ class View
      */
     public function render(): string
     {
-        $viewPath = $_ENV['VIEW_PATH'] . '/' . $this->view . '.View.php';
+        $viewPath = BASE_ROOT . $_ENV['VIEW_PATH'] . '/' . $this->view . '.view.php';
+
 
         if (!file_exists($viewPath)) {
             throw new ViewNotFoundException($viewPath);
