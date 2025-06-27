@@ -8,13 +8,11 @@ use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 use Phroute\Phroute\Dispatcher;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use App\View;
 
 class App
 {
-    private static Connection  $connection;
     private static EntityManager $entityManager;
 
     public function __construct(
@@ -34,7 +32,6 @@ class App
         $conn = DriverManager::getConnection($dbConfig, $ORMconfig);
         $manager = new EntityManager($conn, $ORMconfig);
         static::$entityManager = $manager;
-        static::$connection = $conn;
     }
 
     public function run(): void
@@ -55,11 +52,6 @@ class App
                 $e
             );
         }
-    }
-
-    public static function db(): Connection
-    {
-        return static::$connection;
     }
 
     public static function entityManager(): EntityManager

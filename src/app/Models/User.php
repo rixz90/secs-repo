@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Entities\User as UserEntity;
 use App\Model;
-use App\App;
 use DateTime;
 
 class User extends Model
@@ -27,9 +26,8 @@ class User extends Model
             ->setIsStudent($isStudent)
             ->setIsStaff($isStaff);
 
-        $entManager = App::entityManager();
-        $entManager->persist($user);
-        $entManager->flush();
+        $this->em->persist($user);
+        $this->em->flush();
 
         return $user->getId();
     }

@@ -2,14 +2,14 @@
 
 namespace App;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 
 abstract class Model
 {
-    protected Connection $db;
+    protected EntityManager $em;
 
     public function __construct()
     {
-        $this->db = App::db();
+        $this->em = App::entityManager();
     }
 }
