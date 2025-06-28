@@ -6,6 +6,7 @@ declare(strict_types=1);
 use App\Controllers\BranchController;
 use App\Controllers\LocationController;
 use App\Controllers\CategoryController;
+use App\Controllers\ComplaintController;
 use App\Controllers\UserController;
 use Phroute\Phroute\RouteCollector;
 use App\View;
@@ -25,4 +26,5 @@ $router
     ->controller("/users", UserController::class)
     ->controller("/locations", LocationController::class)
     ->controller("/branches", BranchController::class)
-    ->controller("/categories", CategoryController::class);
+    ->controller("/categories", CategoryController::class)
+    ->controller("/complaints", ComplaintController::class);

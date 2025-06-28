@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\Enums\ComplaintStatus;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,7 +44,7 @@ class Complaint
     private DateTime|null $completedAt = null;
 
     #[Column]
-    private string $status;
+    private ComplaintStatus $status;
 
     /** Many complaints have one user. This is the owning side. with foreign key of user */
     #[ManyToOne(targetEntity: User::class)]
@@ -131,12 +132,12 @@ class Complaint
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): ComplaintStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): Complaint
+    public function setStatus(ComplaintStatus $status): Complaint
     {
         $this->status = $status;
         return $this;

@@ -45,6 +45,7 @@ class User extends Model
             $user->setName($name)
                 ->setEmail($email)
                 ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
                 ->setIsAdmin($isAdmin)
                 ->setIsStudent($isStudent)
                 ->setIsStaff($isStaff);
@@ -129,21 +130,21 @@ class User extends Model
         return true;
     }
 
-    public function hardDeleteUser(): bool
+    public function hardDeleteUser(): array
     {
         parse_str(file_get_contents('php://input'), $_DELETE);
         $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
         if (!$id) {
-            return false;
+            return ['error' => 'Missing Input'];
         }
         /** @var UserEntity $user */
         $user = $this->em->find(UserEntity::class, $id);
         if ($user === null) {
-            return false;
+            return ['error' => 'user not found'];
         }
         $user->setDeletedAt(new DateTime());
         $this->em->remove($user);
         $this->em->flush();
-        return true;
+        return ['id' => $user->getId()];
     }
 }
