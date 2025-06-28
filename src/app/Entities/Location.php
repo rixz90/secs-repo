@@ -24,11 +24,17 @@ class Location
     #[Column(options: ['unsigned' => true])]
     private int $id;
 
-
     #[Column]
     private string $name;
 
+    #[ManyToMany(targetEntity: Branch::class, inversedBy: 'locations')]
+    #[JoinTable(name: 'locations_branches')]
+    private Collection $branches;
 
+    public function __construct()
+    {
+        $this->branches = new ArrayCollection();
+    }
     public function getId(): int
     {
         return $this->id;
@@ -43,15 +49,6 @@ class Location
     {
         $this->name = $name;
         return $this;
-    }
-
-    #[ManyToMany(targetEntity: Branch::class, inversedBy: 'locations')]
-    #[JoinTable(name: 'locations_branches')]
-    private Collection $branches;
-
-    public function __construct()
-    {
-        $this->branches = new ArrayCollection();
     }
 
     public function getBranches(): Collection

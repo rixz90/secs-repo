@@ -3,6 +3,8 @@
 
 declare(strict_types=1);
 
+use App\Controllers\BranchController;
+use App\Controllers\LocationController;
 use App\View;
 use App\Route;
 use App\Controllers\UserController;
@@ -19,4 +21,6 @@ $router
     ->get("/report",  fn() => View::make('report'))
     ->get("/setting",  fn() => View::make('setting'))
 
-    ->controller("/users", UserController::class);
+    ->controller("/users", UserController::class)
+    ->controller("/locations", LocationController::class)
+    ->controller("/branches", BranchController::class);

@@ -6,8 +6,6 @@ namespace App\Controllers;
 
 use App\Models\User;
 
-
-
 class UserController
 {
     public function anyIndex() {}
@@ -20,7 +18,7 @@ class UserController
 
     public function getUser(): string
     {
-        $response = (new User)->fetchUserById();
+        $response = (new User)->fetchAllUsers();
         return json_encode($response);
     }
 
@@ -38,7 +36,8 @@ class UserController
 
     public function deleteUser(): string
     {
-        $response =  (new User)->softDeleteUser();
+        $response =  (new User)->hardDeleteUser();
+        // $response =  (new User)->softDeleteUser();
         return json_encode($response);
     }
 }

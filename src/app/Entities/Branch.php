@@ -23,10 +23,23 @@ class Branch
     #[Column(options: ['unsigned' => true])]
     private int $id;
 
-
     #[Column(unique: true)]
     private string $code;
 
+    #[Column]
+    private string $name;
+
+    /**
+     * Many Branches have Many Locations.
+     * @var Collection<Location>
+     */
+    #[ManyToMany(targetEntity: Location::class, mappedBy: 'branches')]
+    private Collection $locations;
+
+    public function __construct()
+    {
+        $this->locations = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -44,17 +57,15 @@ class Branch
         return $this;
     }
 
-    // ...
-    /**
-     * Many Branches have Many Locations.
-     * @var Collection<Location>
-     */
-    #[ManyToMany(targetEntity: Location::class, mappedBy: 'branches')]
-    private Collection $locations;
-
-    public function __construct()
+    public function getName(): string
     {
-        $this->locations = new ArrayCollection();
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
     }
 
     public function getLocations(): Collection

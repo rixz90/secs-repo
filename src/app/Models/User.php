@@ -18,10 +18,10 @@ class User extends Model
             $isStudent = filter_var($_POST['is_student'], FILTER_VALIDATE_BOOLEAN);
             $isStaff = filter_var($_POST['is_staff'], FILTER_VALIDATE_BOOLEAN);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            if ($email === null || $email == '') {
+            if (empty($name) || empty($email)) {
                 return false;
             }
-            if ($name === null || $name == '') {
+            if (!$name && !$email) {
                 return false;
             }
             $user = (new UserEntity())
@@ -39,13 +39,12 @@ class User extends Model
         }
     }
 
-    public function fetchUserById($param = null): array | null
+    public function fetchUserById($param = null): array
     {
         $id =  $param === null ? filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT)
             : filter_var($param, FILTER_SANITIZE_NUMBER_INT);
-
         if (!$id) {
-            return null;
+            return [];
         }
 
         $user = $this->em->createQueryBuilder()->select('u')
@@ -54,7 +53,6 @@ class User extends Model
             ->setParameter('id', $id)
             ->getQuery()
             ->getArrayResult();
-
         return $user;
     }
 
@@ -64,7 +62,6 @@ class User extends Model
             ->from(UserEntity::class, 'u')
             ->getQuery()
             ->getArrayResult();
-
         return $user;
     }
 
@@ -74,7 +71,6 @@ class User extends Model
 
             parse_str(file_get_contents('php://input'), $_PUT);
             $id = filter_var($_PUT['id'], FILTER_VALIDATE_INT);
-
             if (!$id) {
                 return false;
             }
@@ -112,6 +108,24 @@ class User extends Model
         }
         $user->setDeletedAt(new DateTime());
         $this->em->persist($user);
+        $this->em->flush();
+        return true;
+    }
+
+    public function hardDeleteUser(): bool
+    {
+        parse_str(file_get_contents('php://input'), $_DELETE);
+        $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
+        if (!$id) {
+            return false;
+        }
+        /** @var UserEntity $user */
+        $user = $this->em->find(UserEntity::class, $id);
+        if ($user === null) {
+            return false;
+        }
+        $user->setDeletedAt(new DateTime());
+        $this->em->remove($user);
         $this->em->flush();
         return true;
     }
