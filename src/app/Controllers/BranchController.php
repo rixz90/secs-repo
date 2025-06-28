@@ -8,9 +8,10 @@ use App\Models\Branch;
 
 class BranchController
 {
-    public function anyIndex()
+    public function anyIndex(): string
     {
-        return 'echo branches';
+        $response = (new Branch)->fetchAllBranches();
+        return json_encode($response);
     }
 
     public function anyBranch(string $param): string
@@ -21,7 +22,7 @@ class BranchController
 
     public function getBranch(): string
     {
-        $response = (new Branch)->fetchAllBranches();
+        $response = (new Branch)->fetchBranchById();
         return json_encode($response);
     }
 

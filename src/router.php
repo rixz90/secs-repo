@@ -5,10 +5,11 @@ declare(strict_types=1);
 
 use App\Controllers\BranchController;
 use App\Controllers\LocationController;
-use App\View;
-use App\Route;
+use App\Controllers\CategoryController;
 use App\Controllers\UserController;
 use Phroute\Phroute\RouteCollector;
+use App\View;
+use App\Route;
 
 $router = Route::make(RouteCollector::class);
 $router
@@ -23,4 +24,5 @@ $router
 
     ->controller("/users", UserController::class)
     ->controller("/locations", LocationController::class)
-    ->controller("/branches", BranchController::class);
+    ->controller("/branches", BranchController::class)
+    ->controller("/categories", CategoryController::class);

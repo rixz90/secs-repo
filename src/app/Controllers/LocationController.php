@@ -8,9 +8,10 @@ use App\Models\Location;
 
 class LocationController
 {
-    public function anyIndex()
+    public function anyIndex(): string
     {
-        return 'echo';
+        $response = (new Location)->fetchAllLocations();
+        return json_encode($response);
     }
 
     public function anyLocation(string $param): string
@@ -21,7 +22,7 @@ class LocationController
 
     public function getLocation(): string
     {
-        $response = (new Location)->fetchAllLocations();
+        $response = (new Location)->fetchLocationById();
         return json_encode($response);
     }
 

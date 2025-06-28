@@ -66,7 +66,7 @@ class Category extends Model
             /** @var CategoryEntity $bran */
             $cat = $this->em->find(CategoryEntity::class, $id);
             $name != $cat->getName() ? $cat->setName($name) : '';
-            $this->em->persist($bran);
+            $this->em->persist($cat);
             $this->em->flush();
             return true;
         } catch (\Throwable $e) {

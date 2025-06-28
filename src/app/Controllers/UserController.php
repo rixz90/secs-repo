@@ -8,7 +8,11 @@ use App\Models\User;
 
 class UserController
 {
-    public function anyIndex() {}
+    public function anyIndex()
+    {
+        $response = (new User)->fetchAllUsers();
+        return json_encode($response);
+    }
 
     public function anyUser(string $param): string
     {
@@ -18,7 +22,7 @@ class UserController
 
     public function getUser(): string
     {
-        $response = (new User)->fetchAllUsers();
+        $response = (new User)->fetchUserById();
         return json_encode($response);
     }
 
