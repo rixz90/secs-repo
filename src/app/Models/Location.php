@@ -9,18 +9,18 @@ use App\Model;
 
 class Location extends Model
 {
-    public function createLocation(): bool | array
+    public function createLocation(): int | array
     {
         try {
-            $name = htmlspecialchars($_POST['name'], ENT_QUOTES);
-            if (empty($name) || !$name) {
-                return false;
+            $address = htmlspecialchars($_POST['address'], ENT_QUOTES);
+            if (empty($address) || !$address) {
+                return ['error' => 'Missing input'];
             }
-            $loc = (new LocationEntity())
-                ->setName($name);
+            $loc = new LocationEntity();
+            $loc->setAddress($address);
             $this->em->persist($loc);
             $this->em->flush();
-            return true;
+            return $loc->getId();
         } catch (\Throwable $e) {
             return ['error' => $e->getMessage()];
         }
@@ -28,28 +28,29 @@ class Location extends Model
 
     public function fetchLocationById($param = null): array
     {
-        $id =  $param === null ? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)
-            : filter_var($param, FILTER_VALIDATE_INT);
+        if ($param === null) {
+            $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        } else {
+            $id = filter_var($param, FILTER_VALIDATE_INT);
+        }
         if (!$id) {
-            return [];
+            return ['error' => 'Missing id'];
         }
 
         $loc = $this->em->createQueryBuilder()->select('l')
             ->from(LocationEntity::class, 'l')
             ->where('l.id=:id')
             ->setParameter('id', $id)
-            ->getQuery()
-            ->getArrayResult();
-        return $loc;
+            ->getQuery();
+        return $loc->getArrayResult();
     }
 
     public function fetchAllLocations(): array
     {
         $user = $this->em->createQueryBuilder()->select('l')
             ->from(LocationEntity::class, 'l')
-            ->getQuery()
-            ->getArrayResult();
-        return $user;
+            ->getQuery();
+        return $user->getArrayResult();
     }
 
     public function updateLocation(): bool | array
@@ -61,11 +62,15 @@ class Location extends Model
             if (!$id) {
                 return false;
             }
-            $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
+            $address = htmlspecialchars($_PUT['address'], ENT_QUOTES);
 
             /** @var LocationEntity $loc */
             $loc = $this->em->find(LocationEntity::class, $id);
-            $loc != $loc->getName() ? $loc->setName($name) : '';
+
+            if ($loc != $loc->getAddress()) {
+                $loc->setAddress($address);
+            }
+
             $this->em->persist($loc);
             $this->em->flush();
             return true;
@@ -90,4 +95,6 @@ class Location extends Model
         $this->em->flush();
         return true;
     }
+
+    public function addBranches(array $branches) {}
 }

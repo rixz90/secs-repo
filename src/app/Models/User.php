@@ -12,20 +12,37 @@ class User extends Model
 {
     public function createUser(): bool | array
     {
+        // Input array
+        $input = [
+            'name' => htmlspecialchars($_POST['name']),
+            'is_admin' => $_POST['is_admin'],
+            'is_student' => $_POST['is_student'],
+            'is_staff' => $_POST['is_staff'],
+            'email' => $_POST['email']
+        ];
+        // Define filters for each key
+        $filters = [
+            'name' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'is_admin' => FILTER_VALIDATE_BOOLEAN,
+            'is_student' => FILTER_VALIDATE_BOOLEAN,
+            'is_staff' => FILTER_VALIDATE_BOOLEAN,
+            'email' => FILTER_VALIDATE_EMAIL
+        ];
+        $var = filter_var_array($input, $filters);
         try {
-            $name = htmlspecialchars($_POST['name'], ENT_QUOTES);
-            $isAdmin = filter_var($_POST['is_admin'], FILTER_VALIDATE_BOOLEAN);
-            $isStudent = filter_var($_POST['is_student'], FILTER_VALIDATE_BOOLEAN);
-            $isStaff = filter_var($_POST['is_staff'], FILTER_VALIDATE_BOOLEAN);
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $name = $var['name'];
+            $isAdmin = $var['is_admin'];
+            $isStudent = $var['is_student'];
+            $isStaff = $var['is_staff'];
+            $email = $var['email'];
             if (empty($name) || empty($email)) {
                 return false;
             }
             if (!$name && !$email) {
                 return false;
             }
-            $user = (new UserEntity())
-                ->setName($name)
+            $user = new UserEntity();
+            $user->setName($name)
                 ->setEmail($email)
                 ->setCreatedAt(new DateTime())
                 ->setIsAdmin($isAdmin)

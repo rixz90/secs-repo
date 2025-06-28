@@ -25,7 +25,7 @@ class Location
     private int $id;
 
     #[Column]
-    private string $name;
+    private string $address;
 
     #[ManyToMany(targetEntity: Branch::class, inversedBy: 'locations')]
     #[JoinTable(name: 'locations_branches')]
@@ -40,14 +40,14 @@ class Location
         return $this->id;
     }
 
-    public function getName(): string
+    public function getAddress(): string
     {
-        return $this->name;
+        return $this->address;
     }
 
-    public function setName(string $name): self
+    public function setAddress(string $address): self
     {
-        $this->name = $name;
+        $this->address = $address;
         return $this;
     }
 
