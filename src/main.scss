@@ -1,0 +1,30 @@
+@use "pico";
+
+body > header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 576px) {
+  body > header .container nav ul.icons:before {
+    display: block;
+    height: 1.25rem;
+    margin-inline: var(--pico-nav-element-spacing-horizontal);
+    border-left: var(--pico-border-width) solid
+      var(--pico-form-element-border-color);
+    content: "";
+  }
+}
+
+// @use "sass/base/_base";
+// @import "sass/layouts/_layout";
+// @use "sass/components/_components";
+
+// ////////////////////////
+// //Page
+// @import "sass/pages/_register";
+// @import "sass/pages/_review";
+// @import "sass/pages/_login";
+// @import "sass/pages/_admin";
+// @import "sass/pages/_admin_setting";
