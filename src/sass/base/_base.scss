@@ -1,66 +1,46 @@
-// * {
-//   margin: 0;
-//   padding: 0;
-// }
+:root {
+  --pico-form-element-spacing-vertical: 0.5rem;
 
-// *,
-// *::before,
-// *::after {
-//   box-sizing: inherit;
-// }
+}
 
-// html {
-//   box-sizing: border-box;
-//   font-size: 62.5%; //1 rem = 10px, 10px/16px = 62.5%
-// }
 
-// body {
-//   font-family: "Open Sans", sans-serif;
-//   max-width: fit-content;
-//   font-weight: 400;
-//   line-height: 1.6;
-//   font-size: 1em;
-//   color: #222;
-// }
+table {
+  border-spacing: 30px;
+}
 
-// footer {
-//   display: block;
-//   padding: 32px;
-//   border-top: 1px solid #20202046;
-//   margin-top: 10rem;
-//   height: 9rem;
-//   max-width: 95%;
-//   margin: 50px auto 0 auto;
-// }
+body>header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-// .center {
-//   margin: auto;
-//   width: 50%;
-//   text-align: center;
-// }
+@media (min-width: 576px) {
+  body>header .container nav ul.icons:before {
+    display: block;
+    height: 1.25rem;
+    margin-inline: var(--pico-nav-element-spacing-horizontal);
+    border-left: var(--pico-border-width) solid var(--pico-form-element-border-color);
+    content: "";
+  }
+}
 
-// .right {
-//   float: right;
-//   text-align: right;
-// }
+body>main>section form.searchbox {
+  max-width: 50%;
+  float: right;
+}
 
-// .flex {
-//   display: flex;
-// }
+.flex {
+  display: flex;
+}
 
-// .flex-center {
-//   align-items: center;
-// }
+.flex.center {
+  justify-content: center;
+}
 
-// .flex-axis-center {
-//   justify-content: center;
-// }
+.flex.space-between {
+  justify-content: space-between;
+}
 
-// .baseline {
-//   align-items: baseline;
-// }
-
-// .error {
-//   color: red;
-//   font-size: 2rem;
-// }
+.flex-direction.row-reverse {
+  flex-direction: row-reverse
+}
