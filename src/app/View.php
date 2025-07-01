@@ -35,7 +35,6 @@ class View
     {
         $viewPath = BASE_ROOT . $_ENV['VIEW_PATH'] . '/' . $this->view . '.view.php';
 
-
         if (!file_exists($viewPath)) {
             throw new ViewNotFoundException($viewPath);
         }

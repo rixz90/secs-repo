@@ -1,11 +1,9 @@
 :root {
   --pico-form-element-spacing-vertical: 0.5rem;
-
 }
 
-
-table {
-  border-spacing: 30px;
+.dropdown ul:not([role=button]) {
+  box-shadow: none;
 }
 
 body>header .container {
@@ -27,6 +25,11 @@ body>header .container {
 body>main>section form.searchbox {
   max-width: 50%;
   float: right;
+}
+
+button {
+  width: fit-content;
+  height: fit-content;
 }
 
 .flex {

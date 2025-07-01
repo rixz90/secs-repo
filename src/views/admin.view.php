@@ -1,9 +1,9 @@
 <html data-theme="dark">
-<?php include(BASE_ROOT .  $_ENV['COMP_PATH'] . '/common/_head.php'); ?>
+<?= App\View::make('components/common/_head') ?>
 
 <body>
     <header>
-        <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/admin_navbar.php'); ?>
+        <?= App\View::make('components/common/admin_navbar'); ?>
     </header>
     <main class="container">
         <section class="flex flex-direction row-reverse">

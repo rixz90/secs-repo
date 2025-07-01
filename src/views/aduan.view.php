@@ -1,7 +1,7 @@
 <html data-theme="dark">
-<?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/_head.php'); ?>
+<?= App\View::make('components/common/_head') ?>
 <header>
-    <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/user_navbar.php'); ?>
+    <?= App\View::make('components/common/user_navbar'); ?>
 </header>
 <main class="container">
     <h2>Lodge Complaint</h2>

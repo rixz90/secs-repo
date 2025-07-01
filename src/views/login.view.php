@@ -1,9 +1,9 @@
 <html>
-<?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/_header.php'); ?>
+
+<?= App\View::make('components/common/_head') ?>
 
 <body>
-    <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/default_nav.php'); ?>
-
+    <?= App\View::make('components/common/user_navbar'); ?>
     <div class="content">
         <main class="login-view">
             <h1 class="title">Log Masuk / Log In</h1>

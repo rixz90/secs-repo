@@ -1,0 +1,40 @@
+<div class="container">
+    <a href="/" class="secondary" style="text-decoration:none">
+        <svg style="width: 2rem;height:2rem">
+            <use xlink:href="assets/images/sprite.svg#icon-home"></use>
+        </svg>
+    </a>
+    <nav>
+        <ul>
+            <li>
+                <details class="dropdown">
+                    <summary>
+                        <svg style="width: 1.35rem;height:1.35rem">
+                            <use xlink:href="assets/images/sprite.svg#icon-list"></use>
+                        </svg>
+                        Menu
+                    </summary>
+                    <ul dir="rtl">
+                        <li><a href="/admin">Manage</a></li>
+                        <li><a href="/report">Report</a></li>
+                        <li>
+                            <a href="/setting">
+                                Setting
+                            </a>
+                        </li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+        <ul class="icons">
+            <li>
+                <a href="/" class="secondary">
+                    <svg style="width: 1.5rem;height:1.6rem">
+                        <use xlink:href="assets/images/sprite.svg#icon-log-out"></use>
+                    </svg>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

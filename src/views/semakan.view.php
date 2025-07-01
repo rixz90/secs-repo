@@ -1,9 +1,10 @@
 <html data-theme="dark">
-<?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/_head.php'); ?>
+
+<?= App\View::make('components/common/_head') ?>
 
 <body>
     <header>
-        <?php include(BASE_ROOT . $_ENV['COMP_PATH'] . '/common/user_navbar.php'); ?>
+        <?= App\View::make('components/common/user_navbar'); ?>
     </header>
     <main class="container">
         <section class="flex" style="flex-direction:row-reverse">
@@ -18,7 +19,6 @@
                 <table class="striped">
                     <thead>
                         <tr>
-                            <th scope="col">No.</th>
                             <th scope="col">Complaint ID</th>
                             <th scope="col">Date Report</th>
                             <th scope="col">Category</th>
