@@ -75,6 +75,5 @@
         </section>
     </main>
 </body>
-<script src="/assets/scripts/index.js"></script>
 
 </html>

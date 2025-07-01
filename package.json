@@ -4,15 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile:sass": "sass -I node_modules/@picocss/pico/scss/ src/main.scss public/assets/styles/styles.css -w --no-quiet"
+    "build": "webpack",
+    "compile:sass": "sass -I node_modules/@picocss/pico/scss/ src/main.scss public/styles.css -w --no-quiet"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "sass": "^1.35.1"
+    "css-loader": "^7.1.2",
+    "sass": "^1.35.1",
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "@picocss/pico": "^2.1.1",
+    "alpinejs": "^3.14.9",
     "htmx.org": "^2.0.6"
   }
 }
