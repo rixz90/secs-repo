@@ -8,7 +8,7 @@
 
 ### Clone the repo.
 ```bash
-- git clone https://github.com/rixz90/secs-repo.git
+git clone https://github.com/rixz90/secs-repo.git
 ```
 ### Open terminal and run this command on current directory of this project:
 ```bash
