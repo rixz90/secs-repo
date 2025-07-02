@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "compile:sass": "sass -I node_modules/@picocss/pico/scss/ src/main.scss public/styles.css -w --no-quiet"
+    "compile:sass": "sass -I node_modules/@picocss/pico/scss/ src/main.scss public/styles.css -w --no-quiet",
+    "build:sass": "sass -I node_modules/@picocss/pico/scss/ src/main.scss dist/styles.css -s compressed"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
     "sass": "^1.35.1",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",

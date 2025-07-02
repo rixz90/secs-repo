@@ -8,13 +8,24 @@
     </header>
     <main class="container">
         <h3>Staff E-Complaint System(SECS)</h3>
-        <div x-data="{ open: false }">
-            <button @click="open = true">Expand</button>
 
-            <span x-show="open">
-                Content...
-            </span>
+        <div x-data="dropdown">
+            <button @click="toggle">...</button>
+
+            <div x-show="open">...</div>
         </div>
+
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('dropdown', () => ({
+                    open: false,
+
+                    toggle() {
+                        this.open = !this.open
+                    }
+                }))
+            })
+        </script>
     </main>
     </main>
     <footer></footer>
