@@ -1,14 +1,9 @@
-<section class="panel" id="categoryPanel">
+<section>
     <h3>Category</h3>
-    <form action="">
-        <fieldset>
-            <label for="cat_name">Name:
-                <input type="text" name="name" id="cat_name" required>
-        </fieldset>
-        <div class="container" style="text-align:center;">
-            <input type="submit" style="width: fit-content;">
-            <input type="reset" value="Reset" style="width: fit-content;">
-        </div>
-    </form>
+    <label for="cat_name">Name:</label>
+    <input type="text" name="name" id="cat_name" required />
+    <div class="container" style="text-align:center;">
+        <input type="submit" style="width: fit-content;">
+        <input type="reset" value="Reset" style="width: fit-content;">
+    </div>
 </section>
-<hr />

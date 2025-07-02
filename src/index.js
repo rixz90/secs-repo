@@ -1,5 +1,7 @@
 import Alpine from "alpinejs";
 import "htmx.org";
+import settingView from "./scripts/settingView.js";
 
-window.Alpine = Alpine;
+Alpine.data("settingView", settingView);
+
 Alpine.start();

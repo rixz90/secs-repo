@@ -7,7 +7,7 @@ use App\App;
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
-require_once('../src/router.php');
+require_once('../src/app/router.php');
 (new App(
     $router,
     ['uri' => $_SERVER['REQUEST_URI']],

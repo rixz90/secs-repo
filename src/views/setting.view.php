@@ -5,26 +5,19 @@
     <header>
         <?= App\View::make('components/common/admin_navbar'); ?>
     </header>
-    <main class="container">
+
+    <main class="container" x-data="settingView">
         <section>
             <div>
                 <nav>
                     <ul>
-                        <li id="nav_bra"><a class="secondary">Branch</a></li>
-                        <li id="nav_cat"><a class="secondary">Category</a></li>
-                        <li id="nav_loc"><a class="secondary">Location</a></li>
-                        <li id="nav_adm"><a class="secondary">Admin</a></li>
-
+                        <li><a class=" secondary" @click="toggleBra()">Branch</a></li>
+                        <li><a class="secondary" @click="toggleCat()">Category</a></li>
+                        <li><a class="secondary" @click="toggleLoc()">Location</a></li>
+                        <li><a class="secondary" @click="toggleAdm()">Admin</a></li>
                     </ul>
                 </nav>
             </div>
-        </section>
-        <hr />
-        <section>
-            <?= App\View::make('components/panels/adminPanel') ?>
-            <?= App\View::make('components/panels/branchPanel') ?>
-            <?= App\View::make('components/panels/categoryPanel') ?>
-            <?= App\View::make('components/panels/locationPanel') ?>
         </section>
         <hr />
         <section>
@@ -72,6 +65,21 @@
                     </tr>
                 </tfoot>
             </table>
+        </section>
+        <hr />
+        <section>
+            <template x-if="adm">
+                <?= App\View::make('components/panels/adminPanel') ?>
+            </template>
+            <template x-if="bra">
+                <?= App\View::make('components/panels/branchPanel') ?>
+            </template>
+            <template x-if="cat">
+                <?= App\View::make('components/panels/categoryPanel') ?>
+            </template>
+            <template x-if="loc">
+                <?= App\View::make('components/panels/locationPanel') ?>
+            </template>
         </section>
     </main>
 </body>
