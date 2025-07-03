@@ -1,8 +1,3 @@
-<html>
-
-<?= App\View::make('components/common/_head') ?>
-
-<body>
     <?= App\View::make('components/common/user_navbar'); ?>
     <div class="content">
         <main class="login-view">
@@ -42,6 +37,3 @@
             </div>
         </main>
     </div>
-</body>
-
-</html>

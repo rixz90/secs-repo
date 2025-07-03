@@ -1,6 +1,6 @@
-const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const path = require("path");
 module.exports = {
   mode: "development",
   entry: {
@@ -27,8 +27,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "SECS",
-      filename: "_head.view.php",
-      template: "src/template.html",
+      filename: "index.php",
+      template: "src/template.php",
     }),
   ],
 };

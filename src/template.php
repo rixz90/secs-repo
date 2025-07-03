@@ -8,8 +8,8 @@ $dotenv->load();
 use App\App;
 
 echo '<!DOCTYPE html><html><head>';
-echo \App\View::make('components/common/_head', ["title" => "SECS"]);
-echo '<script defer src="bundle_644190ec5f3e333ca6b5.js"></script></head><body>';
+echo \App\View::make('components/common/_head', ["title" => "<%= htmlWebpackPlugin.options.title %>"]);
+echo '</head><body>';
 
 require_once('../src/app/router.php');
 (new App(

@@ -1,8 +1,3 @@
-<html>
-
-<?= App\View::make('components/common/_head') ?>
-
-<body>
     <header>
         <?= App\View::make('components/common/admin_navbar') ?>
     </header>
@@ -49,8 +44,3 @@
             </table>
         </div>
     </main>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/assets/scripts/report.js"></script>
-</body>
-
-</html>

@@ -1,8 +1,3 @@
-<html data-theme="dark">
-
-<?= App\View::make('components/common/_head') ?>
-
-<body>
     <header>
         <?= App\View::make('components/common/user_navbar'); ?>
     </header>
@@ -30,8 +25,3 @@
             </div>
         </section>
     </main>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/assets/scripts/semakan.js"></script>
-</body>
-
-</html>

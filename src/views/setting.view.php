@@ -1,11 +1,6 @@
-<html>
-<?= App\View::make('components/common/_head') ?>
-
-<body>
     <header>
         <?= App\View::make('components/common/admin_navbar'); ?>
     </header>
-
     <main class="container" x-data="settingView">
         <section>
             <div>
@@ -82,6 +77,3 @@
             </template>
         </section>
     </main>
-</body>
-
-</html>
