@@ -21,8 +21,6 @@
         gtag('config', 'UA-23581568-13');
     </script>
 </body>
-
-</html>
 <style>
     * {
         -webkit-box-sizing: border-box;
