@@ -16,8 +16,8 @@ $router = Route::make(RouteCollector::class);
 $router
     ->get("/", fn() => View::make('index'))
     ->get("/index", fn() => View::make('index'))
-    ->get("/review",  fn() => View::make('semakan'))
-    ->get("/create",  fn() => View::make('aduan'))
+    ->get("/semakan",  fn() => View::make('semakan'))
+    ->get("/aduan",  fn() => View::make('aduan'))
     ->get("/login",  fn() => View::make('admin'))
     ->get("/admin",  fn() => View::make('admin'))
     ->get("/report",  fn() => View::make('report'))

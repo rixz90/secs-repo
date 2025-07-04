@@ -1,0 +1,56 @@
+{% extends '@layouts/base.html.twig' %}
+{% block header %}
+	{% include '@common/admin_navbar.html.twig' %}
+{% endblock %}
+{% block content %}
+	<main class="container" x-data="settingView">
+		<section>
+			<div>
+				<nav>
+					<ul>
+						<li>
+							<a
+								class="secondary"
+								hx-get="/branches/"
+								hx-target="#response"
+								hx-swap="innerHTML"
+								hx-indicator="#indicator"
+								@click="toggleBra()"
+							>
+								Branch
+							</a>
+						</li>
+						<li><a class="secondary" @click="toggleCat()">Category</a></li>
+						<li><a class="secondary" @click="toggleLoc()">Location</a></li>
+						<li><a class="secondary" @click="toggleAdm()">Admin</a></li>
+					</ul>
+				</nav>
+			</div>
+		</section>
+		<hr />
+		<section id="response" class="flex center"></section>
+		<div class="flex center">
+			<img
+				id="indicator"
+				class="htmx-indicator flex center"
+				src="assets/svg-loaders/three-dots.svg"
+				style="width: 2.25rem;height:5rem;"
+			/>
+		</div>
+		<hr />
+		<section>
+			<div x-show="adm" x-collapse>
+				{% include '@panels/adminPanel.html.twig' %}
+			</div>
+			<div x-show="bra" x-collapse>
+				{% include '@panels/branchPanel.html.twig' %}
+			</div>
+			<div x-show="cat" x-collapse>
+				{% include '@panels/categoryPanel.html.twig' %}
+			</div>
+			<div x-show="loc" x-collapse>
+				{% include '@panels/locationPanel.html.twig' %}
+			</div>
+		</section>
+	</main>
+{% endblock %}

@@ -18,9 +18,12 @@
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
     "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "@zackad/prettier-plugin-twig": "^0.14.1",
+    "prettier": "^3.2.5"
   },
   "dependencies": {
+    "@alpinejs/collapse": "^3.14.9",
     "@picocss/pico": "^2.1.1",
     "alpinejs": "^3.14.9",
     "htmx.org": "^2.0.6"

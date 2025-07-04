@@ -1,12 +1,16 @@
 <section>
     <h3>Branch</h3>
-    <label for=" code">Code:</label>
-    <input type="text" name="code" id="code" required />
-    <label for="name">Name:</label>
-    <input type="text" name="name" id="name" required />
-    <div>
-        <label for="location">Location: </label>
-        <details class="dropdown" id="location">
+    <div x-id="['input']">
+        <label :for="$id('input')">Code:</label>
+        <input type="text" name="code" :id="$id('input')" required />
+    </div>
+    <div x-id="['input']">
+        <label :for="$id('input')">Name:</label>
+        <input type="text" name="name" :id="$id('input')" required />
+    </div>
+    <div x-id="['input']">
+        <label :for="$id('input')">Location: </label>
+        <details class="dropdown" :id="$id('input')">
             <summary> Select address... </summary>
             <ul>
                 <li>

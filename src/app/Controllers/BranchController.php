@@ -8,10 +8,12 @@ use App\Models\Branch;
 
 class BranchController
 {
-    public function anyIndex(): string
+    public function anyIndex()
     {
         $response = (new Branch)->fetchAllBranches();
-        return json_encode($response);
+        // Return some View
+        echo "<h1>Hello</h1>";
+        //return json_encode($response);
     }
 
     public function anyBranch(string $param): string

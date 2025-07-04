@@ -10,10 +10,12 @@ use Doctrine\ORM\ORMSetup;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use App\View;
+use Twig\Environment;
 
 class App
 {
     private static EntityManager $entityManager;
+    private static Environment $twig;
 
     public function __construct(
         protected Route $router,
@@ -30,7 +32,21 @@ class App
         $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$entityPath], (bool)$_ENV['DEV_MODE']);
         $conn = DriverManager::getConnection($dbConfig, $ORMconfig);
         $manager = new EntityManager($conn, $ORMconfig);
+
+
+        $viewPath = BASE_ROOT . $_ENV['VIEW_PATH'];
+        $loader = new \Twig\Loader\FilesystemLoader();
+
+        $loader->addPath($viewPath);
+        $loader->addPath($viewPath . '/components/common', 'common');
+        $loader->addPath($viewPath . '/components/panels', 'panels');
+        $loader->addPath($viewPath . '/components/layouts', 'layouts');
+
+        $twig = new \Twig\Environment($loader, [
+            'cache' => 'storage/cache',
+        ]);
         static::$entityManager = $manager;
+        static::$twig = $twig;
     }
 
     public function run(): void
@@ -56,5 +72,10 @@ class App
     public static function entityManager(): EntityManager
     {
         return static::$entityManager;
+    }
+
+    public static function twig(): Environment
+    {
+        return static::$twig;
     }
 }

@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+	<head>
+		{% block head %}
+		<title><%= htmlWebpackPlugin.options.title %></title>
+		{% endblock %}
+	</head>
+	<body>
+		<header>{% block header %}{% endblock header %}</header>
+		{% block content %}{% endblock content %}
+		<footer>{% block footer %}{% endblock footer %}</footer>
+	</body>
+</html>

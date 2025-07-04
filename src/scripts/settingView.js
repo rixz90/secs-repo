@@ -4,6 +4,19 @@ export default () => ({
   loc: false,
   adm: false,
 
+  get getBra() {
+    return this.bra;
+  },
+  get getCat() {
+    return this.cat;
+  },
+  get getLoc() {
+    return this.loc;
+  },
+  get getAdm() {
+    return this.adm;
+  },
+
   toggleBra() {
     this.bra = !this.bra;
     this.cat = false;

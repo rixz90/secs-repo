@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace App;
 
 use App\Exceptions\ViewNotFoundException;
+use Twig\Environment;
 
 class View
 {
+    protected Environment $twig;
+
     public function __construct(
         protected string $view,
         protected array $params = []
-    ) {}
+    ) {
+        $this->twig = App::twig();
+    }
 
     /**
      * Late static binding to create a new View instance.
@@ -33,20 +38,8 @@ class View
      */
     public function render(): string
     {
-        $viewPath = BASE_ROOT . $_ENV['VIEW_PATH'] . '/' . $this->view . '.view.php';
-
-        if (!file_exists($viewPath)) {
-            throw new ViewNotFoundException($viewPath);
-        }
-
-        // foreach ($this->params as $key => $value) {
-        //     $$key = $value; // Extract parameters to local scope
-        // }   
-        extract($this->params); // Extract parameters to local scope
-
-        ob_start();
-        include $viewPath;
-        return (string) ob_get_clean();
+        $viewName = $this->view . '.html.twig';
+        return $this->twig->render($viewName, $this->params);
     }
 
     /**
@@ -57,16 +50,5 @@ class View
     public function __toString()
     {
         return $this->render();
-    }
-
-    /**
-     * Magic method that handle the retrieval of inaccessible or non-existent properties of an object 
-     *
-     * @param string $name The name of the parameter.
-     * @return string|null The value of the parameter or null if not set.
-     */
-    public function __get(string $name): string | null
-    {
-        return $this->params[$name] ?? null;
     }
 }
