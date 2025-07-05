@@ -8,12 +8,10 @@ use App\Models\Branch;
 
 class BranchController
 {
-    public function anyIndex()
+    public function anyIndex(): string
     {
-        $response = (new Branch)->fetchAllBranches();
-        // Return some View
-        echo "<h1>Hello</h1>";
-        //return json_encode($response);
+        $branches = (new Branch)->fetchAllBranches();
+        return (string) \App\View::make('@tables/branch', ["branches" => $branches]);
     }
 
     public function anyBranch(string $param): string
@@ -27,6 +25,7 @@ class BranchController
         $response = (new Branch)->fetchBranchById();
         return json_encode($response);
     }
+
 
     public function postBranch(): string
     {

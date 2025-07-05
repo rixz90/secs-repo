@@ -1,0 +1,29 @@
+<table class="striped">
+	<thead>
+		<tr>
+			<th scope="col">Title</th>
+			<th scope="col">Description</th>
+			<th scope="col">Created at</th>
+			<th scope="col">Updated at</th>
+			<th scope="col">Deleted at</th>
+			<th scope="col">Completed at</th>
+			<th scope="col">Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for c in complaints %}
+			<tr>
+				<td>{{ c.title }}</td>
+				<td>{{ c.description }}</td>
+				<td>{{ c.createdAt }}</td>
+				<td>{{ c.updatedAt }}</td>
+				<td>{{ c.deletedAt }}</td>
+				<td>{{ c.completedAt }}</td>
+				<td>{{ c.status }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+	<style>
+		th,td { text-align: center; }
+	</style>
+</table>

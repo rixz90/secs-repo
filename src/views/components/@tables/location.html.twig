@@ -1,0 +1,17 @@
+<table class="striped">
+	<thead>
+		<tr>
+			<th scope="col">Address</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for l in locations %}
+			<tr>
+				<td>{{ l.address }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+	<style>
+		th,td { text-align: center; }
+	</style>
+</table>

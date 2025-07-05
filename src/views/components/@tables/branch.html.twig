@@ -1,0 +1,19 @@
+<table class="striped">
+	<thead>
+		<tr>
+			<th scope="col">Code</th>
+			<th scope="col">Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for b in branches %}
+			<tr>
+				<td>{{ b.code }}</td>
+				<td>{{ b.name }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+	<style>
+		th,td { text-align: center; }
+	</style>
+</table>

@@ -1,0 +1,17 @@
+<table class="striped">
+	<thead>
+		<tr>
+			<th scope="col">Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for c in categories %}
+			<tr>
+				<td>{{ c.name }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+	<style>
+		th,td { text-align: center; }
+	</style>
+</table>

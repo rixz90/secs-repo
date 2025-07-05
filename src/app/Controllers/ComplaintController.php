@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Complaint;
+use App\View;
 
 class ComplaintController
 {
     public function anyIndex()
     {
-        $response = (new Complaint)->fetchAll();
-        return json_encode($response);
+        $complaints = (new Complaint)->fetchAll();
+        return (string) View::make('@tables/complaint', ["complaints" => $complaints]);
     }
 
     public function anyComplaint(string $param): string
@@ -42,5 +43,15 @@ class ComplaintController
     {
         $response =  (new Complaint)->hardDelete();
         return json_encode($response);
+    }
+
+    public function getForm(): string
+    {
+        parse_str($_SERVER['QUERY_STRING'], $params);
+
+        if ($params['type'] == 'ng') {
+            return (string) View::make('@forms/non-guest');
+        }
+        return (string) View::make('@forms/base');
     }
 }

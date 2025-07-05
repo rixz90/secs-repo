@@ -45,6 +45,15 @@ class Branch extends Model
         return $bran;
     }
 
+    public function fetchAllNameBranches(): array
+    {
+        $bran = $this->em->createQueryBuilder()->select('b.code, b.name')
+            ->from(BranchEntity::class, 'b')
+            ->getQuery()
+            ->getArrayResult();
+        return $bran;
+    }
+
     public function fetchAllBranches(): array
     {
         $bran = $this->em->createQueryBuilder()->select('b')

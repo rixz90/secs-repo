@@ -1,0 +1,59 @@
+<section>
+    <form action="/complaints/complaint" method="post">
+        <section>
+            {% block personal %}
+            <div x-id="['input']">
+                <label :for="$id('input')">Name : </label>
+                <input type="text" name="name" :id="$id('input')" required />
+            </div>
+            <div x-id="['input']">
+                <label :for="$id('input')">Email: </label>
+                <input type="text" name="email" :id="$id('input')" required />
+            </div>
+            <div x-id="['input']">
+                <label :for="$id('input')">Phone Number: </label>
+                <input type="text" name="phone_no" :id="$id('input')" required />
+            </div>
+            {% endblock %}
+        </section>
+        <hr />
+        <section>
+            <h3 class="h3">Complaint Information</h3>
+            <div x-id="['input']">
+                <label :for="$id('input')">UiTM Branch: </label>
+                <select name="branch" id="branch" :id="$id('input')" required hx-get="">
+                    <option value="" disabled selected>Choose Branch</option>
+                </select>
+            </div>
+            <div x-id="['input']">
+                <label :for="$id('input')">Location Details : </label>
+                <select name="location" :id="$id('input')" required>
+                    <option value="" disabled selected>Choose Location</option>
+                </select>
+            </div>
+            <div x-id="['input']">
+                <label :for="$id('input')">Category: </label>
+                <select name="category" :id="$id('input')" required>
+                    <option value="" disabled selected>Choose Category</option>
+                </select>
+            </div>
+        </section>
+        <hr />
+        <section>
+            <div x-id="['input']">
+                <label :for="$id('input')">Details : </label>
+                <textarea name="details" :id="$id('input')" cols="30" rows="10" required></textarea>
+            </div>
+            <div x-id="['input']">
+                <label :for="$id('input')">Attachment : </label>
+                <input type="file" name="fileToUpload" :id="$id('input')" aria-describedby="file-helper">
+                <small id="file-helpher">*Format PDF or Image(jpg, png, jpeg)only</small>
+                <button class="button-remove">Remove</button>
+            </div>
+            <div class="container" style="text-align:center;">
+                <input type="submit" style="width: fit-content;">
+                <input type="reset" value="Reset" style="width: fit-content;">
+            </div>
+        </section>
+    </form>
+</section>

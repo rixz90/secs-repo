@@ -1,116 +1,50 @@
 {% extends '@layouts/base.html.twig' %}
+
 {% block header %}
-	{% include '@common/user_navbar.html.twig' %}
+{% include '@common/user_navbar.html.twig' %}
 {% endblock %}
+
 {% block content %}
 <main class="container">
     <h2>Lodge Complaint</h2>
     <hr />
-    <section x-data="{
-            staff:false, 
-            student:false, 
-            showForm: false, 
-            val:'Select user type...'
-            }">
+    <section x-data="{ staff:false, student:false, showForm: false, val:'Select user type...'}">
         <details class="dropdown" x-ref="dropdown">
             <summary x-html="val"></summary>
             <ul>
                 <li>
                     <label>
-                        <input type="radio" name="isType" value="Student"
-                            @click="
-                                staff=false,
-                                student = true,
-                                $refs.dropdown.open=false,
-                                val='Student',
-                                showForm=true
-                            " />
+                        <input type="radio" name="isType" value="Student" @click="staff=false, student = true,
+                            $refs.dropdown.open=false,
+                            val='Student',
+                            showForm=true" hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML" />
                         Student
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="radio" name="isType" value="Staff"
-                            @click="
-                                staff=true,
-                                student=false,
-                                $refs.dropdown.open=false,
-                                val='Staff',
-                                showForm=true
-                            " />
+                        <input type="radio" name="isType" value="Staff" @click="staff=true, student=false,
+                                    $refs.dropdown.open=false,
+                                    val='Staff',
+                                    showForm=true
+                                " hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML" />
                         Staff
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="radio" name="isType" value="Guest"
-                            @click="
-                                student=false, 
-                                staff=false, 
-                                $refs.dropdown.open=false,
-                                val='Guest',
-                                showForm=true
-                            " />
+                        <input type="radio" name="isType" value="Guest" @click="student=false, staff=false, 
+                                    $refs.dropdown.open=false,
+                                    val='Guest',
+                                    showForm=true
+                                " hx-get="/complaints/form?type=g" hx-target="#target" hx-swap="innerHTML" />
                         Guest
                     </label>
                 </li>
             </ul>
         </details>
-        <div x-show="showForm" x-transition>
-            <hr />
-            <section>
-                <form action="">
-                    <div x-show="staff" x-transition x-id="['input']">
-                        <label :for="$id('input')">Staff ID : </label>
-                        <input type="text" name="staffId" :id="$id('input')" />
-                    </div>
-                    <div x-show="student" x-transition x-id="['input']">
-                        <label :for="$id('input')">Student ID : </label>
-                        <input type="text" name="studentId" :id="$id('input')" />
-                    </div>
-                    <div x-id="['input']">
-                        <label :for="$id('input')">Name : </label>
-                        <input type="text" name="name" :id="$id('input')" required />
-                    </div>
-                    <div x-id="['input']">
-                        <label :for="$id('input')">Email: </label>
-                        <input type="text" name="email" :id="$id('input')" required />
-                    </div>
-                    <div x-id="['input']">
-                        <label :for="$id('input')">Phone Number: </label>
-                        <input type="text" name="phone_no" :id="$id('input')" required />
-                    </div>
-            </section>
-            <hr />
-            <section>
-                <h3 class="h3">Complaint Information</h3>
-                <label for="branch">UiTM Branch: </label>
-                <select name="branch" id="branch" class="form-control" required>
-                    <option value="" disabled selected>Choose Branch</option>
-                </select>
-                <label for="location">Location Details : </label>
-                <select name="location" id="location" class="form-control" required>
-                    <option value="" disabled selected>Choose Location</option>
-                </select>
-                <label for="category">Category: </label>
-                <select name="category" id="category" class="form-control" required>
-                    <option value="" disabled selected>Choose Category</option>
-                </select>
-            </section>
-            <hr />
-            <section>
-                <label for="details">Details : </label>
-                <textarea name="details" id="details" cols="30" rows="10" class="form-control textarea" required></textarea>
-                <label for="attachment">Attachment : </label>
-                <input type="file" name="fileToUpload" id="attachment" aria-describedby="file-helper">
-                <small id="file-helpher">*Format PDF or Image(jpg, png, jpeg)only</small>
-                <button class="button-remove">Remove</button>
-                <div class="container" style="text-align:center;">
-                    <input type="submit" style="width: fit-content;">
-                    <input type="reset" value="Reset" style="width: fit-content;">
-                </div>
-                </form>
-            </section>
+        <hr />
+        <div x-show="showForm" x-transition id="target">
         </div>
 </main>
 {% endblock %}

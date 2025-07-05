@@ -20,9 +20,42 @@
 								Branch
 							</a>
 						</li>
-						<li><a class="secondary" @click="toggleCat()">Category</a></li>
-						<li><a class="secondary" @click="toggleLoc()">Location</a></li>
-						<li><a class="secondary" @click="toggleAdm()">Admin</a></li>
+						<li>
+							<a
+								class="secondary"
+								hx-get="/categories/"
+								hx-target="#response"
+								hx-swap="innerHTML"
+								hx-indicator="#indicator"
+								@click="toggleCat()"
+							>
+								Category
+							</a>
+						</li>
+						<li>
+							<a
+								class="secondary"
+								hx-get="/locations/"
+								hx-target="#response"
+								hx-swap="innerHTML"
+								hx-indicator="#indicator"
+								@click="toggleLoc()"
+							>
+								Location
+							</a>
+						</li>
+						<li>
+							<a
+								class="secondary"
+								hx-get="/users/admin"
+								hx-target="#response"
+								hx-swap="innnerHTML"
+								hx-indicator="#indicator"
+								@click="toggleAdm()"
+							>
+								Admin
+							</a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -30,12 +63,7 @@
 		<hr />
 		<section id="response" class="flex center"></section>
 		<div class="flex center">
-			<img
-				id="indicator"
-				class="htmx-indicator flex center"
-				src="assets/svg-loaders/three-dots.svg"
-				style="width: 2.25rem;height:5rem;"
-			/>
+			<img id="indicator" class="htmx-indicator flex center" src="assets/svg-loaders/three-dots.svg" />
 		</div>
 		<hr />
 		<section>

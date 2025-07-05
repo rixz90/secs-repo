@@ -11,7 +11,7 @@ class CategoryController
     public function anyIndex()
     {
         $response = (new Category)->fetchAllCategories();
-        return json_encode($response);
+        return (string) \App\View::make('@tables/category', ["categories" => $response]);
     }
 
     public function anyCategory(string $param): string

@@ -76,8 +76,20 @@ class User extends Model
 
     public function fetchAllUsers(): array
     {
-        $user = $this->em->createQueryBuilder()->select('u')
+        $user = $this->em->createQueryBuilder()
+            ->select('u')
             ->from(UserEntity::class, 'u')
+            ->getQuery()
+            ->getArrayResult();
+        return $user;
+    }
+
+    public function fetchAllAdmin(): array
+    {
+        $user = $this->em->createQueryBuilder()
+            ->select('u')
+            ->from(UserEntity::class, 'u')
+            ->where('u.isAdmin = 1')
             ->getQuery()
             ->getArrayResult();
         return $user;

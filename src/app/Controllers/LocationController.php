@@ -11,7 +11,7 @@ class LocationController
     public function anyIndex(): string
     {
         $response = (new Location)->fetchAllLocations();
-        return json_encode($response);
+        return (string) \App\View::make('@tables/location', ["locations" => $response]);
     }
 
     public function anyLocation(string $param): string

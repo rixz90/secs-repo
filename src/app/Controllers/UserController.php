@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\User;
+use Kint\Kint;
 
 class UserController
 {
@@ -19,7 +20,11 @@ class UserController
         $response = (new User)->fetchUserById($param);
         return json_encode($response);
     }
-
+    public function anyAdmin(): string
+    {
+        $response = (new User)->fetchAllAdmin();
+        return (string) \App\View::make('@tables/admin', ["users" => $response]);
+    }
     public function getUser(): string
     {
         $response = (new User)->fetchUserById();

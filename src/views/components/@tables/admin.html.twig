@@ -1,0 +1,25 @@
+<table class="striped">
+	<thead>
+		<tr>
+			<th scope="col">Name</th>
+			<th scope="col">Email</th>
+			<th scope="col">Admin</th>
+			<th scope="col">Staff</th>
+			<th scope="col">Student</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for u in users %}
+			<tr>
+				<td>{{ u.name }}</td>
+				<td>{{ u.email }}</td>
+				<td>{{ u.isAdmin }}</td>
+				<td>{{ u.isStaff }}</td>
+				<td>{{ u.isStudent }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+	<style>
+		th,td { text-align: center; }
+	</style>
+</table>

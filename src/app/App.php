@@ -32,18 +32,11 @@ class App
         $ORMconfig = ORMSetup::createAttributeMetadataConfiguration([$entityPath], (bool)$_ENV['DEV_MODE']);
         $conn = DriverManager::getConnection($dbConfig, $ORMconfig);
         $manager = new EntityManager($conn, $ORMconfig);
-
-
-        $viewPath = BASE_ROOT . $_ENV['VIEW_PATH'];
         $loader = new \Twig\Loader\FilesystemLoader();
-
-        $loader->addPath($viewPath);
-        $loader->addPath($viewPath . '/components/common', 'common');
-        $loader->addPath($viewPath . '/components/panels', 'panels');
-        $loader->addPath($viewPath . '/components/layouts', 'layouts');
-
+        require('templateLoad.php');
         $twig = new \Twig\Environment($loader, [
             'cache' => 'storage/cache',
+            'auto_reload' => true,
         ]);
         static::$entityManager = $manager;
         static::$twig = $twig;
