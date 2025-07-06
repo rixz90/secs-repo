@@ -95,6 +95,11 @@ class Location extends Model
         $this->em->flush();
         return true;
     }
-
-    public function addBranches(array $branches) {}
+    public function fetchList(): array
+    {
+        return  $this->em->createQueryBuilder()->select('l.id, l.address')
+            ->from(LocationEntity::class, 'l')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

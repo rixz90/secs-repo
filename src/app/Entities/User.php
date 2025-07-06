@@ -28,6 +28,12 @@ class User
     #[Column]
     private string $name;
 
+    #[Column(name: 'employee_id', nullable: true, unique: true)]
+    private string $employeeId;
+
+    #[Column(name: 'student_id', nullable: true, unique: true)]
+    private string $studentId;
+
     #[Column(unique: true)]
     private string $email;
 
@@ -79,6 +85,26 @@ class User
         return $this->id;
     }
 
+    public function getEmployeeId(): string
+    {
+        return $this->employeeId;
+    }
+
+    public function setEmployeeId(string $employeeId): User
+    {
+        $this->employeeId = $employeeId;
+        return $this;
+    }
+    public function getStudentId(): string
+    {
+        return $this->studentId;
+    }
+
+    public function setStudentId(string $studentId): User
+    {
+        $this->studentId = $studentId;
+        return $this;
+    }
     public function getName(): string
     {
         return $this->name;

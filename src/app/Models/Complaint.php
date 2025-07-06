@@ -6,6 +6,9 @@ namespace App\Models;
 
 use App\Entities\Complaint as ComplaintEntity;
 use App\Entities\User;
+use App\Entities\Location;
+use App\Entities\Branch;
+use App\Entities\Category;
 use App\Enums\ComplaintStatus;
 use App\Model;
 use DateTime;
@@ -17,33 +20,51 @@ class Complaint extends Model
         try {
             // Input array
             $input = [
-                'user_id' => $_POST['user_id'],
-                'title' => $_POST['title'],
-                'desc' => $_POST['desc'],
-                'image' => $_POST['image'],
+                'studentId' => htmlspecialchars($_POST['studentId']),
+                'employeeId' => htmlspecialchars($_POST['employeeId']),
+                'title' => htmlspecialchars($_POST['title']),
+                'desc' => htmlspecialchars($_POST['desc']),
+                'image' => htmlspecialchars($_POST['image']),
+                'locationId' => $_POST['location'],
+                'branchId' => $_POST['branch'],
+                'categoryId' => $_POST['category']
             ];
             // Define filters for each key
             $filters = [
-                'user_id' => FILTER_VALIDATE_INT,
+                'studentId' => FILTER_SANITIZE_SPECIAL_CHARS,
+                'employeeId' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'title' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'desc' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'image' => FILTER_SANITIZE_URL,
+                'locationId' => FILTER_SANITIZE_NUMBER_INT,
+                'branchId' => FILTER_SANITIZE_NUMBER_INT,
+                'categoryId' => FILTER_SANITIZE_NUMBER_INT
             ];
             $var = filter_var_array($input, $filters);
-            $userId = $var['user_id'];
-            if (!$userId) {
-                return ['error' => 'Missing input'];
+
+            if (!empty($var['studentId'])) {
+                $user = $this->em->getRepository(User::class)->findOneBy(['studentId' => $var['studentId']]);
+            } elseif (!empty($var['employeeId'])) {
+                $user = $this->em->getRepository(User::class)->findOneBy(['employeeId' => $var['employeeId']]);
             }
-            $title = htmlspecialchars($var['title']);
-            $desc = htmlspecialchars($var['desc']);
-            $img = $var['image'];
-            $user = $this->em->getRepository(User::class)->find($userId);
+
+            if (!$user) {
+                return ['error' => 'Id not found'];
+            }
+
+            $location = $this->em->getRepository(Location::class)->find($var['locationId']);
+            $branch = $this->em->getRepository(Branch::class)->find($var['branchId']);
+            $category = $this->em->getRepository(Category::class)->find($var['categoryId']);
+
             $complaint = new ComplaintEntity();
             $complaint
-                ->setTitle($title)
-                ->setDesc($desc)
-                ->setImage($img)
+                ->setTitle($var['title'])
+                ->setDesc($var['desc'])
+                ->setImage($var['image'])
                 ->setStatus(ComplaintStatus::Pending)
+                ->setLocation($location)
+                ->setBranch($branch)
+                ->setCategory($category)
                 ->setCreatedAt(new DateTime())
                 ->setUser($user);
             $this->em->persist($complaint);
@@ -65,7 +86,8 @@ class Complaint extends Model
             return ['error' => 'Missing id'];
         }
 
-        $complaint = $this->em->createQueryBuilder()->select('c')
+        $complaint = $this->em->createQueryBuilder()
+            ->select('c')
             ->from(ComplaintEntity::class, 'c')
             ->where('c.id=:id')
             ->setParameter('id', $id)
@@ -79,6 +101,18 @@ class Complaint extends Model
             ->from(ComplaintEntity::class, 'c')
             ->getQuery();
         return $complaint->getArrayResult();
+    }
+
+    public function fetchInnerJoinAll()
+    {
+        $complaint = $this->em->createQueryBuilder()
+            ->select('c.title', 'c.createdAt', 'c.status', 'l.address', 'b.name as braName', 'ca.name as catName')
+            ->from(ComplaintEntity::class, 'c')
+            ->innerJoin('c.location', 'l')
+            ->innerJoin('c.branch', 'b')
+            ->innerJoin('c.category', 'ca')
+            ->getQuery();
+        return  $complaint->getArrayResult();
     }
 
     public function update(): array

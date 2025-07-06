@@ -103,4 +103,12 @@ class Branch extends Model
         $this->em->flush();
         return true;
     }
+
+    public function fetchList(): array
+    {
+        return $this->em->createQueryBuilder()->select('b.code, b.name, b.id')
+            ->from(BranchEntity::class, 'b')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

@@ -50,6 +50,18 @@ class Complaint
     #[ManyToOne(targetEntity: User::class)]
     private User|null $user = null;
 
+    /** Many complaints can be at one location. This is the owning side. with foreign key of user */
+    #[ManyToOne(targetEntity: Location::class)]
+    private Location|null $location = null;
+
+    /** Many complaints can be at one branch. This is the owning side. with foreign key of user */
+    #[ManyToOne(targetEntity: Branch::class)]
+    private Branch|null $branch = null;
+
+    /** Many complaints can be at one category. This is the owning side. with foreign key of user */
+    #[ManyToOne(targetEntity: Category::class)]
+    private Category|null $category = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -151,6 +163,39 @@ class Complaint
     public function setUser(User $user): Complaint
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getLocation(): Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(Location $location): Complaint
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    public function getBranch(): Branch
+    {
+        return $this->branch;
+    }
+
+    public function setBranch(Branch $branch): Complaint
+    {
+        $this->branch = $branch;
+        return $this;
+    }
+
+    public function getCategory(): Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(Category $category): Complaint
+    {
+        $this->category = $category;
         return $this;
     }
 }

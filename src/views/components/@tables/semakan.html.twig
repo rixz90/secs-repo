@@ -1,0 +1,28 @@
+<div class="overflow-auto">
+    <table class="striped">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Date Report</th>
+                <th scope="col">Category</th>
+                <th scope="col">Branch</th>
+                <th scope="col">Location</th>
+                <th scope="col">Date Completed</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in complaints %}
+            <tr>
+                <td>{{ c.title }}</td>
+                <td>{{ c.createdAt | date() }}</td>
+                <td>{{ c.catName }}</td>
+                <td>{{ c.braName }}</td>
+                <td>{{ c.address }}</td>
+                <td>{{ c.completedAt | date() }}</td>
+                <td>{{ enum("App\\Enums\\ComplaintStatus").tryFrom(c.status.value).toString() }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

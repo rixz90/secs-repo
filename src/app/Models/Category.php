@@ -63,7 +63,7 @@ class Category extends Model
             }
             $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
 
-            /** @var CategoryEntity $bran */
+            /** @var CategoryEntity $cat */
             $cat = $this->em->find(CategoryEntity::class, $id);
             $name != $cat->getName() ? $cat->setName($name) : '';
             $this->em->persist($cat);
@@ -89,5 +89,12 @@ class Category extends Model
         $this->em->remove($cat);
         $this->em->flush();
         return true;
+    }
+    public function fetchList(): array
+    {
+        return  $this->em->createQueryBuilder()->select('c.id, c.name')
+            ->from(CategoryEntity::class, 'c')
+            ->getQuery()
+            ->getArrayResult();
     }
 }

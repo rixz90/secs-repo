@@ -2,11 +2,10 @@
 {% block personal %}
 <div x-show="staff" x-transition x-id="['input']">
     <label :for="$id('input')">Staff ID : </label>
-    <input type="text" name="staffId" :id="$id('input')" />
+    <input type="text" name="employeeId" :id="$id('input')" />
 </div>
 <div x-show="student" x-transition x-id="['input']">
     <label :for="$id('input')">Student ID : </label>
     <input type="text" name="studentId" :id="$id('input')" />
 </div>
-{{ parent() }}
 {% endblock %}

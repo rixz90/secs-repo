@@ -8,27 +8,22 @@
 <main class="container">
     <h2>Lodge Complaint</h2>
     <hr />
-    <section x-data="{ staff:false, student:false, showForm: false, val:'Select user type...'}">
+    <section x-data="aduanView">
         <details class="dropdown" x-ref="dropdown">
             <summary x-html="val"></summary>
             <ul>
                 <li>
                     <label>
-                        <input type="radio" name="isType" value="Student" @click="staff=false, student = true,
-                            $refs.dropdown.open=false,
-                            val='Student',
-                            showForm=true" hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML" />
-                        Student
+                        <input type="radio" name="isType" value="Student" @click="toggleStudent"
+                            hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML"
+                            hx-indicator="#indicator" />Student
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="radio" name="isType" value="Staff" @click="staff=true, student=false,
-                                    $refs.dropdown.open=false,
-                                    val='Staff',
-                                    showForm=true
-                                " hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML" />
-                        Staff
+                        <input type="radio" name="isType" value="Staff" @click="toggleStaff"
+                            hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML"
+                            hx-indicator="#indicator" />Staff
                     </label>
                 </li>
                 <li>
@@ -37,14 +32,17 @@
                                     $refs.dropdown.open=false,
                                     val='Guest',
                                     showForm=true
-                                " hx-get="/complaints/form?type=g" hx-target="#target" hx-swap="innerHTML" />
-                        Guest
+                                " hx-get="/complaints/form?type=g" hx-target="#target" hx-swap="innerHTML"
+                            hx-indicator="#indicator" />Guest
                     </label>
                 </li>
             </ul>
         </details>
         <hr />
-        <div x-show="showForm" x-transition id="target">
+        <div x-show="showForm" x-transition id="target"></div>
+        <div class="flex center">
+            <img id="indicator" class="htmx-indicator" src="assets/svg-loaders/three-dots.svg" />
         </div>
+    </section>
 </main>
 {% endblock %}

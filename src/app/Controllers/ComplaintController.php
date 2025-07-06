@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\Branch;
+use App\Models\Category;
 use App\Models\Complaint;
+use App\Models\Location;
 use App\View;
 
 class ComplaintController
 {
     public function anyIndex()
     {
+        parse_str($_SERVER['QUERY_STRING'], $params);
+        if ($params['type'] == 'semakan') {
+            $complaints = (new Complaint)->fetchInnerJoinAll();
+            return (string) View::make('@tables/semakan', ['complaints' => $complaints]);
+        }
         $complaints = (new Complaint)->fetchAll();
         return (string) View::make('@tables/complaint', ["complaints" => $complaints]);
     }
@@ -49,9 +57,15 @@ class ComplaintController
     {
         parse_str($_SERVER['QUERY_STRING'], $params);
 
+        $branch =  (new Branch)->fetchList();
+        $location = (new Location)->fetchList();
+        $category = (new Category)->fetchList();
+        $arr = ['branches' => $branch, 'locations' => $location, 'categories' => $category];
+
         if ($params['type'] == 'ng') {
-            return (string) View::make('@forms/non-guest');
+            return (string) View::make('@forms/non-guest', $arr);
+        } else {
+            return (string) View::make('@forms/base', $arr);
         }
-        return (string) View::make('@forms/base');
     }
 }
