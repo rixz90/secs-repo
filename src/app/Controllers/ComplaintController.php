@@ -15,12 +15,13 @@ class ComplaintController
     public function anyIndex()
     {
         parse_str($_SERVER['QUERY_STRING'], $params);
-        if ($params['type'] == 'semakan') {
+        if (isset($params['table']) && $params['table'] == 'semakan') {
             $complaints = (new Complaint)->fetchInnerJoinAll();
             return (string) View::make('@tables/semakan', ['complaints' => $complaints]);
+        } else {
+            $complaints = (new Complaint)->fetchAll();
+            return (string) View::make('@tables/complaint', ["complaints" => $complaints]);
         }
-        $complaints = (new Complaint)->fetchAll();
-        return (string) View::make('@tables/complaint', ["complaints" => $complaints]);
     }
 
     public function anyComplaint(string $param): string
@@ -56,7 +57,6 @@ class ComplaintController
     public function getForm(): string
     {
         parse_str($_SERVER['QUERY_STRING'], $params);
-
         $branch =  (new Branch)->fetchList();
         $location = (new Location)->fetchList();
         $category = (new Category)->fetchList();

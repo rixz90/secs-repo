@@ -15,11 +15,17 @@
             {% for c in complaints %}
             <tr>
                 <td>{{ c.title }}</td>
-                <td>{{ c.createdAt | date() }}</td>
+                <td>{{ c.createdAt|date() }}</td>
                 <td>{{ c.catName }}</td>
                 <td>{{ c.braName }}</td>
                 <td>{{ c.address }}</td>
-                <td>{{ c.completedAt | date() }}</td>
+                {% if c.completedAt is null %}
+                <td>
+                    <center>...</center>
+                </td>
+                {% else %}
+                <td>{{ c.completedAt|date() }}</td>
+                {% endif %}
                 <td>{{ enum("App\\Enums\\ComplaintStatus").tryFrom(c.status.value).toString() }}</td>
             </tr>
             {% endfor %}

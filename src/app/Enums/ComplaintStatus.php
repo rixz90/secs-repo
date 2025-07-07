@@ -5,16 +5,16 @@ namespace App\Enums;
 enum ComplaintStatus: int
 {
     case Pending = 0;
-    case Process = 1;
-    case Review = 2;
+    case Reported = 1;
+    case Investigated = 2;
     case Completed = 3;
 
     public function toString()
     {
         return match ($this) {
             self::Pending => 'Pending',
-            self::Process => 'Process',
-            self::Review => 'Review',
+            self::Reported => 'Reported',
+            self::Investigated => 'Investigated',
             self::Completed => 'Completed'
         };
     }

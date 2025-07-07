@@ -14,9 +14,9 @@
 		</form>
 	</section>
 	<hr />
-	<section hx-get="/complaints/" hx-trigger="load delay:1s" hx-swap="innerHTML" hx-indicator="#indicator"></section>
 	<div class="flex center">
-		<img id="indicator" class="htmx-indicator" src="assets/svg-loaders/oval.svg" />
+		<img id="indicator" class="htmx-indicator" src="assets/svg-loaders/three-dots.svg" />
 	</div>
+	<section hx-get="/complaints/" hx-trigger="load delay:1s" hx-swap="innerHTML" hx-indicator="#indicator"></section>
 </main>
 {% endblock %}
