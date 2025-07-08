@@ -35,37 +35,11 @@
 				<td>{{ enum("App\\Enums\\ComplaintStatus").tryFrom(c.status.value).toString() }}</td>
 
 				<td class="flex center">
-					<details class="dropdown" style="margin-top: 1rem;">
-						<summary role="button" class="outline secondary"
-							style="text-align:center;min-width:max-content">
-							<svg style="width: 1.35rem;height:1.35rem">
-								<use xlink:href="assets/images/sprite.svg#icon-menu"></use>
-							</svg>
-							Action
-						</summary>
-						<ul>
-							<li><a hx-get="/complaints/form?method=update&id={{ c.id }}" hx-target="#response"
-									hx-swap="innerHTML" hx-indicator="#indicator">
-									<svg style="width: 1.25rem;height:1.25rem;padding-bottom:5px;margin-left:9px;">
-										<use xlink:href="assets/images/sprite.svg#icon-squared-plus"></use>
-									</svg>Update
-								</a></li>
-							<li><a href="">
-									<svg style="width: 1.25rem;height:1.25rem;padding-bottom:5px;">
-										<use xlink:href="assets/images/sprite.svg#icon-squared-minus"></use>
-									</svg>Delete
-								</a></li>
-						</ul>
-					</details>
+					{% include "@common/actionButton.html.twig" with {'controller':'complaints','method':'complaint',
+					'id': c.id} %}
 				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
-		<style>
-			th,
-			td {
-				text-align: center;
-			}
-		</style>
 	</table>
 </div>

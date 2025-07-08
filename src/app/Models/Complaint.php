@@ -37,7 +37,6 @@ class Complaint extends Model
                 'categoryId' => FILTER_SANITIZE_NUMBER_INT
             ];
             $var = filter_var_array($input, $filters);
-
             if (!empty($var['studentId'])) {
                 $user = $this->em->getRepository(User::class)->findOneBy(['studentId' => $var['studentId']]);
             } elseif (!empty($var['employeeId'])) {
@@ -49,11 +48,9 @@ class Complaint extends Model
             if (is_array($user) || empty($user)) {
                 return ["error" => 'Creating or fetching user failed'];
             }
-
             $location = $this->em->getRepository(Location::class)->find($var['locationId']);
             $branch = $this->em->getRepository(Branch::class)->find($var['branchId']);
             $category = $this->em->getRepository(Category::class)->find($var['categoryId']);
-
             $complaint = new ComplaintEntity();
             $complaint
                 ->setTitle($var['title'])
@@ -83,7 +80,6 @@ class Complaint extends Model
         if (!$id) {
             return ['error' => 'Missing id'];
         }
-
         $complaint = $this->em->createQueryBuilder()
             ->select('c')
             ->from(ComplaintEntity::class, 'c')
@@ -92,11 +88,11 @@ class Complaint extends Model
             ->getQuery();
         return $complaint->getArrayResult();
     }
-
     public function fetchAll(): array
     {
         $complaint = $this->em->createQueryBuilder()->select('c')
             ->from(ComplaintEntity::class, 'c')
+            ->where("c.deletedAt is null")
             ->getQuery();
         return $complaint->getArrayResult();
     }
@@ -109,6 +105,7 @@ class Complaint extends Model
             ->innerJoin('c.location', 'l')
             ->innerJoin('c.branch', 'b')
             ->innerJoin('c.category', 'ca')
+            ->where("c.deletedAt is null")
             ->getQuery();
         return  $complaint->getArrayResult();
     }
@@ -123,7 +120,7 @@ class Complaint extends Model
             ->innerJoin('c.branch', 'b')
             ->innerJoin('c.category', 'ca')
             ->innerJoin('c.user', 'u')
-            ->where('c.id = :id')
+            ->where('c.id = :id and c.deletedAt is null')
             ->setParameter('id', $id)
             ->getQuery();
         return $complaint->getOneOrNullResult();
@@ -139,13 +136,13 @@ class Complaint extends Model
             }
             $title = htmlspecialchars($_PUT['title'], ENT_QUOTES);
             $desc = htmlspecialchars($_PUT['desc'], ENT_QUOTES);
-            $image = filter_var($_PUT['image'], FILTER_SANITIZE_URL);
+            // $image = filter_var($_PUT['image'], FILTER_SANITIZE_URL);
 
             /** @var ComplaintEntity $comp */
             $comp = $this->em->find(ComplaintEntity::class, $id);
             $title != $comp->getTitle() ? $comp->setTitle($title) : '';
             $desc != $comp->getDesc() ? $comp->setDesc($desc) : '';
-            $image != $comp->getImage() ? $comp->setImage($image) : '';
+            // $image != $comp->getImage() ? $comp->setImage($image) : '';
             $comp->setUpdatedAt(new DateTime());
             $this->em->persist($comp);
             $this->em->flush();
@@ -157,8 +154,8 @@ class Complaint extends Model
 
     public function softDelete(): array
     {
-        parse_str(file_get_contents('php://input'), $_DELETE);
-        $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
+
+        $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
         if (!$id) {
             return ['error' => 'Missing Input id or Invalid'];
         }

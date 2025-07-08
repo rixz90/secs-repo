@@ -48,7 +48,6 @@ class User extends Model
             return ['error' => $e->getMessage()];
         }
     }
-
     public function fetchUserById($param = null): array
     {
         $id =  $param === null ? filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT)
@@ -65,7 +64,6 @@ class User extends Model
             ->getArrayResult();
         return $user;
     }
-
     public function fetchAllUsers(): array
     {
         $user = $this->em->createQueryBuilder()
@@ -75,7 +73,6 @@ class User extends Model
             ->getArrayResult();
         return $user;
     }
-
     public function fetchAllAdmin(): array
     {
         $user = $this->em->createQueryBuilder()
@@ -86,11 +83,9 @@ class User extends Model
             ->getArrayResult();
         return $user;
     }
-
     public function updateUser(): bool | array
     {
         try {
-
             parse_str(file_get_contents('php://input'), $_PUT);
             $id = filter_var($_PUT['id'], FILTER_VALIDATE_INT);
             if (!$id) {
@@ -111,7 +106,6 @@ class User extends Model
             return ['err' => $e->getMessage()];
         }
     }
-
     public function softDeleteUser(): bool
     {
         parse_str(file_get_contents('php://input'), $_DELETE);
@@ -129,7 +123,6 @@ class User extends Model
         $this->em->flush();
         return true;
     }
-
     public function hardDeleteUser(): array
     {
         parse_str(file_get_contents('php://input'), $_DELETE);

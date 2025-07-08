@@ -1,4 +1,4 @@
-<div class="overflow-auto">
+<div class="overflow-auto" style="min-height:40vh">
 	<table class="striped" style="margin-bottom: 4rem;">
 		<thead>
 			<tr>
@@ -14,49 +14,14 @@
 			<tr>
 				<td>{{ u.name }}</td>
 				<td>{{ u.email }}</td>
-				{% if u.isStaff is true %}
-				<td>true</td>
-				{% else %}
-				<td>false</td>
-				{% endif %}
-				{% if u.isStudent is true %}
-				<td>true</td>
-				{% else %}
-				<td>false</td>
-				{% endif %}
+				<td>{{ u.employeeId| default('...')}}</td>
+				<td>{{ u.studentId| default('...')}}</td>
 				<td class="flex center">
-					<details class="dropdown" style="margin-top: 1rem;">
-						<summary role="button" class="outline secondary"
-							style="text-align:center;min-width:max-content">
-							<svg style="width: 1.35rem;height:1.35rem">
-								<use xlink:href="assets/images/sprite.svg#icon-menu"></use>
-							</svg>
-							Action
-						</summary>
-						<ul>
-							<li><a href="">
-									<svg style="width: 1.25rem;height:1.25rem;padding-bottom:5px;margin-left:9px;">
-										<use xlink:href="assets/images/sprite.svg#icon-squared-plus"></use>
-									</svg>
-									Update
-								</a></li>
-							<li><a href="">
-									<svg style="width: 1.25rem;height:1.25rem;padding-bottom:5px;">
-										<use xlink:href="assets/images/sprite.svg#icon-squared-minus"></use>
-									</svg>
-									Delete
-								</a></li>
-						</ul>
-					</details>
+					{% include "@common/actionButton.html.twig" with {'controller':'users','method':'user',
+					'id': u.id} %}
 				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
-		<style>
-			th,
-			td {
-				text-align: center;
-			}
-		</style>
 	</table>
 </div>

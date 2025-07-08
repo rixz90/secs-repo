@@ -38,9 +38,6 @@ class ComplaintController
 
     public function postComplaint(): string
     {
-        if (isset($_POST['_method']) && $_POST['_method'] == 'put') {
-            return $this->putComplaint();
-        }
         $response = (new Complaint)->create();
         return json_encode($response);
     }
@@ -48,13 +45,15 @@ class ComplaintController
     public function putComplaint(): string
     {
         $response =  (new Complaint)->update();
-        return json_encode($response);
+        $complaints = (new Complaint)->fetchAll();
+        return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
     }
 
     public function deleteComplaint(): string
     {
-        $response =  (new Complaint)->hardDelete();
-        return json_encode($response);
+        $response =  (new Complaint)->softDelete();
+        $complaints = (new Complaint)->fetchAll();
+        return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
     }
 
     public function getForm(): string
