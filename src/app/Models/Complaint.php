@@ -20,8 +20,6 @@ class Complaint extends Model
         try {
             // Input array
             $input = [
-                'studentId' => htmlspecialchars($_POST['studentId']),
-                'employeeId' => htmlspecialchars($_POST['employeeId']),
                 'title' => htmlspecialchars($_POST['title']),
                 'desc' => htmlspecialchars($_POST['desc']),
                 'image' => htmlspecialchars($_POST['image']),
@@ -31,8 +29,6 @@ class Complaint extends Model
             ];
             // Define filters for each key
             $filters = [
-                'studentId' => FILTER_SANITIZE_SPECIAL_CHARS,
-                'employeeId' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'title' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'desc' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'image' => FILTER_SANITIZE_URL,
@@ -47,9 +43,11 @@ class Complaint extends Model
             } elseif (!empty($var['employeeId'])) {
                 $user = $this->em->getRepository(User::class)->findOneBy(['employeeId' => $var['employeeId']]);
             }
-
-            if (!$user) {
-                return ['error' => 'Id not found'];
+            if (empty($user)) {
+                $user = (new \App\Models\User)->createUser();
+            }
+            if (is_array($user) || empty($user)) {
+                return ["error" => 'Creating or fetching user failed'];
             }
 
             $location = $this->em->getRepository(Location::class)->find($var['locationId']);
@@ -115,6 +113,22 @@ class Complaint extends Model
         return  $complaint->getArrayResult();
     }
 
+    public function fetchInnerJoinById($id): ComplaintEntity | null
+    {
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        $complaint = $this->em->createQueryBuilder()
+            ->select('c', 'l', 'b', 'ca', 'u')
+            ->from(ComplaintEntity::class, 'c')
+            ->innerJoin('c.location', 'l')
+            ->innerJoin('c.branch', 'b')
+            ->innerJoin('c.category', 'ca')
+            ->innerJoin('c.user', 'u')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        return $complaint->getOneOrNullResult();
+    }
+
     public function update(): array
     {
         try {
@@ -129,16 +143,15 @@ class Complaint extends Model
 
             /** @var ComplaintEntity $comp */
             $comp = $this->em->find(ComplaintEntity::class, $id);
-
             $title != $comp->getTitle() ? $comp->setTitle($title) : '';
             $desc != $comp->getDesc() ? $comp->setDesc($desc) : '';
             $image != $comp->getImage() ? $comp->setImage($image) : '';
             $comp->setUpdatedAt(new DateTime());
             $this->em->persist($comp);
             $this->em->flush();
-            return ['id' => $comp->getId()];
+            return ['message' => "Update is successful for id " . $comp->getId()];
         } catch (\Throwable $e) {
-            return ['err' => $e->getMessage()];
+            return ['error' => $e->getMessage()];
         }
     }
 
@@ -147,7 +160,7 @@ class Complaint extends Model
         parse_str(file_get_contents('php://input'), $_DELETE);
         $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
         if (!$id) {
-            return ['error' => 'Missing Input'];
+            return ['error' => 'Missing Input id or Invalid'];
         }
         /** @var ComplaintEntity $comp */
         $comp = $this->em->find(ComplaintEntity::class, $id);

@@ -29,13 +29,16 @@ class User
     private string $name;
 
     #[Column(name: 'employee_id', nullable: true, unique: true)]
-    private string $employeeId;
+    private ?string $employeeId = null;
 
     #[Column(name: 'student_id', nullable: true, unique: true)]
-    private string $studentId;
+    private ?string $studentId = null;
 
     #[Column(unique: true)]
     private string $email;
+
+    #[Column]
+    private string $phone;
 
     #[Column(name: 'created_at', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private DateTime $createdAt;
@@ -61,12 +64,6 @@ class User
     #[Column(name: 'is_admin', options: ['default' => false])]
     private bool $isAdmin = false;
 
-    #[Column(name: 'is_student', options: ['default' => false])]
-    private bool $isStudent = false;
-
-    #[Column(name: 'is_staff', options: ['default' => false])]
-    private bool $isStaff = false;
-
 
     /** One user can make many complaints. This is the inverse side.
      * @var Collection<Complaint>
@@ -85,24 +82,34 @@ class User
         return $this->id;
     }
 
-    public function getEmployeeId(): string
+    public function getEmployeeId(): string | null
     {
         return $this->employeeId;
     }
 
-    public function setEmployeeId(string $employeeId): User
+    public function setEmployeeId(?string $employeeId): User
     {
         $this->employeeId = $employeeId;
         return $this;
     }
-    public function getStudentId(): string
+    public function getStudentId(): string | null
     {
         return $this->studentId;
     }
 
-    public function setStudentId(string $studentId): User
+    public function setStudentId(?string $studentId): User
     {
         $this->studentId = $studentId;
+        return $this;
+    }
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): User
+    {
+        $this->phone = $phone;
         return $this;
     }
     public function getName(): string
@@ -168,28 +175,6 @@ class User
     public function setIsAdmin(bool $is_admin = false): User
     {
         $this->isAdmin = $is_admin;
-        return $this;
-    }
-
-    public function isStudent(): bool
-    {
-        return $this->isStudent;
-    }
-
-    public function setIsStudent(bool $is_student = false): User
-    {
-        $this->isStudent = $is_student;
-        return $this;
-    }
-
-    public function isStaff(): bool
-    {
-        return $this->isStaff;
-    }
-
-    public function setIsStaff(bool $is_staff = false): User
-    {
-        $this->isStaff = $is_staff;
         return $this;
     }
 

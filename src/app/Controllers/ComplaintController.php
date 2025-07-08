@@ -17,10 +17,10 @@ class ComplaintController
         parse_str($_SERVER['QUERY_STRING'], $params);
         if (isset($params['table']) && $params['table'] == 'semakan') {
             $complaints = (new Complaint)->fetchInnerJoinAll();
-            return (string) View::make('@tables/semakan', ['complaints' => $complaints]);
+            return View::make('@tables/semakan', ['complaints' => $complaints])->render();
         } else {
             $complaints = (new Complaint)->fetchAll();
-            return (string) View::make('@tables/complaint', ["complaints" => $complaints]);
+            return View::make('@tables/complaint', ["complaints" => $complaints])->render();
         }
     }
 
@@ -38,6 +38,9 @@ class ComplaintController
 
     public function postComplaint(): string
     {
+        if (isset($_POST['_method']) && $_POST['_method'] == 'put') {
+            return $this->putComplaint();
+        }
         $response = (new Complaint)->create();
         return json_encode($response);
     }
@@ -57,15 +60,26 @@ class ComplaintController
     public function getForm(): string
     {
         parse_str($_SERVER['QUERY_STRING'], $params);
-        $branch =  (new Branch)->fetchList();
-        $location = (new Location)->fetchList();
-        $category = (new Category)->fetchList();
-        $arr = ['branches' => $branch, 'locations' => $location, 'categories' => $category];
-
-        if ($params['type'] == 'ng') {
-            return (string) View::make('@forms/non-guest', $arr);
-        } else {
-            return (string) View::make('@forms/base', $arr);
+        $arr = [
+            'branches' => (new Branch)->fetchList(),
+            'locations' => (new Location)->fetchList(),
+            'categories' => (new Category)->fetchList()
+        ];
+        if (isset($params['type'])) {
+            return match (htmlspecialchars($params['type'])) {
+                'ng' => View::make('@forms/non-guest', $arr)->render(),
+                'g' => View::make('@forms/base', $arr)->render(),
+                default => json_encode(["error" => 'Form not found'])
+            };
+        } else if (isset($params['method']) == 'update' && isset($params['id'])) {
+            $complaint = (new Complaint)->fetchInnerJoinById($params['id']);
+            if (empty($complaint)) {
+                return json_encode(["error" => 'Id not found']);
+            }
+            $arr['complaint'] = $complaint;
+            $arr['method'] = "PUT";
+            return View::make('@forms/non-guest', $arr)->render();
         }
+        return json_encode(["error" => 'Form not found']);
     }
 }

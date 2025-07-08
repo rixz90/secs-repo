@@ -2,19 +2,19 @@
     <form action="/complaints/complaint" method="post">
         <section>
             {% block personal %}
-            {% endblock %}
             <div x-id="['input']">
                 <label :for="$id('input')">Name : </label>
-                <input type="text" name="name" :id="$id('input')" required />
+                <input type="text" name="name" :id="$id('input')" value="{{ complaint.user.name }}" required />
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Email: </label>
-                <input type="text" name="email" :id="$id('input')" required />
+                <input type="text" name="email" :id="$id('input')" value="{{ complaint.user.email }}" required />
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Phone Number: </label>
-                <input type="text" name="phone_no" :id="$id('input')" required />
+                <input type="text" name="phone" :id="$id('input')" value="{{ complaint.user.phone }}" required />
             </div>
+            {% endblock %}
         </section>
         <hr />
         <section>
@@ -22,27 +22,29 @@
             <div x-id="['input']">
                 <label :for="$id('input')">UiTM Branch: </label>
                 <select name="branch" id="branch" :id="$id('input')">
-                    <option value="" disabled selected>Choose Branch</option>
+                    <option value="{{ form.branchId }}" disabled selected>Choose Branch</option>
                     {% for b in branches %}
-                    <option value={{ b.id }}>{{ b.name }}</option>
+                    <option {{ (complaint.branch.id==b.id)? ' selected ' : '' }} value={{ b.id }}>{{ b.name }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Location Details : </label>
                 <select name="location" :id="$id('input')" required>
-                    <option value="" disabled selected>Choose Location</option>
+                    <option value="{{ form.locationId }}" disabled selected>Choose Location</option>
                     {% for l in locations %}
-                    <option value={{ l.id }}>{{ l.address }}</option>
+                    <option {{ (complaint.location.id==l.id)? ' selected ' : '' }} value={{ l.id }}>{{ l.address }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Category: </label>
                 <select name="category" :id="$id('input')" required>
-                    <option value="" disabled selected>Choose Category</option>
+                    <option value="{{ form.categoryId }}" disabled selected>Choose Category</option>
                     {% for c in categories %}
-                    <option value={{ c.id }}>{{ c.name }}</option>
+                    <option {{ (complaint.category.id==c.id)? ' selected ' : '' }} value={{ c.id }}>{{ c.name }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
@@ -51,22 +53,27 @@
         <section>
             <div x-id="['input']">
                 <label :for="$id('input')">Title : </label>
-                <input type="text" name="title" :id="$id('input')" required />
+                <input type="text" name="title" :id="$id('input')" value="{{ complaint.title }}" required />
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Details : </label>
-                <textarea name="desc" :id="$id('input')" cols="30" rows="10" required></textarea>
+                <textarea name="desc" :id="$id('input')" cols="30" rows="10"
+                    required>{{ complaint.getDesc() }}</textarea>
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Attachment : </label>
-                <input type="file" name="image" :id="$id('input')" aria-describedby="file-helper">
+                <input type="file" name="image" :id="$id('input')" aria-describedby="file-helper" value="" />
                 <small id="file-helpher">*Format PDF or Image(jpg, png, jpeg)only</small>
                 <button class="button-remove">Remove</button>
             </div>
             <div class="container" style="text-align:center;">
-                <input type="submit" style="width: fit-content;">
+                <input type="submit" style="width: fit-content;" value="{{ method=='PUT'? 'Update':'Submit' }}">
                 <input type="reset" value="Reset" style="width: fit-content;">
             </div>
         </section>
+        {% if complaint.id is not null %}
+        <input type="hidden" name="id" value="{{ complaint.id }}" />
+        <input type="hidden" name="_method" value="put" />
+        {% endif %}
     </form>
 </section>

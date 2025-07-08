@@ -10,48 +10,40 @@ use DateTime;
 
 class User extends Model
 {
-    public function createUser(): bool | array
+    public function createUser(): UserEntity | array
     {
         // Input array
         $input = [
+            'studentId' => isset($_POST['studentId']) ? htmlspecialchars($_POST['studentId']) : null,
+            'employeeId' => isset($_POST['employeeId']) ? htmlspecialchars($_POST['employeeId']) : null,
             'name' => htmlspecialchars($_POST['name']),
-            'is_admin' => $_POST['is_admin'],
-            'is_student' => $_POST['is_student'],
-            'is_staff' => $_POST['is_staff'],
-            'email' => $_POST['email']
+            'email' => $_POST['email'],
+            'phone' => $_POST['phone']
         ];
         // Define filters for each key
         $filters = [
+            'studentId' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'employeeId' => FILTER_SANITIZE_SPECIAL_CHARS,
             'name' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'is_admin' => FILTER_VALIDATE_BOOLEAN,
-            'is_student' => FILTER_VALIDATE_BOOLEAN,
-            'is_staff' => FILTER_VALIDATE_BOOLEAN,
-            'email' => FILTER_VALIDATE_EMAIL
+            'email' => FILTER_VALIDATE_EMAIL,
+            'phone' => FILTER_SANITIZE_NUMBER_INT
         ];
         $var = filter_var_array($input, $filters);
         try {
-            $name = $var['name'];
-            $isAdmin = $var['is_admin'];
-            $isStudent = $var['is_student'];
-            $isStaff = $var['is_staff'];
-            $email = $var['email'];
-            if (empty($name) || empty($email)) {
-                return false;
-            }
-            if (!$name && !$email) {
-                return false;
+            if (empty($var['name']) || empty($var['email'])) {
+                return ['error' => 'name or email empty'];
             }
             $user = new UserEntity();
-            $user->setName($name)
-                ->setEmail($email)
+            $user->setName($var['name'])
+                ->setEmail($var['email'])
                 ->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime())
-                ->setIsAdmin($isAdmin)
-                ->setIsStudent($isStudent)
-                ->setIsStaff($isStaff);
+                ->setStudentId(empty($var['studentId']) ? null : $var['studentId'])
+                ->setEmployeeId(empty($var['employeeId']) ? null : $var['employeeId'])
+                ->setPhone($var['phone']);
+
             $this->em->persist($user);
             $this->em->flush();
-            return true;
+            return $user;
         } catch (\Throwable $e) {
             return ['error' => $e->getMessage()];
         }
@@ -106,15 +98,11 @@ class User extends Model
             }
             $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
             $isAdmin = filter_var($_GET['is_admin'], FILTER_VALIDATE_BOOLEAN);
-            $isStudent = filter_var($_GET['is_student'], FILTER_VALIDATE_BOOLEAN);
-            $isStaff = filter_var($_GET['is_staff'], FILTER_VALIDATE_BOOLEAN);
 
             /** @var UserEntity $user */
             $user = $this->em->find(UserEntity::class, $id);
             $name != $user->getName() ? $user->setName($name) : '';
             $isAdmin != $user->isAdmin() ? $user->setIsAdmin($isAdmin) : '';
-            $isStudent != $user->isStudent() ? $user->setIsStudent($isStudent) : '';
-            $isStaff != $user->isStaff() ? $user->setIsStaff($isStaff) : '';
             $user->setUpdatedAt(new DateTime());
             $this->em->persist($user);
             $this->em->flush();

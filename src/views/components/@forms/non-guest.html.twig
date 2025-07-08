@@ -1,11 +1,12 @@
 {% extends "@forms/base.html.twig" %}
 {% block personal %}
-<div x-show="staff" x-transition x-id="['input']">
+<div x-show="{{ (complaint.user.employeeId is not null)? 'true' : 'staff' }}" x-transition x-id="['input']">
     <label :for="$id('input')">Staff ID : </label>
-    <input type="text" name="employeeId" :id="$id('input')" />
+    <input type="text" name="employeeId" :id="$id('input')" value="{{ complaint.user.employeeId }}" />
 </div>
-<div x-show="student" x-transition x-id="['input']">
+<div x-show="{{ (complaint.user.studentId is not null)? 'true' : 'student' }}" x-transition x-id="['input']">
     <label :for="$id('input')">Student ID : </label>
-    <input type="text" name="studentId" :id="$id('input')" />
+    <input type="text" name="studentId" :id="$id('input')" value=" {{ complaint.user.studentId }}" />
 </div>
+{{ parent() }}
 {% endblock %}
