@@ -12,6 +12,7 @@ use App\Entities\Category;
 use App\Enums\ComplaintStatus;
 use App\Model;
 use DateTime;
+use DateTimeZone;
 
 class Complaint extends Model
 {
@@ -22,7 +23,7 @@ class Complaint extends Model
             $input = [
                 'title' => htmlspecialchars($_POST['title']),
                 'desc' => htmlspecialchars($_POST['desc']),
-                'image' => htmlspecialchars($_POST['image']),
+                'image' => htmlspecialchars($_POST['image'] ?? ''),
                 'locationId' => $_POST['location'],
                 'branchId' => $_POST['branch'],
                 'categoryId' => $_POST['category']
@@ -60,7 +61,7 @@ class Complaint extends Model
                 ->setLocation($location)
                 ->setBranch($branch)
                 ->setCategory($category)
-                ->setCreatedAt(new DateTime())
+                ->setCreatedAt(new DateTime('now', new DateTimeZone('Asia/Kuala_Lumpur')))
                 ->setUser($user);
             $this->em->persist($complaint);
             $this->em->flush();
@@ -72,7 +73,7 @@ class Complaint extends Model
 
     public function fetchById($param = null): array
     {
-        if ($param === null) {
+        if (empty($param)) {
             $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         } else {
             $id = filter_var($param, FILTER_VALIDATE_INT);
@@ -97,7 +98,7 @@ class Complaint extends Model
         return $complaint->getArrayResult();
     }
 
-    public function fetchInnerJoinAll()
+    public function fetchInnerJoinAll(): array
     {
         $complaint = $this->em->createQueryBuilder()
             ->select('c.title', 'c.createdAt', 'c.status', 'l.address', 'b.name as braName', 'ca.name as catName')
@@ -130,20 +131,49 @@ class Complaint extends Model
     {
         try {
             parse_str(file_get_contents('php://input'), $_PUT);
-            $id = filter_var($_PUT['id'], FILTER_VALIDATE_INT);
-            if ($id === null) {
-                return ['error' => 'Missing Input'];
+            $input = [
+                'id' => $_PUT['id'],
+                'title' => htmlspecialchars($_PUT['title']),
+                'desc' => htmlspecialchars($_PUT['desc']),
+                'image' => htmlspecialchars($_PUT['image'] ?? ''),
+                'locationId' => $_PUT['location'],
+                'branchId' => $_PUT['branch'],
+                'categoryId' => $_PUT['category']
+            ];
+            $filters = [
+                'id' => FILTER_VALIDATE_INT,
+                'title' => FILTER_SANITIZE_SPECIAL_CHARS,
+                'desc' => FILTER_SANITIZE_SPECIAL_CHARS,
+                'image' => FILTER_SANITIZE_URL,
+                'locationId' => FILTER_SANITIZE_NUMBER_INT,
+                'branchId' => FILTER_SANITIZE_NUMBER_INT,
+                'categoryId' => FILTER_SANITIZE_NUMBER_INT
+            ];
+            $var = filter_var_array($input, $filters);
+            if (empty($var['id'])) {
+                return ['error' => 'Missing id'];
             }
-            $title = htmlspecialchars($_PUT['title'], ENT_QUOTES);
-            $desc = htmlspecialchars($_PUT['desc'], ENT_QUOTES);
-            // $image = filter_var($_PUT['image'], FILTER_SANITIZE_URL);
-
             /** @var ComplaintEntity $comp */
-            $comp = $this->em->find(ComplaintEntity::class, $id);
-            $title != $comp->getTitle() ? $comp->setTitle($title) : '';
-            $desc != $comp->getDesc() ? $comp->setDesc($desc) : '';
-            // $image != $comp->getImage() ? $comp->setImage($image) : '';
-            $comp->setUpdatedAt(new DateTime());
+            $comp = $this->em->find(ComplaintEntity::class, $var['id']);
+            if (empty($comp)) {
+                return ['error' => 'Complaint not found'];
+            }
+            if ($comp->getLocation()->getId() != $var['locationId']) {
+                $loc = $this->em->getRepository(Location::class)->find($var['locationId']);
+                $comp->setLocation($loc);
+            }
+            if ($comp->getBranch()->getId() != $var['branchId']) {
+                $bran = $this->em->getRepository(Branch::class)->find($var['branchId']);
+                $comp->setBranch($bran);
+            }
+            if ($comp->getCategory()->getId() != $var['categoryId']) {
+                $cat = $this->em->getRepository(Category::class)->find($var['categoryId']);
+                $comp->setCategory($cat);
+            }
+            $var['title'] != $comp->getTitle() ? $comp->setTitle($var['title']) : '';
+            $var['desc'] != $comp->getDesc() ? $comp->setDesc($var['desc']) : '';
+            $var['image'] != $comp->getImage() ? $comp->setImage($var['image']) : '';
+            $comp->setUpdatedAt(new DateTime('now', new DateTimeZone('Asia/Kuala_Lumpur')));
             $this->em->persist($comp);
             $this->em->flush();
             return ['message' => "Update is successful for id " . $comp->getId()];
@@ -154,20 +184,19 @@ class Complaint extends Model
 
     public function softDelete(): array
     {
-
         $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
         if (!$id) {
             return ['error' => 'Missing Input id or Invalid'];
         }
         /** @var ComplaintEntity $comp */
         $comp = $this->em->find(ComplaintEntity::class, $id);
-        if ($comp === null) {
+        if (empty($comp)) {
             return ['error' => 'User not found'];
         }
-        $comp->setDeletedAt(new DateTime());
+        $comp->setDeletedAt(new DateTime('now', new DateTimeZone('Asia/Kuala_Lumpur')));
         $this->em->persist($comp);
         $this->em->flush();
-        return ['id' => $comp->getId()];
+        return ['message' => 'soft delete id ' . $comp->getId()];
     }
 
     public function hardDelete(): array

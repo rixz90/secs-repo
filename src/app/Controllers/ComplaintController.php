@@ -12,7 +12,7 @@ use App\View;
 
 class ComplaintController
 {
-    public function anyIndex()
+    public function anyIndex(): string
     {
         parse_str($_SERVER['QUERY_STRING'], $params);
         if (isset($params['table']) && $params['table'] == 'semakan') {
@@ -26,20 +26,21 @@ class ComplaintController
 
     public function anyComplaint(string $param): string
     {
-        $response = (new Complaint)->fetchById($param);
-        return json_encode($response);
+        $complaints = (new Complaint)->fetchById($param);
+        return View::make('@tables/complaint', ['complaints' => $complaints])->render();
     }
 
     public function getComplaint(): string
     {
-        $response = (new Complaint)->fetchById();
-        return json_encode($response);
+        $complaints = (new Complaint)->fetchById();
+        return View::make('@tables/complaint', ['complaints' => $complaints])->render();
     }
 
     public function postComplaint(): string
     {
         $response = (new Complaint)->create();
-        return json_encode($response);
+        $complaints = (new Complaint)->fetchAll();
+        return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
     }
 
     public function putComplaint(): string

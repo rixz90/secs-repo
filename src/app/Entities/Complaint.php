@@ -28,20 +28,20 @@ class Complaint
     #[Column]
     private string $description;
 
-    #[Column]
-    private string $image;
+    #[Column(nullable: true)]
+    private ?string $image = null;
 
     #[Column(name: 'created_at', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private DateTime $createdAt;
 
     #[Column(name: 'updated_at', nullable: true)]
-    private DateTime|null $updatedAt = null;
+    private ?DateTime $updatedAt = null;
 
     #[Column(name: 'deleted_at', nullable: true)]
-    private DateTime|null $deletedAt = null;
+    private ?DateTime $deletedAt = null;
 
     #[Column(name: 'completed_at', nullable: true)]
-    private DateTime|null $completedAt = null;
+    private ?DateTime $completedAt = null;
 
     #[Column]
     private ComplaintStatus $status;
@@ -89,12 +89,12 @@ class Complaint
         return $this;
     }
 
-    public function getImage(): string
+    public function getImage(): string | null
     {
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image = null): self
     {
         $this->image = $image;
         return $this;
