@@ -52,17 +52,15 @@ class Category extends Model
         return $cat;
     }
 
-    public function updateCategory(): bool | array
+    public function update(): bool | array
     {
         try {
-
             parse_str(file_get_contents('php://input'), $_PUT);
             $id = filter_var($_PUT['id'], FILTER_VALIDATE_INT);
             if (!$id) {
                 return false;
             }
             $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
-
             /** @var CategoryEntity $cat */
             $cat = $this->em->find(CategoryEntity::class, $id);
             $name != $cat->getName() ? $cat->setName($name) : '';
@@ -74,21 +72,20 @@ class Category extends Model
         }
     }
 
-    public function dropCategory(): bool
+    public function delete(): array
     {
-        parse_str(file_get_contents('php://input'), $_DELETE);
-        $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (!$id) {
-            return false;
+            return ['error' => 'Missing Input'];
         }
         /** @var CategoryEntity $bran */
         $cat = $this->em->find(CategoryEntity::class, $id);
         if (!$cat) {
-            return false;
+            return ['error' => 'Category not found'];
         }
         $this->em->remove($cat);
         $this->em->flush();
-        return true;
+        return ['message' => "Category Id $id has been removed"];
     }
     public function fetchList(): array
     {

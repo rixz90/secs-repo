@@ -64,6 +64,7 @@ class Complaint
 
     /** Many complaints can be at one category. This is the owning side. with foreign key of user */
     #[ManyToOne(targetEntity: Category::class, cascade: ['persist'])]
+    #[JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
     private Category|null $category = null;
 
     public function getId(): int

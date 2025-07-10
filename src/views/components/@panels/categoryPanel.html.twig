@@ -1,11 +1,21 @@
+{% set category = categories|first %}
 <section>
-    <h3>Category</h3>
-    <div x-id="['input']">
-        <label :for="$id('input')">Name:</label>
-        <input type="text" name="name" :id="$id('input')" required />
-    </div>
-    <div class="container" style="text-align:center;">
-        <input type="submit" style="width: fit-content;">
-        <input type="reset" value="Reset" style="width: fit-content;">
-    </div>
+    <form action="">
+        <h3>Category</h3>
+        <div x-id="['input']">
+            <label :for="$id('input')">Name:</label>
+            <input type="text" name="name" :id="$id('input')" value="{{ category.name }}" required />
+        </div>
+        <div class="container" style="text-align:center;">
+            {% if method == 'PUT' is defined %}
+            <input type="hidden" name="id" value="{{ category.id }}" />
+            <input type="submit" value="Update" hx-put="/categories/category" hx-target="#response" hx-swap="innerHTML"
+                hx-indicator="#indicator" style="width: fit-content;" />
+            {% else %}
+            <input type="submit" value="Submit" hx-post="/categories/category" hx-target="#response" hx-swap="innerHTML"
+                hx-indicator="#indicator" style="width: fit-content;" />
+            {% endif %}
+            <input type="reset" value="Reset" style="width: fit-content;">
+        </div>
+    </form>
 </section>

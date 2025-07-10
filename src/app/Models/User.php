@@ -40,7 +40,6 @@ class User extends Model
                 ->setStudentId(empty($var['studentId']) ? null : $var['studentId'])
                 ->setEmployeeId(empty($var['employeeId']) ? null : $var['employeeId'])
                 ->setPhone($var['phone']);
-
             $this->em->persist($user);
             $this->em->flush();
             return $user;
@@ -55,7 +54,6 @@ class User extends Model
         if (!$id) {
             return [];
         }
-
         $user = $this->em->createQueryBuilder()->select('u')
             ->from(UserEntity::class, 'u')
             ->where('u.id=:id')
@@ -75,53 +73,58 @@ class User extends Model
     }
     public function fetchAllAdmin(): array
     {
+        $qb = $this->em->createQueryBuilder();
         $user = $this->em->createQueryBuilder()
             ->select('u')
             ->from(UserEntity::class, 'u')
-            ->where('u.isAdmin = 1')
+            ->where($qb->expr()->andX(
+                $qb->expr()->eq('u.isAdmin', 1),
+                $qb->expr()->isNull('u.deletedAt')
+            ))
             ->getQuery()
             ->getArrayResult();
         return $user;
     }
-    public function updateUser(): bool | array
+    public function update(): array
     {
         try {
             parse_str(file_get_contents('php://input'), $_PUT);
             $id = filter_var($_PUT['id'], FILTER_VALIDATE_INT);
             if (!$id) {
-                return false;
+                return ['error' => 'Missing input'];
             }
             $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
             $isAdmin = filter_var($_GET['is_admin'], FILTER_VALIDATE_BOOLEAN);
-
             /** @var UserEntity $user */
             $user = $this->em->find(UserEntity::class, $id);
+            if (empty($user)) {
+                return ['error' => 'User not found'];
+            }
             $name != $user->getName() ? $user->setName($name) : '';
-            $isAdmin != $user->isAdmin() ? $user->setIsAdmin($isAdmin) : '';
+            $isAdmin != $user->isAdmin() ? $user->setIsAdmin(true) : '';
             $user->setUpdatedAt(new DateTime());
             $this->em->persist($user);
             $this->em->flush();
-            return true;
+            return ['message' => "Id $id has been updated"];
         } catch (\Throwable $e) {
             return ['err' => $e->getMessage()];
         }
     }
-    public function softDeleteUser(): bool
+    public function softDelete(): array
     {
-        parse_str(file_get_contents('php://input'), $_DELETE);
-        $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (!$id) {
-            return false;
+            return ['error' => 'Missing Input'];
         }
         /** @var UserEntity $user */
         $user = $this->em->find(UserEntity::class, $id);
         if ($user === null) {
-            return false;
+            return ['error' => 'User not found'];
         }
         $user->setDeletedAt(new DateTime());
         $this->em->persist($user);
         $this->em->flush();
-        return true;
+        return ['message' => "Id $id has been removed"];
     }
     public function hardDeleteUser(): array
     {

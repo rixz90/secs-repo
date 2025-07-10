@@ -11,8 +11,8 @@ class LocationController
 {
     public function anyIndex(): string
     {
-        $response = (new Location)->fetchAllLocations();
-        return (string) \App\View::make('@tables/location', ["locations" => $response]);
+        $loc = (new Location)->fetchAllLocations();
+        return View::make('@tables/location', ["locations" => $loc])->render();
     }
 
     public function anyLocation(string $param): string
@@ -30,33 +30,32 @@ class LocationController
     public function postLocation(): string
     {
         $response = (new Location)->createLocation();
-        return json_encode($response);
+        $loc = (new Location)->fetchAllLocations();
+        return View::make('@tables/location', ["locations" => $loc, "response" => $response])->render();
     }
 
     public function putLocation(): string
     {
-        $response =  (new Location)->updateLocation();
-        return json_encode($response);
+        $response =  (new Location)->update();
+        $loc = (new Location)->fetchAllLocations();
+        return View::make('@tables/location', ["locations" => $loc, "response" => $response])->render();
     }
 
     public function deleteLocation(): string
     {
-        $response =  (new Location)->dropLocation();
-        return json_encode($response);
+        $response =  (new Location)->delete();
+        $loc = (new Location)->fetchAllLocations();
+        return View::make('@tables/location', ["locations" => $loc, "response" => $response])->render();
     }
 
-    public function getForm(): string
+    public function anyEdit(string $id): string
     {
-        parse_str($_SERVER['QUERY_STRING'], $params);
-        if (isset($params['method']) == 'update' && isset($params['id'])) {
-            $loc = (new Location)->fetchLocationById($params['id']);
-            if (empty($loc)) {
-                return json_encode(["error" => 'Id not found']);
-            }
-            $arr['location'] = $loc;
-            $arr['method'] = "PUT";
-            return View::make('@panels/locationPanel', $arr)->render();
+        $loc = (new Location)->fetchLocationById(htmlspecialchars($id));
+        if (empty($loc)) {
+            return json_encode(["error" => 'Id not found']);
         }
-        return json_encode(["error" => 'Form not found']);
+        $arr['locations'] = $loc;
+        $arr['method'] = "PUT";
+        return view::make('@panels/locationPanel', $arr)->render();
     }
 }

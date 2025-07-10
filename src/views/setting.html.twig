@@ -44,16 +44,16 @@
 	<hr />
 	<section>
 		<div x-show="adm" x-collapse>
-			{% include '@panels/adminPanel.html.twig' %}
+			{{ include('@panels/adminPanel.html.twig', with_context:false) }}
 		</div>
 		<div x-show="bra" x-collapse>
-			{% include '@panels/branchPanel.html.twig' with locations %}
+			{{ include('@panels/branchPanel.html.twig',{'locations': locations}, with_context:false) }}
 		</div>
 		<div x-show="cat" x-collapse>
-			{% include '@panels/categoryPanel.html.twig' %}
+			{{ include('@panels/categoryPanel.html.twig', with_context:false) }}
 		</div>
 		<div x-show="loc" x-collapse>
-			{% include '@panels/locationPanel.html.twig' %}
+			{{ include('@panels/locationPanel.html.twig', with_context:false) }}
 		</div>
 	</section>
 </main>

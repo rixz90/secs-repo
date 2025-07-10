@@ -27,26 +27,29 @@ class CategoryController
     public function postCategory(): string
     {
         $response = (new Category)->createCategory();
-        return json_encode($response);
+        $cat = (new Category)->fetchAllCategories();
+        return View::make('@tables/category', ["categories" => $cat, "response" => $response])->render();
     }
     public function putCategory(): string
     {
-        $response =  (new Category)->updateCategory();
-        return json_encode($response);
+        $response =  (new Category)->update();
+        $cat = (new Category)->fetchAllCategories();
+        return View::make('@tables/category', ["categories" => $cat, "response" => $response])->render();
     }
     public function deleteCategory(): string
     {
-        $response =  (new Category)->dropCategory();
-        return json_encode($response);
+        $response =  (new Category)->delete();
+        $cat = (new Category)->fetchAllCategories();
+        return View::make('@tables/category', ["categories" => $cat, "response" => $response])->render();
     }
     public function anyEdit(string $id): string
     {
-        $category = (new category)->fetchcategorybyid(htmlspecialchars($id));
+        $category = (new Category)->fetchCategoryById(htmlspecialchars($id));
         if (empty($category)) {
             return json_encode(["error" => 'Id not found']);
         }
-        $arr['category'] = $category;
-        $arr['method'] = "put";
-        return view::make('@panels/categorypanel', $arr)->render();
+        $arr['categories'] = $category;
+        $arr['method'] = "PUT";
+        return view::make('@panels/categoryPanel', $arr)->render();
     }
 }

@@ -11,7 +11,7 @@ class UserController
 {
     public function anyIndex()
     {
-        $response = (new User)->fetchAllUsers();
+        $response = (new User)->fetchAllAdmin();
         return json_encode($response);
     }
 
@@ -22,8 +22,8 @@ class UserController
     }
     public function anyAdmin(): string
     {
-        $response = (new User)->fetchAllAdmin();
-        return (string) \App\View::make('@tables/admin', ["users" => $response]);
+        $admin = (new User)->fetchAllAdmin();
+        return (string) \App\View::make('@tables/admin', ["admins" => $admin]);
     }
     public function getUser(): string
     {
@@ -34,32 +34,33 @@ class UserController
     public function postUser(): string
     {
         $response = (new User)->createUser();
-        return json_encode($response);
+        $admins = (new User)->fetchAllAdmin();
+        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
     }
 
     public function putUser(): string
     {
-        $response =  (new User)->updateUser();
-        return json_encode($response);
+        $response =  (new User)->update();
+        $admins = (new User)->fetchAllAdmin();
+        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
     }
 
     public function deleteUser(): string
     {
-        $response =  (new User)->softDeleteUser();
-        return json_encode($response);
+        $response =  (new User)->softDelete();
+        var_dump($response);
+        $admins = (new User)->fetchAllAdmin();
+        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
     }
-    public function getForm(): string
+
+    public function anyEdit(string $id): string
     {
-        parse_str($_SERVER['QUERY_STRING'], $params);
-        if (isset($params['method']) == 'update' && isset($params['id'])) {
-            $admin = (new User)->fetchUserById($params['id']);
-            if (empty($admin)) {
-                return json_encode(["error" => 'Id not found']);
-            }
-            $arr['admin'] = $admin;
-            $arr['method'] = "PUT";
-            return View::make('@panels/adminPanel', $arr)->render();
+        $user = (new User)->fetchUserById(htmlspecialchars($id));
+        if (empty($user)) {
+            return json_encode(["error" => 'Id not found']);
         }
-        return json_encode(["error" => 'Form not found']);
+        $arr['admins'] = $user;
+        $arr['method'] = "PUT";
+        return view::make('@panels/adminPanel', $arr)->render();
     }
 }

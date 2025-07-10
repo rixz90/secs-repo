@@ -53,7 +53,7 @@ class Location extends Model
         return $user->getArrayResult();
     }
 
-    public function updateLocation(): bool | array
+    public function update(): bool | array
     {
         try {
 
@@ -79,21 +79,20 @@ class Location extends Model
         }
     }
 
-    public function dropLocation(): bool
+    public function delete(): array
     {
-        parse_str(file_get_contents('php://input'), $_DELETE);
-        $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (!$id) {
-            return false;
+            return ['error' => 'Missing Input'];
         }
         /** @var LocationEntity $loc */
         $loc = $this->em->find(LocationEntity::class, $id);
         if (!$loc) {
-            return false;
+            return ['error' => 'Location not found'];
         }
         $this->em->remove($loc);
         $this->em->flush();
-        return true;
+        return ['message' => "Id $id is deleted"];
     }
     public function fetchList(): array
     {

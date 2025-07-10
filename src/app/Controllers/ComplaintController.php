@@ -14,21 +14,6 @@ class ComplaintController
 {
     public function anyIndex() {}
 
-    public function anyEdit(string $id): string
-    {
-        $complaint = (new Complaint)->fetchLeftJoinById($id);
-        if (empty($complaint)) {
-            return json_encode(["error" => 'Id not found']);
-        }
-        $arr = [
-            'branches' => (new Branch)->fetchList(),
-            'locations' => (new Location)->fetchList(),
-            'categories' => (new Category)->fetchList()
-        ];
-        $arr['complaint'] = $complaint;
-        $arr['method'] = "PUT";
-        return View::make('@forms/non-guest', $arr)->render();
-    }
     public function anyComplaint(string $param): string
     {
         $complaints = (new Complaint)->fetchById($param);
@@ -77,5 +62,20 @@ class ComplaintController
             'g' => View::make('@forms/base', $arr)->render(),
             default => json_encode(["error" => 'Form not found'])
         };
+    }
+    public function anyEdit(string $id): string
+    {
+        $complaint = (new Complaint)->fetchLeftJoinById($id);
+        if (empty($complaint)) {
+            return json_encode(["error" => 'Id not found']);
+        }
+        $arr = [
+            'branches' => (new Branch)->fetchList(),
+            'locations' => (new Location)->fetchList(),
+            'categories' => (new Category)->fetchList()
+        ];
+        $arr['complaint'] = $complaint;
+        $arr['method'] = "PUT";
+        return View::make('@forms/non-guest', $arr)->render();
     }
 }
