@@ -12,77 +12,70 @@ use App\View;
 
 class ComplaintController
 {
-    public function anyIndex(): string
-    {
-        parse_str($_SERVER['QUERY_STRING'], $params);
-        if (isset($params['table']) && $params['table'] == 'semakan') {
-            $complaints = (new Complaint)->fetchLeftJoinAll();
-            return View::make('@tables/semakan', ['complaints' => $complaints])->render();
-        } else {
-            $complaints = (new Complaint)->fetchAll();
-            return View::make('@tables/complaint', ["complaints" => $complaints])->render();
-        }
-    }
+    public function anyIndex() {}
 
+    public function anyEdit(string $id): string
+    {
+        $complaint = (new Complaint)->fetchLeftJoinById($id);
+        if (empty($complaint)) {
+            return json_encode(["error" => 'Id not found']);
+        }
+        $arr = [
+            'branches' => (new Branch)->fetchList(),
+            'locations' => (new Location)->fetchList(),
+            'categories' => (new Category)->fetchList()
+        ];
+        $arr['complaint'] = $complaint;
+        $arr['method'] = "PUT";
+        return View::make('@forms/non-guest', $arr)->render();
+    }
     public function anyComplaint(string $param): string
     {
         $complaints = (new Complaint)->fetchById($param);
         return View::make('@tables/complaint', ['complaints' => $complaints])->render();
     }
-
     public function getComplaint(): string
     {
         $complaints = (new Complaint)->fetchById();
         return View::make('@tables/complaint', ['complaints' => $complaints])->render();
     }
-
     public function postComplaint(): string
     {
         $response = (new Complaint)->create();
-        $complaints = (new Complaint)->fetchAll();
-        return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
+        $complaints = (new Complaint)->fetchLeftJoinAll();
+        return View::make('@tables/semakan', ['complaints' => $complaints], $response)->render();
     }
-
     public function putComplaint(): string
     {
         $response =  (new Complaint)->update();
         $complaints = (new Complaint)->fetchAll();
         return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
     }
-
     public function deleteComplaint(): string
     {
         $response =  (new Complaint)->softDelete();
         $complaints = (new Complaint)->fetchAll();
         return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
     }
-
-    public function getForm(): string
+    public function anyTable(string $type): string
     {
-        parse_str($_SERVER['QUERY_STRING'], $params);
+        $complaints = (new Complaint)->fetchLeftJoinAll();
+        return match (htmlspecialchars($type)) {
+            'semakan' => View::make('@tables/semakan', ['complaints' => $complaints])->render(),
+            'admin' => View::make('@tables/complaint', ["complaints" => $complaints])->render()
+        };
+    }
+    public function getForm(string $type): string
+    {
         $arr = [
             'branches' => (new Branch)->fetchList(),
             'locations' => (new Location)->fetchList(),
             'categories' => (new Category)->fetchList()
         ];
-        if (isset($params['type'])) {
-            return match (htmlspecialchars($params['type'])) {
-                'ng' => View::make('@forms/non-guest', $arr)->render(),
-                'g' => View::make('@forms/base', $arr)->render(),
-                default => json_encode(["error" => 'Form not found'])
-            };
-        } else if (isset($params['method']) == 'update' && isset($params['id'])) {
-            $complaint = (new Complaint)->fetchLeftJoinById($params['id']);
-            if (empty($complaint)) {
-                return json_encode(["error" => 'Id not found']);
-            }
-            if (empty($complaint)) {
-                return json_encode(["error" => 'Complaint not found']);
-            }
-            $arr['complaint'] = $complaint;
-            $arr['method'] = "PUT";
-            return View::make('@forms/non-guest', $arr)->render();
-        }
-        return json_encode(["error" => 'Form not found']);
+        return match (htmlspecialchars($type)) {
+            'ng' => View::make('@forms/non-guest', $arr)->render(),
+            'g' => View::make('@forms/base', $arr)->render(),
+            default => json_encode(["error" => 'Form not found'])
+        };
     }
 }

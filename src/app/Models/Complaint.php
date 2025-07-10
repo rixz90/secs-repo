@@ -101,7 +101,7 @@ class Complaint extends Model
     public function fetchLeftJoinAll(): array
     {
         $complaint = $this->em->createQueryBuilder()
-            ->select('c.title', 'c.createdAt', 'c.status', 'l.address', 'b.name as braName', 'ca.name as catName')
+            ->select('c.id', 'c.title', 'c.description', 'c.createdAt', 'c.status', 'l.address', 'b.name as braName', 'ca.name as catName')
             ->from(ComplaintEntity::class, 'c')
             ->leftJoin('c.location', 'l')
             ->leftJoin('c.branch', 'b')

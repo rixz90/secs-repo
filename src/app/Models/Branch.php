@@ -12,16 +12,23 @@ use Kint\Kint as Kint;
 
 class Branch extends Model
 {
-    public function createBranch(): array
+    public function create(): array
     {
         try {
             $code = htmlspecialchars($_POST['code'], ENT_QUOTES);
             $name = htmlspecialchars($_POST['name'], ENT_QUOTES);
+            $locationIds = $_POST['locations'] ?? [];
             if (empty($code) || empty($name)) {
                 return ['error' => 'Missing Input'];
             }
-            $bran = (new BranchEntity())
-                ->setCode($code)
+            $bran = (new BranchEntity());
+            foreach ($locationIds as $locationId) {
+                if (filter_var($locationId, FILTER_VALIDATE_INT)) {
+                    $location = $this->em->getReference(Location::class, $locationId);
+                    $bran->addLocation($location);
+                }
+            }
+            $bran->setCode($code)
                 ->setName($name);
             $this->em->persist($bran);
             $this->em->flush();

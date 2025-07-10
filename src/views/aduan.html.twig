@@ -15,14 +15,14 @@
                 <li>
                     <label>
                         <input type="radio" name="isType" value="Student" @click="toggleStudent"
-                            hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML"
+                            hx-get="/complaints/form/ng" hx-target="#target" hx-swap="innerHTML"
                             hx-indicator="#indicator" />Student
                     </label>
                 </li>
                 <li>
                     <label>
                         <input type="radio" name="isType" value="Staff" @click="toggleStaff"
-                            hx-get="/complaints/form?type=ng" hx-target="#target" hx-swap="innerHTML"
+                            hx-get="/complaints/form/ng" hx-target="#target" hx-swap="innerHTML"
                             hx-indicator="#indicator" />Staff
                     </label>
                 </li>
@@ -32,7 +32,7 @@
                                     $refs.dropdown.open=false,
                                     val='Guest',
                                     showForm=true
-                                " hx-get="/complaints/form?type=g" hx-target="#target" hx-swap="innerHTML"
+                                " hx-get="/complaints/form/g" hx-target="#target" hx-swap="innerHTML"
                             hx-indicator="#indicator" />Guest
                     </label>
                 </li>
