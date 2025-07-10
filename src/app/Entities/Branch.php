@@ -17,7 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[Table('branches')]
 class Branch
 {
-
     #[Id]
     #[GeneratedValue]
     #[Column(options: ['unsigned' => true])]
@@ -29,12 +28,8 @@ class Branch
     #[Column]
     private string $name;
 
-    /**
-     * Many Branches have Many Locations.
-     * @var Collection<Location>
-     */
     #[ManyToMany(targetEntity: Location::class, mappedBy: 'branches')]
-    private Collection $locations;
+    private ?Collection $locations = null;
 
     public function __construct()
     {
@@ -68,14 +63,25 @@ class Branch
         return $this;
     }
 
-    public function getLocations(): Collection
+    public function getLocations(): ?Collection
     {
         return $this->locations;
     }
 
-    public function addLocation(Location $location): self
+    public function addLocation(Location $location): void
     {
-        $this->locations[] = $location;
-        return $this;
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->addBranch($this);
+        }
+    }
+
+    public function removeLocation(Location $location): void
+    {
+        if (!$this->locations->contains($location)) {
+            return;
+        }
+        $this->locations->removeElement($location);
+        $location->removeBranch($this);
     }
 }

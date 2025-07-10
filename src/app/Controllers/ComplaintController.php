@@ -16,7 +16,7 @@ class ComplaintController
     {
         parse_str($_SERVER['QUERY_STRING'], $params);
         if (isset($params['table']) && $params['table'] == 'semakan') {
-            $complaints = (new Complaint)->fetchInnerJoinAll();
+            $complaints = (new Complaint)->fetchLeftJoinAll();
             return View::make('@tables/semakan', ['complaints' => $complaints])->render();
         } else {
             $complaints = (new Complaint)->fetchAll();
@@ -72,9 +72,12 @@ class ComplaintController
                 default => json_encode(["error" => 'Form not found'])
             };
         } else if (isset($params['method']) == 'update' && isset($params['id'])) {
-            $complaint = (new Complaint)->fetchInnerJoinById($params['id']);
+            $complaint = (new Complaint)->fetchLeftJoinById($params['id']);
             if (empty($complaint)) {
                 return json_encode(["error" => 'Id not found']);
+            }
+            if (empty($complaint)) {
+                return json_encode(["error" => 'Complaint not found']);
             }
             $arr['complaint'] = $complaint;
             $arr['method'] = "PUT";

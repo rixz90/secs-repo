@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use DateTime;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 #[Entity]
 #[Table('complaints')]
@@ -47,19 +48,22 @@ class Complaint
     private ComplaintStatus $status;
 
     /** Many complaints have one user. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: User::class)]
+    #[ManyToOne(targetEntity: User::class, cascade: ['persist'])]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
     private User|null $user = null;
 
     /** Many complaints can be at one location. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: Location::class)]
+    #[ManyToOne(targetEntity: Location::class, cascade: ['persist'])]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
     private Location|null $location = null;
 
     /** Many complaints can be at one branch. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: Branch::class)]
+    #[ManyToOne(targetEntity: Branch::class, cascade: ['persist'])]
+    #[JoinColumn(name: 'branch_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
     private Branch|null $branch = null;
 
     /** Many complaints can be at one category. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: Category::class)]
+    #[ManyToOne(targetEntity: Category::class, cascade: ['persist'])]
     private Category|null $category = null;
 
     public function getId(): int
@@ -166,7 +170,7 @@ class Complaint
         return $this;
     }
 
-    public function getLocation(): Location
+    public function getLocation(): ?Location
     {
         return $this->location;
     }
@@ -177,7 +181,7 @@ class Complaint
         return $this;
     }
 
-    public function getBranch(): Branch
+    public function getBranch(): ?Branch
     {
         return $this->branch;
     }
@@ -188,7 +192,7 @@ class Complaint
         return $this;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }

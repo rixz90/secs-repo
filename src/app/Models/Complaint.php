@@ -98,28 +98,28 @@ class Complaint extends Model
         return $complaint->getArrayResult();
     }
 
-    public function fetchInnerJoinAll(): array
+    public function fetchLeftJoinAll(): array
     {
         $complaint = $this->em->createQueryBuilder()
             ->select('c.title', 'c.createdAt', 'c.status', 'l.address', 'b.name as braName', 'ca.name as catName')
             ->from(ComplaintEntity::class, 'c')
-            ->innerJoin('c.location', 'l')
-            ->innerJoin('c.branch', 'b')
-            ->innerJoin('c.category', 'ca')
+            ->leftJoin('c.location', 'l')
+            ->leftJoin('c.branch', 'b')
+            ->leftJoin('c.category', 'ca')
             ->where("c.deletedAt is null")
             ->getQuery();
         return  $complaint->getArrayResult();
     }
 
-    public function fetchInnerJoinById($id): ComplaintEntity | null
+    public function fetchLeftJoinById($id): ComplaintEntity | null
     {
         $id = filter_var($id, FILTER_VALIDATE_INT);
         $complaint = $this->em->createQueryBuilder()
             ->select('c', 'l', 'b', 'ca', 'u')
             ->from(ComplaintEntity::class, 'c')
-            ->innerJoin('c.location', 'l')
-            ->innerJoin('c.branch', 'b')
-            ->innerJoin('c.category', 'ca')
+            ->leftJoin('c.location', 'l')
+            ->leftJoin('c.branch', 'b')
+            ->leftJoin('c.category', 'ca')
             ->innerJoin('c.user', 'u')
             ->where('c.id = :id and c.deletedAt is null')
             ->setParameter('id', $id)
@@ -137,7 +137,7 @@ class Complaint extends Model
                 'desc' => htmlspecialchars($_PUT['desc']),
                 'image' => htmlspecialchars($_PUT['image'] ?? ''),
                 'locationId' => $_PUT['location'],
-                'branchId' => $_PUT['branch'],
+                'branchId' => $_PUT['branch'] ?? '',
                 'categoryId' => $_PUT['category']
             ];
             $filters = [
@@ -158,15 +158,15 @@ class Complaint extends Model
             if (empty($comp)) {
                 return ['error' => 'Complaint not found'];
             }
-            if ($comp->getLocation()->getId() != $var['locationId']) {
+            if ($comp->getLocation()?->getId() != $var['locationId']) {
                 $loc = $this->em->getRepository(Location::class)->find($var['locationId']);
                 $comp->setLocation($loc);
             }
-            if ($comp->getBranch()->getId() != $var['branchId']) {
+            if ($comp->getBranch()?->getId() != $var['branchId']) {
                 $bran = $this->em->getRepository(Branch::class)->find($var['branchId']);
                 $comp->setBranch($bran);
             }
-            if ($comp->getCategory()->getId() != $var['categoryId']) {
+            if ($comp->getCategory()?->getId() != $var['categoryId']) {
                 $cat = $this->em->getRepository(Category::class)->find($var['categoryId']);
                 $comp->setCategory($cat);
             }

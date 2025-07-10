@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\User;
-use Kint\Kint;
+use App\View;
 
 class UserController
 {
@@ -45,8 +45,21 @@ class UserController
 
     public function deleteUser(): string
     {
-        $response =  (new User)->hardDeleteUser();
-        // $response =  (new User)->softDeleteUser();
+        $response =  (new User)->softDeleteUser();
         return json_encode($response);
+    }
+    public function getForm(): string
+    {
+        parse_str($_SERVER['QUERY_STRING'], $params);
+        if (isset($params['method']) == 'update' && isset($params['id'])) {
+            $admin = (new User)->fetchUserById($params['id']);
+            if (empty($admin)) {
+                return json_encode(["error" => 'Id not found']);
+            }
+            $arr['admin'] = $admin;
+            $arr['method'] = "PUT";
+            return View::make('@panels/adminPanel', $arr)->render();
+        }
+        return json_encode(["error" => 'Form not found']);
     }
 }

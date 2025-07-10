@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Location;
+use App\View;
 
 class LocationController
 {
@@ -42,5 +43,20 @@ class LocationController
     {
         $response =  (new Location)->dropLocation();
         return json_encode($response);
+    }
+
+    public function getForm(): string
+    {
+        parse_str($_SERVER['QUERY_STRING'], $params);
+        if (isset($params['method']) == 'update' && isset($params['id'])) {
+            $loc = (new Location)->fetchLocationById($params['id']);
+            if (empty($loc)) {
+                return json_encode(["error" => 'Id not found']);
+            }
+            $arr['location'] = $loc;
+            $arr['method'] = "PUT";
+            return View::make('@panels/locationPanel', $arr)->render();
+        }
+        return json_encode(["error" => 'Form not found']);
     }
 }

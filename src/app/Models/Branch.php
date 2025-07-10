@@ -5,24 +5,27 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\Branch as BranchEntity;
+use App\Entities\Location;
 use App\Model;
+use Throwable;
+use Kint\Kint as Kint;
 
 class Branch extends Model
 {
-    public function createBranch(): bool | array
+    public function createBranch(): array
     {
         try {
             $code = htmlspecialchars($_POST['code'], ENT_QUOTES);
             $name = htmlspecialchars($_POST['name'], ENT_QUOTES);
             if (empty($code) || empty($name)) {
-                return false;
+                return ['error' => 'Missing Input'];
             }
             $bran = (new BranchEntity())
                 ->setCode($code)
                 ->setName($name);
             $this->em->persist($bran);
             $this->em->flush();
-            return true;
+            return ['message' => "Created branch id: " . $bran->getId()];
         } catch (\Throwable $e) {
             return ['error' => $e->getMessage()];
         }
@@ -36,8 +39,9 @@ class Branch extends Model
             return [];
         }
 
-        $bran = $this->em->createQueryBuilder()->select('b')
+        $bran = $this->em->createQueryBuilder()->select('b', 'l')
             ->from(BranchEntity::class, 'b')
+            ->leftJoin('b.locations', 'l')
             ->where('b.id=:id')
             ->setParameter('id', $id)
             ->getQuery()
@@ -63,47 +67,61 @@ class Branch extends Model
         return $bran;
     }
 
-    public function updateBranch(): bool | array
+    public function update(): array
     {
         try {
-
             parse_str(file_get_contents('php://input'), $_PUT);
             $id = filter_var($_PUT['id'], FILTER_VALIDATE_INT);
-            if (!$id) {
-                return false;
+            if (empty($id)) {
+                return ['error' => 'id not found'];
             }
             $code = htmlspecialchars($_PUT['code'], ENT_QUOTES);
             $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
+            $locationIds = $_PUT['locations'] ?? [];
 
-            /** @var BranchEntity $bran */
+            /** @var \App\Entities\Branch $bran */
             $bran = $this->em->find(BranchEntity::class, $id);
+            foreach ($bran->getLocations() as $loc) {
+                $bran->removeLocation($loc);
+            }
+            foreach ($locationIds as $locationId) {
+                $location = $this->em->getReference(Location::class, $locationId);
+                $bran->addLocation($location);
+            }
             $name != $bran->getName() ? $bran->setName($name) : '';
             $code != $bran->getCode() ? $bran->setCode($code) : '';
             $this->em->persist($bran);
             $this->em->flush();
-            return true;
+            return ['message' => "Id no $id has been updated."];
         } catch (\Throwable $e) {
-            return ['err' => $e->getMessage()];
+            return ['error' => $e->getMessage()];
         }
     }
 
-    public function dropBranch(): bool
+    public function delete(): array
     {
-        parse_str(file_get_contents('php://input'), $_DELETE);
-        $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
-        if (!$id) {
-            return false;
+        try {
+            $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+            if (!$id) {
+                return ['error' => 'Missing Input'];
+            }
+            /** @var BranchEntity $bran */
+            $bran = $this->em->getRepository(BranchEntity::class)->find($id);
+            if (empty($bran)) {
+                return ['error' => 'user not found'];
+            }
+            /** @var \App\Entities\Location $loc */
+            foreach ($bran->getLocations() as $loc) {
+                $loc->removeBranch($bran);
+            }
+            $this->em->persist($bran);
+            $this->em->remove($bran);
+            $this->em->flush();
+            return ["message" => "Branch : $id is removed"];
+        } catch (Throwable $e) {
+            return ['error' => $e->getMessage()];
         }
-        /** @var BranchEntity $bran */
-        $bran = $this->em->find(BranchEntity::class, $id);
-        if (!$bran) {
-            return false;
-        }
-        $this->em->remove($bran);
-        $this->em->flush();
-        return true;
     }
-
     public function fetchList(): array
     {
         return $this->em->createQueryBuilder()->select('b.code, b.name, b.id')

@@ -9,25 +9,25 @@
 			<nav>
 				<ul>
 					<li>
-						<a class="secondary" hx-get="/branches/" hx-target="#response" hx-swap="innerHTML"
+						<a href="" class="secondary" hx-get="/branches/" hx-target="#response" hx-swap="innerHTML"
 							hx-indicator="#indicator" @click="toggleBra()">
 							Branch
 						</a>
 					</li>
 					<li>
-						<a class="secondary" hx-get="/categories/" hx-target="#response" hx-swap="innerHTML"
+						<a href="" class="secondary" hx-get="/categories/" hx-target="#response" hx-swap="innerHTML"
 							hx-indicator="#indicator" @click="toggleCat()">
 							Category
 						</a>
 					</li>
 					<li>
-						<a class="secondary" hx-get="/locations/" hx-target="#response" hx-swap="innerHTML"
+						<a href="" class="secondary" hx-get="/locations/" hx-target="#response" hx-swap="innerHTML"
 							hx-indicator="#indicator" @click="toggleLoc()">
 							Location
 						</a>
 					</li>
 					<li>
-						<a class="secondary" hx-get="/users/admin" hx-target="#response" hx-swap="innnerHTML"
+						<a href="" class="secondary" hx-get="/users/admin" hx-target="#response" hx-swap="innnerHTML"
 							hx-indicator="#indicator" @click="toggleAdm()">
 							Admin
 						</a>
@@ -47,7 +47,7 @@
 			{% include '@panels/adminPanel.html.twig' %}
 		</div>
 		<div x-show="bra" x-collapse>
-			{% include '@panels/branchPanel.html.twig' %}
+			{% include '@panels/branchPanel.html.twig' with locations %}
 		</div>
 		<div x-show="cat" x-collapse>
 			{% include '@panels/categoryPanel.html.twig' %}

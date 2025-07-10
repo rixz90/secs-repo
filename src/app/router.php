@@ -8,7 +8,7 @@ use App\Controllers\LocationController;
 use App\Controllers\CategoryController;
 use App\Controllers\ComplaintController;
 use App\Controllers\UserController;
-use App\Models\Branch;
+use App\Models;
 use Phroute\Phroute\RouteCollector;
 use App\View;
 use App\Route;
@@ -21,8 +21,8 @@ $router
     ->get("/aduan",  fn() => View::make('aduan'))
     ->get("/login",  fn() => View::make('admin'))
     ->get("/admin",  fn() => View::make('admin'))
-    ->get("/report",  fn() => View::make('report', ['branches' => (new Branch)->fetchList()]))
-    ->get("/setting",  fn() => View::make('setting'))
+    ->get("/report",  fn() => View::make('report', ['branches' => (new models\branch)->fetchlist()]))
+    ->get("/setting",  fn() => View::make('setting', ['locations' => (new Models\Location)->fetchList()]))
 
     ->controller("/users", UserController::class)
     ->controller("/locations", LocationController::class)

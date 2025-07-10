@@ -33,9 +33,9 @@ class Location
     #[OneToMany(targetEntity: Complaint::class, mappedBy: 'locations')]
     private Collection $complaints;
 
-    #[ManyToMany(targetEntity: Branch::class, inversedBy: 'locations')]
+    #[ManyToMany(targetEntity: Branch::class, inversedBy: 'locations', cascade: ['persist', 'remove'])]
     #[JoinTable(name: 'locations_branches')]
-    private Collection $branches;
+    private ?Collection $branches;
 
     public function __construct()
     {
@@ -62,10 +62,21 @@ class Location
         return $this->branches;
     }
 
-    public function addBranch(Branch $branch): self
+    public function addBranch(Branch $branch): void
     {
-        $this->branches[] = $branch;
-        return $this;
+        if (!$this->branches->contains($branch)) {
+            $this->branches[] = $branch;
+            $branch->addLocation($this);
+        }
+    }
+
+    public function removeBranch(Branch $branch): void
+    {
+        if (!$this->branches->contains($branch)) {
+            return;
+        }
+        $this->branches->removeElement($branch);
+        $branch->removeLocation($this);
     }
 
     public function getComplaints(): Collection
