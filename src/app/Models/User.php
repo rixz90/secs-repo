@@ -14,8 +14,8 @@ class User extends Model
     {
         // Input array
         $input = [
-            'studentId' => isset($_POST['studentId']) ? htmlspecialchars($_POST['studentId']) : null,
-            'employeeId' => isset($_POST['employeeId']) ? htmlspecialchars($_POST['employeeId']) : null,
+            'studentId' => !empty($_POST['studentId']) ? htmlspecialchars($_POST['studentId']) : '',
+            'employeeId' => !empty($_POST['employeeId']) ? htmlspecialchars($_POST['employeeId']) : '',
             'name' => htmlspecialchars($_POST['name']),
             'email' => $_POST['email'],
             'phone' => $_POST['phone']
@@ -34,15 +34,28 @@ class User extends Model
                 return ['error' => 'name or email empty'];
             }
             $user = new UserEntity();
-            $user->setName($var['name'])
+            $user
+                ->setName($var['name'])
                 ->setEmail($var['email'])
                 ->setCreatedAt(new DateTime())
-                ->setStudentId(empty($var['studentId']) ? null : $var['studentId'])
-                ->setEmployeeId(empty($var['employeeId']) ? null : $var['employeeId'])
+                ->setStudentId(!empty($var['studentId']) ?  $var['studentId'] : null)
+                ->setEmployeeId(!empty($var['employeeId']) ? $var['employeeId'] : null)
                 ->setPhone($var['phone']);
             $this->em->persist($user);
             $this->em->flush();
             return $user;
+        } catch (\Throwable $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+    public function createAdmin(): array
+    {
+        try {
+            $user = $this->createUser();
+            $user->setIsAdmin(true);
+            $this->em->persist($user);
+            $this->em->flush();
+            return ['message' => 'admin has been created'];
         } catch (\Throwable $e) {
             return ['error' => $e->getMessage()];
         }
@@ -107,7 +120,7 @@ class User extends Model
             $this->em->flush();
             return ['message' => "Id $id has been updated"];
         } catch (\Throwable $e) {
-            return ['err' => $e->getMessage()];
+            return ['error' => $e->getMessage()];
         }
     }
     public function softDelete(): array
@@ -118,7 +131,7 @@ class User extends Model
         }
         /** @var UserEntity $user */
         $user = $this->em->find(UserEntity::class, $id);
-        if ($user === null) {
+        if (empty($user)) {
             return ['error' => 'User not found'];
         }
         $user->setDeletedAt(new DateTime());
@@ -130,12 +143,12 @@ class User extends Model
     {
         parse_str(file_get_contents('php://input'), $_DELETE);
         $id = filter_var($_DELETE['id'], FILTER_VALIDATE_INT);
-        if (!$id) {
+        if (empty($id)) {
             return ['error' => 'Missing Input'];
         }
         /** @var UserEntity $user */
         $user = $this->em->find(UserEntity::class, $id);
-        if ($user === null) {
+        if (empty($user)) {
             return ['error' => 'user not found'];
         }
         $user->setDeletedAt(new DateTime());

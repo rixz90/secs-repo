@@ -18,6 +18,13 @@
 				</td>
 			</tr>
 			{% endfor %}
+			{% if branches is empty %}
+			<tr>
+				<td colspan="10">
+					<center>...</center>
+				</td>
+			</tr>
+			{% endif %}
 		</tbody>
 	</table>
 </div>

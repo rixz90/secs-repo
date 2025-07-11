@@ -22,7 +22,7 @@ $router
     ->get("/login",  fn() => View::make('admin'))
     ->get("/admin",  fn() => View::make('admin'))
     ->get("/report",  fn() => View::make('report', ['branches' => (new models\branch)->fetchlist()]))
-    ->get("/setting",  fn() => View::make('setting', ['locations' => (new Models\Location)->fetchList()]))
+    ->get("/setting",  fn() => View::make('setting'))
 
     ->controller("/users", UserController::class)
     ->controller("/locations", LocationController::class)

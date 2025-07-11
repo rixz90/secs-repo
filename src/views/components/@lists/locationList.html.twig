@@ -1,0 +1,9 @@
+{% for location in locations %}
+<li>
+    <label>
+        <input type="checkbox" name="locations[]" value="{{ location.id }}" {{ (location in
+            branch.locations)?'checked':''}} />
+        {{location.address }}
+    </label>
+</li>
+{% endfor %}

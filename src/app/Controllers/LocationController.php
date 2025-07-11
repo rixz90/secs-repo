@@ -23,8 +23,8 @@ class LocationController
 
     public function getLocation(): string
     {
-        $response = (new Location)->fetchLocationById();
-        return json_encode($response);
+        $loc = (new Location)->fetchList();
+        return View::make('@lists/locationList', ["locations" => $loc])->render();
     }
 
     public function postLocation(): string

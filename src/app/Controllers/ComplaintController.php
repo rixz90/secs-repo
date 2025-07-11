@@ -54,7 +54,6 @@ class ComplaintController
     {
         $arr = [
             'branches' => (new Branch)->fetchList(),
-            'locations' => (new Location)->fetchList(),
             'categories' => (new Category)->fetchList()
         ];
         return match (htmlspecialchars($type)) {

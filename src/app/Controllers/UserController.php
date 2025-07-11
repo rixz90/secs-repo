@@ -23,7 +23,7 @@ class UserController
     public function anyAdmin(): string
     {
         $admin = (new User)->fetchAllAdmin();
-        return (string) \App\View::make('@tables/admin', ["admins" => $admin]);
+        return View::make('@tables/admin', ["admins" => $admin])->render();
     }
     public function getUser(): string
     {
@@ -38,6 +38,12 @@ class UserController
         return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
     }
 
+    public function postAdmin(): string
+    {
+        $response = (new User)->createAdmin();
+        $admins = (new User)->fetchAllAdmin();
+        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
+    }
     public function putUser(): string
     {
         $response =  (new User)->update();
@@ -48,7 +54,6 @@ class UserController
     public function deleteUser(): string
     {
         $response =  (new User)->softDelete();
-        var_dump($response);
         $admins = (new User)->fetchAllAdmin();
         return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
     }

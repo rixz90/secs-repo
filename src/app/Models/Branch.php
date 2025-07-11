@@ -91,6 +91,8 @@ class Branch extends Model
             foreach ($bran->getLocations() as $loc) {
                 $bran->removeLocation($loc);
             }
+
+            var_dump($locationIds);
             foreach ($locationIds as $locationId) {
                 $location = $this->em->getReference(Location::class, $locationId);
                 $bran->addLocation($location);

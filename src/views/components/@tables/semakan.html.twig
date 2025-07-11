@@ -16,19 +16,20 @@
             <tr>
                 <td>{{ c.title }}</td>
                 <td>{{ c.createdAt|date() }}</td>
-                <td>{{ c.catName }}</td>
-                <td>{{ c.braName }}</td>
-                <td>{{ c.address }}</td>
-                {% if c.completedAt is null %}
-                <td>
-                    <center>...</center>
-                </td>
-                {% else %}
-                <td>{{ c.completedAt|date() }}</td>
-                {% endif %}
+                <td>{{ c.catName|default('....') }}</td>
+                <td>{{ c.braName|default('....') }}</td>
+                <td>{{ c.address|default('....') }}</td>
+                <td>{{ c.completedAt|default('....') }}</td>
                 <td>{{ enum("App\\Enums\\ComplaintStatus").tryFrom(c.status.value).toString() }}</td>
             </tr>
             {% endfor %}
+            {% if complaints is empty %}
+            <tr>
+                <td colspan="10">
+                    <center>...</center>
+                </td>
+            </tr>
+            {% endif %}
         </tbody>
     </table>
 </div>

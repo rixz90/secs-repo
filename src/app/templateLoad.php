@@ -7,3 +7,4 @@ $loader->addPath($viewPath . '/components/@panels', 'panels');
 $loader->addPath($viewPath . '/components/@layouts', 'layouts');
 $loader->addPath($viewPath . '/components/@tables', 'tables');
 $loader->addPath($viewPath . '/components/@forms', 'forms');
+$loader->addPath($viewPath . '/components/@lists', 'lists');

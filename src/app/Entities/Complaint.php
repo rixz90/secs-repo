@@ -176,7 +176,7 @@ class Complaint
         return $this->location;
     }
 
-    public function setLocation(Location $location): Complaint
+    public function setLocation(?Location $location): ?Complaint
     {
         $this->location = $location;
         return $this;
@@ -187,7 +187,7 @@ class Complaint
         return $this->branch;
     }
 
-    public function setBranch(Branch $branch): Complaint
+    public function setBranch(?Branch $branch): Complaint
     {
         $this->branch = $branch;
         return $this;
@@ -198,7 +198,7 @@ class Complaint
         return $this->category;
     }
 
-    public function setCategory(Category $category): Complaint
+    public function setCategory(?Category $category): Complaint
     {
         $this->category = $category;
         return $this;

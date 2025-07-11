@@ -6,7 +6,7 @@
 </div>
 <div x-show="{{ (complaint.user.studentId is not null)? 'true' : 'student' }}" x-transition x-id="['input']">
     <label :for="$id('input')">Student ID : </label>
-    <input type="text" name="studentId" :id="$id('input')" value=" {{ complaint.user.studentId }}" />
+    <input type="text" name="studentId" :id="$id('input')" value="{{ complaint.user.studentId }}" />
 </div>
 {{ parent() }}
 {% endblock %}

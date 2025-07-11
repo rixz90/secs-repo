@@ -10,13 +10,21 @@
 			<label :for="$id('input')">Name:</label>
 			<input type="text" name="name" :id="$id('input')" value="{{admin.name}}" required />
 		</div>
+		<div x-id="['input']">
+			<label :for="$id('input')">Email: </label>
+			<input type="text" name="email" :id="$id('input')" value="{{ admin.email }}" required />
+		</div>
+		<div x-id="['input']">
+			<label :for="$id('input')">Phone Number: </label>
+			<input type="text" name="phone" :id="$id('input')" value="{{ admin.phone }}" required />
+		</div>
 		<div class="container" style="text-align:center;">
 			{% if method == 'PUT' is defined %}
 			<input type="hidden" name="id" value="{{ admin.id }}" />
 			<input type="submit" value="Update" hx-put="/users/user" hx-target="#response" hx-swap="innerHTML"
 				hx-indicator="#indicator" style="width: fit-content;" />
 			{% else %}
-			<input type="submit" value="Submit" hx-post="/users/user" hx-target="#response" hx-swap="innerHTML"
+			<input type="submit" value="Submit" hx-post="/users/admin" hx-target="#response" hx-swap="innerHTML"
 				hx-indicator="#indicator" style="width: fit-content;" />
 			{% endif %}
 			<input type="reset" value="Reset" style="width: fit-content;">

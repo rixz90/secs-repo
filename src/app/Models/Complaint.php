@@ -24,31 +24,22 @@ class Complaint extends Model
                 'title' => htmlspecialchars($_POST['title']),
                 'desc' => htmlspecialchars($_POST['desc']),
                 'image' => htmlspecialchars($_POST['image'] ?? ''),
-                'locationId' => $_POST['location'],
-                'branchId' => $_POST['branch'],
-                'categoryId' => $_POST['category']
+                'locationId' => $_POST['location'] ?? null,
+                'branchId' => $_POST['branch'] ?? null,
+                'categoryId' => $_POST['category'] ?? null
             ];
             // Define filters for each key
             $filters = [
                 'title' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'desc' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'image' => FILTER_SANITIZE_URL,
-                'locationId' => FILTER_SANITIZE_NUMBER_INT,
-                'branchId' => FILTER_SANITIZE_NUMBER_INT,
-                'categoryId' => FILTER_SANITIZE_NUMBER_INT
+                'locationId' => FILTER_SANITIZE_SPECIAL_CHARS,
+                'branchId' => FILTER_SANITIZE_SPECIAL_CHARS,
+                'categoryId' => FILTER_SANITIZE_SPECIAL_CHARS
             ];
             $var = filter_var_array($input, $filters);
-            if (!empty($var['studentId'])) {
-                $user = $this->em->getRepository(User::class)->findOneBy(['studentId' => $var['studentId']]);
-            } elseif (!empty($var['employeeId'])) {
-                $user = $this->em->getRepository(User::class)->findOneBy(['employeeId' => $var['employeeId']]);
-            }
-            if (empty($user)) {
-                $user = (new \App\Models\User)->createUser();
-            }
-            if (is_array($user) || empty($user)) {
-                return ["error" => 'Creating or fetching user failed'];
-            }
+            $user = (new \App\Models\User)->createUser();
+
             $location = $this->em->getRepository(Location::class)->find($var['locationId']);
             $branch = $this->em->getRepository(Branch::class)->find($var['branchId']);
             $category = $this->em->getRepository(Category::class)->find($var['categoryId']);

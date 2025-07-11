@@ -21,7 +21,8 @@
             <h3 class="h3">Complaint Information</h3>
             <div x-id="['input']">
                 <label :for="$id('input')">UiTM Branch: </label>
-                <select name="branch" id="branch" :id="$id('input')">
+                <select name="branch" id="branch" :id="$id('input')" hx-get="/branches/location" hx-trigger="change"
+                    hx-swap="innerHTML" hx-target="#list" hx-include="find option[selected]">
                     <option value="{{ form.branchId }}" disabled selected>Choose Branch</option>
                     {% for b in branches %}
                     <option {{ (complaint.branch.id==b.id)? ' selected ' : '' }} value={{ b.id }}>{{ b.name }}</option>
@@ -29,14 +30,11 @@
                 </select>
             </div>
             <div x-id="['input']">
-                <label :for="$id('input')">Location Details : </label>
-                <select name="location" :id="$id('input')" required>
-                    <option value="{{ form.locationId }}" disabled selected>Choose Location</option>
-                    {% for l in locations %}
-                    <option {{ (complaint.location.id==l.id)? ' selected ' : '' }} value={{ l.id }}>{{ l.address }}
-                    </option>
-                    {% endfor %}
-                </select>
+                <label :for="$id('input')">Location: </label>
+                <details class="dropdown" :id="$id('input')">
+                    <summary> Select address... </summary>
+                    <ul id="list"></ul>
+                </details>
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Category: </label>
