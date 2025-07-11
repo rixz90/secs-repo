@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 #[Entity]
 #[Table('categories')]
@@ -18,6 +20,9 @@ class Category
     #[GeneratedValue]
     #[Column(options: ['unsigned' => true])]
     private int $id;
+
+    #[ManyToMany(targetEntity: Complaint::class, mappedBy: 'categories')]
+    private Collection $complaints;
 
     #[Column]
     private string $name;
@@ -36,5 +41,27 @@ class Category
     {
         $this->name = $name;
         return $this;
+    }
+
+    public function getComplaints(): Collection
+    {
+        return $this->complaints;
+    }
+
+    public function addComplaint(Complaint $complaint): void
+    {
+        if (!$this->complaints->contains($complaint)) {
+            $this->complaints[] = $complaint;
+            $complaint->addCategory($this);
+        }
+    }
+
+    public function removeComplaint(Complaint $complaint): void
+    {
+        if (!$this->complaints->contains($complaint)) {
+            return;
+        }
+        $this->complaints->removeElement($complaint);
+        $complaint->removeCategory($this);
     }
 }

@@ -11,8 +11,11 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
 
 #[Entity]
 #[Table('complaints')]
@@ -52,20 +55,20 @@ class Complaint
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
     private User|null $user = null;
 
-    /** Many complaints can be at one location. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: Location::class, cascade: ['persist'])]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
-    private Location|null $location = null;
+    /** Many complaints can be at Many location */
+    #[ManyToMany(targetEntity: Location::class, inversedBy: 'complaints')]
+    #[JoinTable(name: 'complaints_locations')]
+    private Collection $locations;
 
-    /** Many complaints can be at one branch. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: Branch::class, cascade: ['persist'])]
-    #[JoinColumn(name: 'branch_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
-    private Branch|null $branch = null;
+    /** Many complaints can be at many branches. */
+    #[ManyToMany(targetEntity: Branch::class, inversedBy: 'complaints')]
+    #[JoinTable(name: 'complaints_branches')]
+    private Collection $branches;
 
-    /** Many complaints can be at one category. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: Category::class, cascade: ['persist'])]
-    #[JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
-    private Category|null $category = null;
+    /** Many complaints can have many categories. */
+    #[ManyToMany(targetEntity: Category::class, inversedBy: 'complaints')]
+    #[JoinTable(name: 'complaints_categories')]
+    private Collection $categories;
 
     public function getId(): int
     {
@@ -116,34 +119,34 @@ class Complaint
         return $this;
     }
 
-    public function getUpdatedAt(): DateTime|null
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTime|null $updatedAt): self
+    public function setUpdatedAt(?DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
 
-    public function getDeletedAt(): DateTime|null
+    public function getDeletedAt(): ?DateTime
     {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(DateTime|null $deletedAt): self
+    public function setDeletedAt(?DateTime $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
         return $this;
     }
 
-    public function getCompletedAt(): DateTime|null
+    public function getCompletedAt(): ?DateTime
     {
         return $this->completedAt;
     }
 
-    public function setCompletedAt(DateTime|null $completedAt): self
+    public function setCompletedAt(?DateTime $completedAt): self
     {
         $this->completedAt = $completedAt;
         return $this;
@@ -171,36 +174,68 @@ class Complaint
         return $this;
     }
 
-    public function getLocation(): ?Location
+    public function getLocation(): Collection
     {
-        return $this->location;
+        return $this->locations;
     }
 
-    public function setLocation(?Location $location): ?Complaint
+    public function getCategories(): Collection
     {
-        $this->location = $location;
-        return $this;
+        return $this->categories;
     }
 
-    public function getBranch(): ?Branch
+    public function getBranches(): Collection
     {
-        return $this->branch;
+        return $this->branches;
     }
 
-    public function setBranch(?Branch $branch): Complaint
+    public function addLocation(Location $location): void
     {
-        $this->branch = $branch;
-        return $this;
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->addComplaint($this);
+        }
     }
 
-    public function getCategory(): ?Category
+    public function removeLocation(Location $location): void
     {
-        return $this->category;
+        if (!$this->locations->contains($location)) {
+            return;
+        }
+        $this->locations->removeElement($location);
+        $location->removeComplaint($this);
+    }
+    public function addCategory(Category $category): void
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addComplaint($this);
+        }
     }
 
-    public function setCategory(?Category $category): Complaint
+    public function removeCategory(Category $category): void
     {
-        $this->category = $category;
-        return $this;
+        if (!$this->categories->contains($category)) {
+            return;
+        }
+        $this->categories->removeElement($category);
+        $category->removeComplaint($this);
+    }
+
+    public function addBranch(Branch $branch): void
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches[] = $branch;
+            $branch->addComplaint($this);
+        }
+    }
+
+    public function removeBranch(Branch $branch): void
+    {
+        if (!$this->branches->contains($branch)) {
+            return;
+        }
+        $this->branches->removeElement($branch);
+        $branch->removeComplaint($this);
     }
 }

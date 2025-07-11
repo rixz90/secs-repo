@@ -29,11 +29,15 @@ class Branch
     private string $name;
 
     #[ManyToMany(targetEntity: Location::class, mappedBy: 'branches')]
-    private ?Collection $locations = null;
+    private Collection $locations;
+
+    #[ManyToMany(targetEntity: Complaint::class, mappedBy: 'branches')]
+    private Collection $complaints;
 
     public function __construct()
     {
         $this->locations = new ArrayCollection();
+        $this->complaints = new ArrayCollection();
     }
 
     public function getId(): int
@@ -63,11 +67,31 @@ class Branch
         return $this;
     }
 
-    public function getLocations(): ?Collection
+    public function getComplaints(): Collection
+    {
+        return $this->complaints;
+    }
+
+    public function addComplaint(Complaint $complaint): void
+    {
+        if (!$this->complaints->contains($complaint)) {
+            $this->complaints[] = $complaint;
+            $complaint->addBranch($this);
+        }
+    }
+
+    public function removeComplaint(Complaint $complaint): void
+    {
+        if (!$this->complaints->contains($complaint)) {
+            return;
+        }
+        $this->complaints->removeElement($complaint);
+        $complaint->removeBranch($this);
+    }
+    public function getLocations(): Collection
     {
         return $this->locations;
     }
-
     public function addLocation(Location $location): void
     {
         if (!$this->locations->contains($location)) {
@@ -75,7 +99,6 @@ class Branch
             $location->addBranch($this);
         }
     }
-
     public function removeLocation(Location $location): void
     {
         if (!$this->locations->contains($location)) {

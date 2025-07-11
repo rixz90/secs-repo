@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\Common\Collections\Collection;
@@ -30,12 +29,12 @@ class Location
     /** One location can have many complaints. This is the inverse side.
      * @var Collection<Complaint>
      */
-    #[OneToMany(targetEntity: Complaint::class, mappedBy: 'locations')]
+    #[ManyToMany(targetEntity: Complaint::class, mappedBy: 'locations')]
     private Collection $complaints;
 
-    #[ManyToMany(targetEntity: Branch::class, inversedBy: 'locations', cascade: ['persist', 'remove'])]
+    #[ManyToMany(targetEntity: Branch::class, inversedBy: 'locations')]
     #[JoinTable(name: 'locations_branches')]
-    private ?Collection $branches;
+    private Collection $branches;
 
     public function __construct()
     {
@@ -58,11 +57,24 @@ class Location
     {
         return $this->complaints;
     }
-
-    public function addComplaint(Complaint $complaint): self
+    public function getBranches(): Collection
     {
-        $this->complaints[] = $complaint;
-        return $this;
+        return $this->branches;
+    }
+    public function addComplaint(Complaint $complaint): void
+    {
+        if (!$this->complaints->contains($complaint)) {
+            $this->complaints[] = $complaint;
+            $complaint->addLocation($this);
+        }
+    }
+    public function removeComplaint(Complaint $complaint): void
+    {
+        if (!$this->complaints->contains($complaint)) {
+            return;
+        }
+        $this->complaints->removeElement($complaint);
+        $complaint->removeLocation($this);
     }
     public function addBranch(Branch $branch): void
     {
@@ -70,10 +82,6 @@ class Location
             $this->branches[] = $branch;
             $branch->addLocation($this);
         }
-    }
-    public function getBranches(): Collection
-    {
-        return $this->branches;
     }
     public function removeBranch(Branch $branch): void
     {
