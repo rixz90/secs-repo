@@ -45,40 +45,15 @@ class Location
     {
         return $this->id;
     }
-
     public function getAddress(): string
     {
         return $this->address;
     }
-
     public function setAddress(string $address): self
     {
         $this->address = $address;
         return $this;
     }
-
-    public function getBranches(): Collection
-    {
-        return $this->branches;
-    }
-
-    public function addBranch(Branch $branch): void
-    {
-        if (!$this->branches->contains($branch)) {
-            $this->branches[] = $branch;
-            $branch->addLocation($this);
-        }
-    }
-
-    public function removeBranch(Branch $branch): void
-    {
-        if (!$this->branches->contains($branch)) {
-            return;
-        }
-        $this->branches->removeElement($branch);
-        $branch->removeLocation($this);
-    }
-
     public function getComplaints(): Collection
     {
         return $this->complaints;
@@ -88,5 +63,24 @@ class Location
     {
         $this->complaints[] = $complaint;
         return $this;
+    }
+    public function addBranch(Branch $branch): void
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches[] = $branch;
+            $branch->addLocation($this);
+        }
+    }
+    public function getBranches(): Collection
+    {
+        return $this->branches;
+    }
+    public function removeBranch(Branch $branch): void
+    {
+        if (!$this->branches->contains($branch)) {
+            return;
+        }
+        $this->branches->removeElement($branch);
+        $branch->removeLocation($this);
     }
 }

@@ -22,7 +22,7 @@
             <div x-id="['input']">
                 <label :for="$id('input')">UiTM Branch: </label>
                 <select name="branch" id="branch" :id="$id('input')" hx-get="/branches/location" hx-trigger="change"
-                    hx-swap="innerHTML" hx-target="#list" hx-include="find option[selected]">
+                    hx-swap="innerHTML" hx-target="#list" hx-include="find option[selected]" hx-indicator="#indicator">
                     <option value="{{ form.branchId }}" disabled selected>Choose Branch</option>
                     {% for b in branches %}
                     <option {{ (complaint.branch.id==b.id)? ' selected ' : '' }} value={{ b.id }}>{{ b.name }}</option>
@@ -32,10 +32,13 @@
             <div x-id="['input']">
                 <label :for="$id('input')">Location: </label>
                 <details class="dropdown" :id="$id('input')">
-                    <summary> Select address... </summary>
+                    <summary> Select address <img id="indicator" class="htmx-indicator"
+                            src="assets/svg-loaders/three-dots.svg" style="margin-top:5px;width: 1rem;height:0.5rem;" />
+                    </summary>
                     <ul id="list"></ul>
                 </details>
             </div>
+
             <div x-id="['input']">
                 <label :for="$id('input')">Category: </label>
                 <select name="category" :id="$id('input')" required>
