@@ -39,6 +39,7 @@ class Location
     public function __construct()
     {
         $this->branches = new ArrayCollection();
+        $this->complaints = new ArrayCollection();
     }
     public function getId(): int
     {

@@ -27,6 +27,7 @@ class ComplaintController
     public function postComplaint(): string
     {
         $response = (new Complaint)->create();
+        var_dump($response);
         $complaints = (new Complaint)->fetchLeftJoinAll();
         return View::make('@tables/semakan', ['complaints' => $complaints], $response)->render();
     }

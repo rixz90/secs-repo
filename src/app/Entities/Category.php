@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity]
 #[Table('categories')]
@@ -26,6 +27,11 @@ class Category
 
     #[Column]
     private string $name;
+
+    public function __construct()
+    {
+        $this->complaints = new ArrayCollection();
+    }
 
     public function getId(): int
     {

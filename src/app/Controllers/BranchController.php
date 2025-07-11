@@ -20,12 +20,6 @@ class BranchController
         $response = (new Branch)->fetchBranchById();
         return json_encode($response);
     }
-    public function anyLocation(): string
-    {
-        $bran = (new Branch)->fetchBranchById($_GET['branch']);
-        $locations = $bran[0]['locations'];
-        return View::make('@lists/locationList', ["locations" => $locations])->render();
-    }
     public function postBranch(): string
     {
         $response = (new Branch)->create();
@@ -35,7 +29,6 @@ class BranchController
     public function putBranch(): string
     {
         $response =  (new Branch)->update();
-
         $branches = (new Branch)->fetchAllBranches();
         return View::make('@tables/branch', ["branches" => $branches, "response" => $response])->render();
     }
@@ -56,5 +49,11 @@ class BranchController
         $arr['locations'] = $loc;
         $arr['method'] = "PUT";
         return View::make('@panels/branchPanel', $arr)->render();
+    }
+    public function anyLocation(): string
+    {
+        $bran = (new Branch)->fetchBranchById($_GET['branch']);
+        $locations = $bran[0]['locations'];
+        return View::make('@lists/locationList', ["locations" => $locations])->render();
     }
 }

@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\ManyToMany;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -51,8 +52,8 @@ class Complaint
     private ComplaintStatus $status;
 
     /** Many complaints have one user. This is the owning side. with foreign key of user */
-    #[ManyToOne(targetEntity: User::class, cascade: ['persist'])]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
+    #[ManyToOne(targetEntity: User::class, cascade: ['remove'])]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     private User|null $user = null;
 
     /** Many complaints can be at Many location */
@@ -69,6 +70,14 @@ class Complaint
     #[ManyToMany(targetEntity: Category::class, inversedBy: 'complaints')]
     #[JoinTable(name: 'complaints_categories')]
     private Collection $categories;
+
+
+    public function __construct()
+    {
+        $this->locations = new ArrayCollection();
+        $this->branches = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -174,7 +183,7 @@ class Complaint
         return $this;
     }
 
-    public function getLocation(): Collection
+    public function getLocations(): Collection
     {
         return $this->locations;
     }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\Complaint as ComplaintEntity;
-use App\Entities\User;
 use App\Entities\Location;
 use App\Entities\Branch;
 use App\Entities\Category;
@@ -23,37 +22,40 @@ class Complaint extends Model
             $input = [
                 'title' => htmlspecialchars($_POST['title']),
                 'desc' => htmlspecialchars($_POST['desc']),
-                'image' => htmlspecialchars($_POST['image'] ?? ''),
-                'locationId' => $_POST['location'] ?? null,
-                'branchId' => $_POST['branch'] ?? null,
-                'categoryId' => $_POST['category'] ?? null
+                'image' => htmlspecialchars($_POST['image'] ?? '')
             ];
             // Define filters for each key
             $filters = [
                 'title' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'desc' => FILTER_SANITIZE_SPECIAL_CHARS,
-                'image' => FILTER_SANITIZE_URL,
-                'locationId' => FILTER_SANITIZE_SPECIAL_CHARS,
-                'branchId' => FILTER_SANITIZE_SPECIAL_CHARS,
-                'categoryId' => FILTER_SANITIZE_SPECIAL_CHARS
+                'image' => FILTER_SANITIZE_URL
             ];
             $var = filter_var_array($input, $filters);
             $user = (new \App\Models\User)->createUser();
-
-            $location = $this->em->getRepository(Location::class)->find($var['locationId']);
-            $branch = $this->em->getRepository(Branch::class)->find($var['branchId']);
-            $category = $this->em->getRepository(Category::class)->find($var['categoryId']);
-            $complaint = new ComplaintEntity();
-            $complaint
+            $locations = $_POST['locations'] ?? [];
+            $branch = $_POST['branch'];
+            $category = $_POST['category'];
+            $complaint = (new ComplaintEntity)
                 ->setTitle($var['title'])
                 ->setDesc($var['desc'])
                 ->setImage($var['image'])
                 ->setStatus(ComplaintStatus::Pending)
-                ->setLocation($location)
-                ->setBranch($branch)
-                ->setCategory($category)
                 ->setCreatedAt(new DateTime('now', new DateTimeZone('Asia/Kuala_Lumpur')))
                 ->setUser($user);
+            foreach ($locations as $id) {
+                if (filter_var($id, FILTER_VALIDATE_INT)) {
+                    $loc = $this->em->getReference(Location::class, $id);
+                    $complaint->addLocation($loc);
+                }
+            }
+            if (filter_var($branch, FILTER_VALIDATE_INT)) {
+                $bran = $this->em->getReference(Branch::class, $branch);
+                $complaint->addBranch($bran);
+            }
+            if (filter_var($category, FILTER_VALIDATE_INT)) {
+                $cat = $this->em->getReference(Category::class, $category);
+                $complaint->addCategory($cat);
+            }
             $this->em->persist($complaint);
             $this->em->flush();
             return ['id' => $complaint->getId()];
@@ -127,20 +129,18 @@ class Complaint extends Model
                 'title' => htmlspecialchars($_PUT['title']),
                 'desc' => htmlspecialchars($_PUT['desc']),
                 'image' => htmlspecialchars($_PUT['image'] ?? ''),
-                'locationId' => $_PUT['location'],
-                'branchId' => $_PUT['branch'] ?? '',
-                'categoryId' => $_PUT['category']
             ];
             $filters = [
                 'id' => FILTER_VALIDATE_INT,
                 'title' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'desc' => FILTER_SANITIZE_SPECIAL_CHARS,
                 'image' => FILTER_SANITIZE_URL,
-                'locationId' => FILTER_SANITIZE_NUMBER_INT,
-                'branchId' => FILTER_SANITIZE_NUMBER_INT,
-                'categoryId' => FILTER_SANITIZE_NUMBER_INT
             ];
             $var = filter_var_array($input, $filters);
+            $locations = $_PUT['location'] ?? [];
+            $branches = $_PUT['branch'] ?? [];
+            $categories = $_PUT['category'] ?? [];
+
             if (empty($var['id'])) {
                 return ['error' => 'Missing id'];
             }
@@ -149,17 +149,32 @@ class Complaint extends Model
             if (empty($comp)) {
                 return ['error' => 'Complaint not found'];
             }
-            if ($comp->getLocation()?->getId() != $var['locationId']) {
-                $loc = $this->em->getRepository(Location::class)->find($var['locationId']);
-                $comp->setLocation($loc);
+            foreach ($comp->getLocations() as $loc) {
+                $comp->removeLocation($loc);
             }
-            if ($comp->getBranch()?->getId() != $var['branchId']) {
-                $bran = $this->em->getRepository(Branch::class)->find($var['branchId']);
-                $comp->setBranch($bran);
+            foreach ($comp->getBranches() as $bran) {
+                $comp->removeBranch($bran);
             }
-            if ($comp->getCategory()?->getId() != $var['categoryId']) {
-                $cat = $this->em->getRepository(Category::class)->find($var['categoryId']);
-                $comp->setCategory($cat);
+            foreach ($comp->getCategories() as $cat) {
+                $comp->removeCategory($cat);
+            }
+            foreach ($locations as $id) {
+                if (filter_var($id, FILTER_VALIDATE_INT)) {
+                    $loc = $this->em->getReference(Location::class, $id);
+                    $comp->addLocation($loc);
+                }
+            }
+            foreach ($branches as $id) {
+                if (filter_var($id, FILTER_VALIDATE_INT)) {
+                    $bran = $this->em->getReference(Branch::class, $id);
+                    $comp->addBranch($bran);
+                }
+            }
+            foreach ($categories as $id) {
+                if (filter_var($id, FILTER_VALIDATE_INT)) {
+                    $cat = $this->em->getReference(Category::class, $id);
+                    $comp->addCategory($cat);
+                }
             }
             $var['title'] != $comp->getTitle() ? $comp->setTitle($var['title']) : '';
             $var['desc'] != $comp->getDesc() ? $comp->setDesc($var['desc']) : '';

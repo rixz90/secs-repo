@@ -8,7 +8,6 @@ use App\Entities\Branch as BranchEntity;
 use App\Entities\Location;
 use App\Model;
 use Throwable;
-use Kint\Kint as Kint;
 
 class Branch extends Model
 {
@@ -91,8 +90,6 @@ class Branch extends Model
             foreach ($bran->getLocations() as $loc) {
                 $bran->removeLocation($loc);
             }
-
-            var_dump($locationIds);
             foreach ($locationIds as $locationId) {
                 $location = $this->em->getReference(Location::class, $locationId);
                 $bran->addLocation($location);
