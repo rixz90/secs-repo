@@ -27,7 +27,6 @@ class ComplaintController
     public function postComplaint(): string
     {
         $response = (new Complaint)->create();
-        var_dump($response);
         $complaints = (new Complaint)->fetchLeftJoinAll();
         return View::make('@tables/semakan', ['complaints' => $complaints], $response)->render();
     }
@@ -74,8 +73,23 @@ class ComplaintController
             'locations' => (new Location)->fetchList(),
             'categories' => (new Category)->fetchList()
         ];
-        $arr['complaint'] = $complaint;
+        $arr['complaints'] = $complaint;
         $arr['method'] = "PUT";
         return View::make('@forms/non-guest', $arr)->render();
+    }
+    public function anyLocation(): string
+    {
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $branchId = filter_input(INPUT_GET, 'branch', FILTER_VALIDATE_INT);
+        if (empty($id) || empty($branchId)) {
+            return "";
+        }
+
+        $bran = (new Branch)->fetchBranchById($branchId);
+        $comp = (new Complaint)->fetchLeftJoinById($id);
+        $locations = $bran[0]['locations'];
+        $complaint = $comp[0];
+
+        return View::make('@lists/locationList', ["locations" => $locations, "complaint" => $complaint])->render();
     }
 }

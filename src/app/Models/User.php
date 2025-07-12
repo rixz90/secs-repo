@@ -107,15 +107,15 @@ class User extends Model
                 return ['error' => 'Missing input'];
             }
             $name = htmlspecialchars($_PUT['name'], ENT_QUOTES);
-            $isAdmin = filter_var($_GET['is_admin'], FILTER_VALIDATE_BOOLEAN);
+            $email = htmlspecialchars($_PUT['email'], ENT_QUOTES);
             /** @var UserEntity $user */
             $user = $this->em->find(UserEntity::class, $id);
             if (empty($user)) {
                 return ['error' => 'User not found'];
             }
             $name != $user->getName() ? $user->setName($name) : '';
-            $isAdmin != $user->isAdmin() ? $user->setIsAdmin(true) : '';
             $user->setUpdatedAt(new DateTime());
+            $user->setEmail($email);
             $this->em->persist($user);
             $this->em->flush();
             return ['message' => "Id $id has been updated"];

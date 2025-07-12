@@ -39,7 +39,7 @@ class Branch extends Model
 
     public function fetchBranchById($param = null): array
     {
-        $id =  $param === null ? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)
+        $id =  empty($param) ? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)
             : filter_var($param, FILTER_VALIDATE_INT);
         if (!$id) {
             return [];

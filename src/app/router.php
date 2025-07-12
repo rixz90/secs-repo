@@ -21,7 +21,7 @@ $router
     ->get("/aduan",  fn() => View::make('aduan'))
     ->get("/login",  fn() => View::make('admin'))
     ->get("/admin",  fn() => View::make('admin'))
-    ->get("/report",  fn() => View::make('report', ['branches' => (new models\branch)->fetchlist()]))
+    ->get("/report",  fn() => View::make('report'))
     ->get("/setting",  fn() => View::make('setting'))
 
     ->controller("/users", UserController::class)

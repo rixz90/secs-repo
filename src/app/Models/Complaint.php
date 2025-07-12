@@ -93,31 +93,38 @@ class Complaint extends Model
 
     public function fetchLeftJoinAll(): array
     {
+        $qb = $this->em->createQueryBuilder();
         $complaint = $this->em->createQueryBuilder()
-            ->select('c.id', 'c.title', 'c.description', 'c.createdAt', 'c.status', 'l.address', 'b.name as braName', 'ca.name as catName')
+            ->select('c.id', 'c.title', 'c.description', 'c.createdAt', 'c.updatedAt', 'c.completedAt', 'c.status', 'l.address', 'b.name as braName', 'ca.name as catName')
             ->from(ComplaintEntity::class, 'c')
-            ->leftJoin('c.location', 'l')
-            ->leftJoin('c.branch', 'b')
-            ->leftJoin('c.category', 'ca')
-            ->where("c.deletedAt is null")
+            ->leftJoin('c.locations', 'l')
+            ->leftJoin('c.branches', 'b')
+            ->leftJoin('c.categories', 'ca')
+            ->where($qb->expr()->isNull('c.deletedAt'))
             ->getQuery();
         return  $complaint->getArrayResult();
     }
 
-    public function fetchLeftJoinById($id): ComplaintEntity | null
+    public function fetchLeftJoinById($id): array
     {
         $id = filter_var($id, FILTER_VALIDATE_INT);
+        $qb = $this->em->createQueryBuilder();
         $complaint = $this->em->createQueryBuilder()
             ->select('c', 'l', 'b', 'ca', 'u')
             ->from(ComplaintEntity::class, 'c')
-            ->leftJoin('c.location', 'l')
-            ->leftJoin('c.branch', 'b')
-            ->leftJoin('c.category', 'ca')
+            ->leftJoin('c.locations', 'l')
+            ->leftJoin('c.branches', 'b')
+            ->leftJoin('c.categories', 'ca')
             ->innerJoin('c.user', 'u')
-            ->where('c.id = :id and c.deletedAt is null')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('c.id', ':id'),
+                    $qb->expr()->isNull('c.deletedAt')
+                )
+            )
             ->setParameter('id', $id)
             ->getQuery();
-        return $complaint->getOneOrNullResult();
+        return $complaint->getArrayResult();
     }
 
     public function update(): array
@@ -140,6 +147,9 @@ class Complaint extends Model
             $locations = $_PUT['location'] ?? [];
             $branches = $_PUT['branch'] ?? [];
             $categories = $_PUT['category'] ?? [];
+
+            $branches = is_array($branches) ? $branches : [$branches];
+            $categories = is_array($categories) ? $categories : [$categories];
 
             if (empty($var['id'])) {
                 return ['error' => 'Missing id'];

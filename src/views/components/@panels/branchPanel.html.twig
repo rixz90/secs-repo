@@ -14,8 +14,21 @@
             <label :for="$id('input')">Location: </label>
             <details class="dropdown" :id="$id('input')">
                 <summary> Select address... </summary>
-                <ul hx-get="/locations/location" hx-swap="innerHTML" hx-target="this" hx-trigger="load">
+                {% if method == 'PUT' is defined %}
+                <ul>
+                    {% for location in locations %}
+                    <li>
+                        <label>
+                            <input type="checkbox" name="locations[]" value="{{ location.id }}" {{ (location in
+                                branch.locations)?'checked':''}} />
+                            {{location.address }}
+                        </label>
+                    </li>
+                    {% endfor %}
                 </ul>
+                {% else %}
+                <ul hx-get="/locations/location" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></ul>
+                {% endif %}
             </details>
         </div>
         <div class="container" style="text-align:center;">

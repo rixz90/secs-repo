@@ -1,3 +1,4 @@
+{% set complaint = complaints|first %}
 <section>
     <form action="/complaints/complaint" method="post">
         <section>
@@ -21,11 +22,13 @@
             <h3 class="h3">Complaint Information</h3>
             <div x-id="['input']">
                 <label :for="$id('input')">UiTM Branch: </label>
-                <select name="branch" id="branch" :id="$id('input')" hx-get="/branches/location" hx-trigger="change"
-                    hx-swap="innerHTML" hx-target="#list" hx-include="find option[selected]" hx-indicator="#indicator">
+                <select name="branch" id="branch" :id="$id('input')" hx-get="/complaints/location"
+                    hx-trigger="load, change" hx-swap="innerHTML" hx-target="#list"
+                    hx-include="find option[selected],[name='id']" hx-indicator="#indicator">
                     <option value="{{ form.branchId }}" disabled selected>Choose Branch</option>
-                    {% for b in branches %}
-                    <option {{ (complaint.branch.id==b.id)? ' selected ' : '' }} value={{ b.id }}>{{ b.name }}</option>
+                    {% for branch in branches %}
+                    <option value={{ branch.id }} {{ branch in complaint.branches ? 'selected' : '' }}>{{ branch.name }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
@@ -43,8 +46,9 @@
                 <label :for="$id('input')">Category: </label>
                 <select name="category" :id="$id('input')" required>
                     <option value="{{ form.categoryId }}" disabled selected>Choose Category</option>
-                    {% for c in categories %}
-                    <option {{ (complaint.category.id==c.id)? ' selected ' : '' }} value={{ c.id }}>{{ c.name }}
+                    {% for category in categories %}
+                    <option value={{ category.id }} {{ category in complaint.categories ? 'selected' : '' }}>
+                        {{ category.name }}
                     </option>
                     {% endfor %}
                 </select>
@@ -59,7 +63,7 @@
             <div x-id="['input']">
                 <label :for="$id('input')">Details : </label>
                 <textarea name="desc" :id="$id('input')" cols="30" rows="10"
-                    required>{{ complaint.getDesc() }}</textarea>
+                    required>{{ complaint.description }}</textarea>
             </div>
             <div x-id="['input']">
                 <label :for="$id('input')">Attachment : </label>
