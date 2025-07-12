@@ -1,5 +1,10 @@
 # Staff E-Complaint System
 
+Build an MVC Pattern website that allows all employees, students, and guests to lodge reports/complaints to all branches and locations around the university campus or institutions. The web development utilizes ORM Doctrine at the backend, using Doctrine DBAL, and employs Twig as the template engine. I use the Pico CSS framework as my frontend CSS style, and for the JavaScript framework, I use AlpineJS and HTMX for client-side reactivity and interaction.
+
+## Deployment
+
+To deploy this project run
 ### Install Git, docker, nodejs, composer
 
 - https://git-scm.com/downloads
