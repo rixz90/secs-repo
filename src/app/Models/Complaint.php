@@ -144,7 +144,7 @@ class Complaint extends Model
                 'image' => FILTER_SANITIZE_URL,
             ];
             $var = filter_var_array($input, $filters);
-            $locations = $_PUT['location'] ?? [];
+            $locations = $_PUT['locations'] ?? [];
             $branches = $_PUT['branch'] ?? [];
             $categories = $_PUT['category'] ?? [];
 

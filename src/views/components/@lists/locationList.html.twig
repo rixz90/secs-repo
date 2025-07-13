@@ -1,7 +1,21 @@
-{% for location in locations %}
+{% set branch = branches|first %}
+{% set complaint = complaints|first %}
+
+{% if branch.id == complaint.branches|first.id %}
+{% for location in branch.locations %}
 <li>
     <label>
-        <input type="checkbox" name="locations[]" value="{{ location.id }}" />{{location.address }}
+        <input type="checkbox" name="locations[]" value="{{ location.id }}" {{ location in complaint.locations
+            ? 'checked' : '' }} /> {{ location.address }}
     </label>
 </li>
 {% endfor %}
+{% else %}
+{% for location in branch.locations %}
+<li>
+    <label>
+        <input type="checkbox" name="locations[]" value="{{ location.id }}" /> {{ location.address }}
+    </label>
+</li>
+{% endfor %}
+{% endif %}

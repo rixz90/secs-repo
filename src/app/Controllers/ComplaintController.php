@@ -87,9 +87,7 @@ class ComplaintController
 
         $bran = (new Branch)->fetchBranchById($branchId);
         $comp = (new Complaint)->fetchLeftJoinById($id);
-        $locations = $bran[0]['locations'];
-        $complaint = $comp[0];
 
-        return View::make('@lists/locationList', ["locations" => $locations, "complaint" => $complaint])->render();
+        return View::make('@lists/locationList', ["branches" => $bran, "complaints" => $comp])->render();
     }
 }
