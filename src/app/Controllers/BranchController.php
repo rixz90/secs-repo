@@ -56,8 +56,8 @@ class BranchController
         if (empty($branchId)) {
             return "";
         }
-        $bran = (new Branch)->fetchBranchById($branchId);
-        $locations = $bran[0]['locations'];
-        return View::make('@lists/locationList', ["locations" => $locations])->render();
+        $branches = (new Branch)->fetchBranchById($branchId);
+        $locations = $branches[0]['locations'];
+        return View::make('@lists/locationListForm', ["locations" => $locations])->render();
     }
 }
