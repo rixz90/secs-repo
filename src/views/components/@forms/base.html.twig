@@ -22,9 +22,9 @@
             <h3 class="h3">Complaint Information</h3>
             <div x-id="['input']">
                 <label :for="$id('input')">UiTM Branch: </label>
-                <select name="branch" id="branch" :id="$id('input')" hx-get="/complaints/location"
-                    hx-trigger="load, change" hx-swap="innerHTML" hx-target="#list"
-                    hx-include="find option[selected],[name='id']" hx-indicator="#indicator">
+                <select name="branch" id="branch" :id="$id('input')" {% if complaint.id %} hx-get="/complaints/location"
+                    {% else %} hx-get="/branches/location" {% endif %} hx-trigger="load, change" hx-swap="innerHTML"
+                    hx-target="#list" hx-include="find option[selected],[name='id']" hx-indicator="#indicator">
                     <option value="{{ form.branchId }}" disabled selected>Choose Branch</option>
                     {% for branch in branches %}
                     <option value={{ branch.id }} {{ branch in complaint.branches ? 'selected' : '' }}>{{ branch.name }}

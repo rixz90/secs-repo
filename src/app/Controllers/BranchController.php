@@ -6,7 +6,6 @@ namespace App\Controllers;
 
 use App\Models\Branch;
 use App\Models\Location;
-use App\Models\Complaint;
 use App\View;
 
 class BranchController
@@ -50,5 +49,15 @@ class BranchController
         $arr['locations'] = $loc;
         $arr['method'] = "PUT";
         return View::make('@panels/branchPanel', $arr)->render();
+    }
+    public function anyLocation(): string
+    {
+        $branchId = filter_input(INPUT_GET, 'branch', FILTER_VALIDATE_INT);
+        if (empty($branchId)) {
+            return "";
+        }
+        $bran = (new Branch)->fetchBranchById($branchId);
+        $locations = $bran[0]['locations'];
+        return View::make('@lists/locationList', ["locations" => $locations])->render();
     }
 }
