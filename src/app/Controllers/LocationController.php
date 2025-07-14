@@ -24,7 +24,7 @@ class LocationController
     public function getLocation(): string
     {
         $loc = (new Location)->fetchList();
-        return View::make('@lists/locationList', ["locations" => $loc])->render();
+        return View::make('@lists/locationListForm', ["locations" => $loc])->render();
     }
 
     public function postLocation(): string
