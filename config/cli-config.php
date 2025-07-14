@@ -15,8 +15,8 @@ use Doctrine\Migrations\Configuration\Migration\PhpFile;
 use Doctrine\ORM\ORMSetup;
 
 $config = new PhpFile('migrations.php'); // Or use one of the Doctrine\Migrations\Configuration\Configuration\* loaders
-
 $paths = [dirname(__DIR__) . '/' . $_ENV['ENTITY_PATH']];
+
 $isDevMode = true;
 
 $dbParams = [

@@ -5,6 +5,19 @@ RUN apt-get update && apt-get install -y \
     curl \
     zip \
     unzip \
-    vim 
+    vim
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
 RUN docker-php-ext-install pdo pdo_mysql
 WORKDIR /var/www
+
+# Copy application files to the working directory
+COPY . . 
+COPY ./composer.* ./
+# Install
+RUN composer install --prefer-dist --no-dev --no-scripts
+RUN composer dump-autoload --optimize
