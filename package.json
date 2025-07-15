@@ -4,8 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "npm install --only=prod",
-		"build": "webpack",
+		"build": "npm install --only=prod",
 		"compile:sass": "sass -I node_modules/@picocss/pico/scss/ src/main.scss public/styles.css -w --no-quiet",
 		"build:sass": "sass -I node_modules/@picocss/pico/scss/ src/main.scss dist/styles.css -s compressed"
 	},

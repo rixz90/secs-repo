@@ -19,11 +19,12 @@ services:
       image: nginx:1.29
       container_name: secs-nginx
       restart: always
+      env_file: .env
       ports:
          - '8000:80'
       volumes:
          - .:/var/www
-         - .:/etc/nginx/conf.d
+         - ./templates:/etc/nginx/templates
    db:
       container_name: secs-db
       image: mysql:latest
