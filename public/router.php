@@ -8,7 +8,6 @@ use App\Controllers\LocationController;
 use App\Controllers\CategoryController;
 use App\Controllers\ComplaintController;
 use App\Controllers\UserController;
-use App\Models;
 use Phroute\Phroute\RouteCollector;
 use App\View;
 use App\Route;
