@@ -53,3 +53,7 @@ docker-compose up -d
 
 - to view the website or wherever nginx host locate at inside docker-compose.yml
 - open **localhost:8001** for phpmyadmin.
+
+### Demo website.
+
+- https://my-app-production-657.up.railway.app/
