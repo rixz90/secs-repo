@@ -20,4 +20,9 @@ COPY . .
 COPY ./composer.* ./
 # Install
 RUN composer install --prefer-dist --no-dev --no-scripts
-RUN composer dump-autoload --optimize
+RUN composer dump-autoload 
+# --optimize
+
+RUN pecl install -o -f xdebug-3.4.5 \ && docker-php-ext-enable xdebug
+
+
