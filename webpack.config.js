@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const path = require('path')
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	watch: true,
 	watchOptions: {
 		poll: 1000, // Check for changes every second
