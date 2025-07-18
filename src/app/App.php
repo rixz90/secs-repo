@@ -34,7 +34,10 @@ class App
         $manager = new EntityManager($conn, $ORMconfig);
         $loader = new \Twig\Loader\FilesystemLoader();
         require('templateLoad.php');
-        $twig = new \Twig\Environment($loader);
+        $twig = new \Twig\Environment($loader, [
+            'cache' => $_SERVER['PWD'] . $_ENV['TWIG_CACHE'],
+            'debug' => (bool)$_ENV['DEV_MODE'],
+        ]);
         static::$entityManager = $manager;
         static::$twig = $twig;
     }
