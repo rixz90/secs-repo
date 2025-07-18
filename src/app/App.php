@@ -23,7 +23,7 @@ class App
         protected array $dbConfig
     ) {
 
-        $entityPath = $_SERVER['PWD'] . '/' . $_ENV['ENTITY_PATH'];
+        $entityPath = $_SERVER['PWD'] . $_ENV['ENTITY_PATH'];
 
         if (!is_dir($entityPath)) {
             throw new \Exception("Directory entities not found");
