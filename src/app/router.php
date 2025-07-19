@@ -8,12 +8,9 @@ use App\Controllers\LocationController;
 use App\Controllers\CategoryController;
 use App\Controllers\ComplaintController;
 use App\Controllers\UserController;
-use Phroute\Phroute\RouteCollector;
 use App\View;
-use App\Route;
 
-$router = Route::make(RouteCollector::class);
-$router
+static::$router
     ->get("/", fn() => View::make('index'))
     ->get("/index", fn() => View::make('index'))
     ->get("/semakan",  fn() => View::make('semakan'))
