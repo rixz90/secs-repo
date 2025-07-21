@@ -8,86 +8,91 @@ use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Complaint;
 use App\Models\Location;
-use App\View;
+use Psr\Container\ContainerInterface;
+use Slim\Views\Twig;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface;
 
 class ComplaintController
 {
-    public function anyIndex() {}
+    public function __construct(
+        protected Twig $view,
+        protected ContainerInterface $container
+    ) {}
 
-    public function anyComplaint(string $param): string
+    public function anyComplaint(Request $request, Response $response, array $args): ResponseInterface
     {
-        $complaints = (new Complaint)->fetchById($param);
-        return View::make('@tables/complaint', ['complaints' => $complaints])->render();
+        $complaints = $this->container->get(Complaint::class)->fetchById($request->getAttribute('id'));
+        return $this->view->render($response, '@tables/complaint', ['complaints' => $complaints]);
     }
-    public function getComplaint(): string
+    public function getComplaint(Request $request, Response $response, array $args): ResponseInterface
     {
-        $complaints = (new Complaint)->fetchById();
-        return View::make('@tables/complaint', ['complaints' => $complaints])->render();
+        $complaints = $this->container->get(Complaint::class)->fetchById();
+        return $this->view->render($response, '@tables/complaint', ['complaints' => $complaints]);
     }
-    public function postComplaint(): string
+    public function postComplaint(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new Complaint)->create();
-        $complaints = (new Complaint)->fetchLeftJoinAll();
-        return View::make('@tables/semakan', ['complaints' => $complaints], $response)->render();
+        $this->container->get(Complaint::class)->create();
+        $complaints = $this->container->get(Complaint::class)->fetchLeftJoinAll();
+        return $this->view->render($response, '@tables/semakan', ['complaints' => $complaints]);
     }
-    public function putComplaint(): string
+    public function putComplaint(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response =  (new Complaint)->update();
-        $complaints = (new Complaint)->fetchAll();
-        return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
+        $this->container->get(Complaint::class)->update();
+        $complaints = $this->container->get(Complaint::class)->fetchAll();
+        return $this->view->render($response, '@tables/complaint', ['complaints' => $complaints]);
     }
-    public function deleteComplaint(): string
+    public function deleteComplaint(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response =  (new Complaint)->softDelete();
-        $complaints = (new Complaint)->fetchAll();
-        return View::make('@tables/complaint', ['complaints' => $complaints], $response)->render();
+        $this->container->get(Complaint::class)->softDelete();
+        $complaints = $this->container->get(Complaint::class)->fetchAll();
+        return $this->view->render($response, '@tables/complaint', ['complaints' => $complaints]);
     }
-    public function anyTable(string $type): string
+    public function table(Request $request, Response $response, array $args): ResponseInterface
     {
-        $complaints = (new Complaint)->fetchLeftJoinAll();
-        return match (htmlspecialchars($type)) {
-            'semakan' => View::make('@tables/semakan', ['complaints' => $complaints])->render(),
-            'admin' => View::make('@tables/complaint', ["complaints" => $complaints])->render()
+        $complaints = $this->container->get(Complaint::class)->fetchLeftJoinAll();
+        return match (htmlspecialchars($request->getAttribute('type'))) {
+            'semakan' => $this->view->render($response, '@tables/semakan', ['complaints' => $complaints]),
+            'admin' => $this->view->render($response, '@tables/complaint', ["complaints" => $complaints])
         };
     }
-    public function getForm(string $type): string
+    public function form(Request $request, Response $response, array $args): ResponseInterface
     {
         $arr = [
-            'branches' => (new Branch)->fetchList(),
-            'categories' => (new Category)->fetchList()
+            'branches' => $this->container->get(Branch::class)->fetchList(),
+            'categories' => $this->container->get(Category::class)->fetchList()
         ];
-        return match (htmlspecialchars($type)) {
-            'ng' => View::make('@forms/non-guest', $arr)->render(),
-            'g' => View::make('@forms/base', $arr)->render(),
+        return match (htmlspecialchars($request->getAttribute('type'))) {
+            'ng' => $this->view->render($response, '@forms/non-guest', $arr),
+            'g' => $this->view->render($response, '@forms/base', $arr),
             default => json_encode(["error" => 'Form not found'])
         };
     }
-    public function anyEdit(string $id): string
+    public function edit(Request $request, Response $response, array $args): ResponseInterface
     {
-        $complaint = (new Complaint)->fetchLeftJoinById($id);
+        $complaint = $this->container->get(Complaint::class)->fetchLeftJoinById($request->getAttribute('id'));
         if (empty($complaint)) {
-            return json_encode(["error" => 'Id not found']);
+            return $this->view->render($response, '@tables/complaint', ["error" => 'Id not found']);
         }
         $arr = [
-            'branches' => (new Branch)->fetchList(),
-            'locations' => (new Location)->fetchList(),
-            'categories' => (new Category)->fetchList()
+            'branches' => $this->container->get(Branch::class)->fetchList(),
+            'locations' => $this->container->get(Location::class)->fetchList(),
+            'categories' => $this->container->get(Category::class)->fetchList()
         ];
         $arr['complaints'] = $complaint;
         $arr['method'] = "PUT";
-        return View::make('@forms/non-guest', $arr)->render();
+        return $this->view->render($response, '@forms/non-guest', $arr);
     }
-    public function anyLocation(): string
+    public function anyLocation(Request $request, Response $response, array $args): ResponseInterface
     {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         $branchId = filter_input(INPUT_GET, 'branch', FILTER_VALIDATE_INT);
         if (empty($id) || empty($branchId)) {
-            return "";
+            return $this->view->render($response, '@lists/locationList');
         }
-
-        $bran = (new Branch)->fetchBranchById($branchId);
-        $comp = (new Complaint)->fetchLeftJoinById($id);
-
-        return View::make('@lists/locationList', ["branches" => $bran, "complaints" => $comp])->render();
+        $bran = $this->container->get(Branch::class)->fetchBranchById($branchId);
+        $comp = $this->container->get(Complaint::class)->fetchLeftJoinById($id);
+        return $this->view->render($response, '@lists/locationList', ["branches" => $bran, "complaints" => $comp]);
     }
 }

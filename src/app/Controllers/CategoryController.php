@@ -4,52 +4,61 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\View;
 use App\Models\Category;
+use Psr\Container\ContainerInterface;
+use Slim\Views\Twig;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface;
 
 class CategoryController
 {
-    public function anyIndex()
+    public function __construct(
+        protected ContainerInterface $container,
+        protected Twig $view
+    ) {}
+
+    public function anyIndex(Request $request, Response $response, array $args): ResponseInterface
     {
-        $cat = (new Category)->fetchAllCategories();
-        return View::make('@tables/category', ["categories" => $cat])->render();
+        $cat = $this->container->get(Category::class)->fetchAllCategories();
+        return $this->view->render($response, '@tables/category', ["categories" => $cat]);
     }
-    public function anyCategory(string $param): string
+    public function anyCategory(Request $request, Response $response, array $args): ResponseInterface
     {
-        $cat = (new Category)->fetchCategoryById($param);
-        return View::make('@tables/category', ["categories" => $cat])->render();
+        $cat = $this->container->get(Category::class)->fetchCategoryById(htmlspecialchars($request->getAttribute('id')));
+        return $this->view->render($response, '@tables/category', ["categories" => $cat]);
     }
-    public function getCategory(): string
+    public function getCategory(Request $request, Response $response, array $args): ResponseInterface
     {
-        $cat = (new Category)->fetchCategoryById();
-        return View::make('@panels/category', ["categories" => $cat])->render();
+        $cat = $this->container->get(Category::class)->fetchCategoryById();
+        return $this->view->render($response, '@panels/category', ["categories" => $cat]);
     }
-    public function postCategory(): string
+    public function postCategory(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new Category)->createCategory();
-        $cat = (new Category)->fetchAllCategories();
-        return View::make('@tables/category', ["categories" => $cat, "response" => $response])->render();
+        $response = $this->container->get(Category::class)->createCategory();
+        $cat = $this->container->get(Category::class)->fetchAllCategories();
+        return $this->view->render($response, '@tables/category', ["categories" => $cat, "response" => $response]);
     }
-    public function putCategory(): string
+    public function putCategory(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response =  (new Category)->update();
-        $cat = (new Category)->fetchAllCategories();
-        return View::make('@tables/category', ["categories" => $cat, "response" => $response])->render();
+        $response =  $this->container->get(Category::class)->update();
+        $cat = $this->container->get(Category::class)->fetchAllCategories();
+        return $this->view->render($response, '@tables/category', ["categories" => $cat, "response" => $response]);
     }
-    public function deleteCategory(): string
+    public function deleteCategory(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response =  (new Category)->delete();
-        $cat = (new Category)->fetchAllCategories();
-        return View::make('@tables/category', ["categories" => $cat, "response" => $response])->render();
+        $response =  $this->container->get(Category::class)->delete();
+        $cat = $this->container->get(Category::class)->fetchAllCategories();
+        return $this->view->render($response, '@tables/category', ["categories" => $cat, "response" => $response]);
     }
-    public function anyEdit(string $id): string
+    public function anyEdit(Request $request, Response $response, array $args): ResponseInterface
     {
-        $category = (new Category)->fetchCategoryById(htmlspecialchars($id));
+        $category = $this->container->get(Category::class)->fetchCategoryById(htmlspecialchars($request->getAttribute('id')));
         if (empty($category)) {
-            return json_encode(["error" => 'Id not found']);
+            return $this->view->render($response, '@panels/categoryPanel', ["error" => 'Id not found']);
         }
         $arr['categories'] = $category;
         $arr['method'] = "PUT";
-        return view::make('@panels/categoryPanel', $arr)->render();
+        return $this->view->render($response, '@panels/categoryPanel', $arr);
     }
 }

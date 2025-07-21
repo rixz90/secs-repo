@@ -6,56 +6,60 @@ namespace App\Controllers;
 
 use App\Models\Location;
 use App\View;
+use Slim\Views\Twig;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Container\ContainerInterface;
 
 class LocationController
 {
-    public function anyIndex(): string
+    public function __construct(
+        protected Twig $view,
+        protected ContainerInterface $container
+    ) {}
+
+    public function anyIndex(Request $request, Response $response): ResponseInterface
     {
-        $loc = (new Location)->fetchAllLocations();
-        return View::make('@tables/location', ["locations" => $loc])->render();
+        $loc = $this->container->get(Location::class)->fetchAllLocations();
+        return $this->view->render($response, '@tables/location', ["locations" => $loc]);
     }
 
-    public function anyLocation(string $param): string
+    public function getLocation(Request $request, Response $response): ResponseInterface
     {
-        $response = (new Location)->fetchLocationById($param);
-        return json_encode($response);
+        $loc = $this->container->get(Location::class)->fetchList();
+        return $this->view->render($response, '@lists/locationListForm', ["locations" => $loc]);
     }
 
-    public function getLocation(): string
+    public function postLocation(Request $request, Response $response): ResponseInterface
     {
-        $loc = (new Location)->fetchList();
-        return View::make('@lists/locationListForm', ["locations" => $loc])->render();
+        $response = $this->container->get(Location::class)->createLocation();
+        $loc = $this->container->get(Location::class)->fetchAllLocations();
+        return $this->view->render($response, '@tables/location', ["locations" => $loc, "response" => $response]);
     }
 
-    public function postLocation(): string
+    public function putLocation(Request $request, Response $response): ResponseInterface
     {
-        $response = (new Location)->createLocation();
-        $loc = (new Location)->fetchAllLocations();
-        return View::make('@tables/location', ["locations" => $loc, "response" => $response])->render();
+        $response =  $this->container->get(Location::class)->update();
+        $loc = $this->container->get(Location::class)->fetchAllLocations();
+        return $this->view->render($response, '@tables/location', ["locations" => $loc, "response" => $response]);
     }
 
-    public function putLocation(): string
+    public function deleteLocation(Request $request, Response $response): ResponseInterface
     {
-        $response =  (new Location)->update();
-        $loc = (new Location)->fetchAllLocations();
-        return View::make('@tables/location', ["locations" => $loc, "response" => $response])->render();
+        $response =  $this->container->get(Location::class)->delete();
+        $loc = $this->container->get(Location::class)->fetchAllLocations();
+        return $this->view->render($response, '@tables/location', ["locations" => $loc, "response" => $response]);
     }
 
-    public function deleteLocation(): string
+    public function anyEdit(Request $request, Response $response): ResponseInterface
     {
-        $response =  (new Location)->delete();
-        $loc = (new Location)->fetchAllLocations();
-        return View::make('@tables/location', ["locations" => $loc, "response" => $response])->render();
-    }
-
-    public function anyEdit(string $id): string
-    {
-        $loc = (new Location)->fetchLocationById(htmlspecialchars($id));
+        $loc = $this->container->get(Location::class)->fetchLocationById(htmlspecialchars($request->getAttribute('id')));
         if (empty($loc)) {
-            return json_encode(["error" => 'Id not found']);
+            return $this->view->render($response, '@tables/location', ["error" => 'Id not found']);
         }
         $arr['locations'] = $loc;
         $arr['method'] = "PUT";
-        return view::make('@panels/locationPanel', $arr)->render();
+        return $this->view->render($response, '@panels/locationPanel', $arr);
     }
 }

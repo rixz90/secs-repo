@@ -6,58 +6,61 @@ namespace App\Controllers;
 
 use App\Models\Branch;
 use App\Models\Location;
-use App\View;
+use Psr\Container\ContainerInterface;
+use Slim\Views\Twig;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface;
 
 class BranchController
 {
-    public function anyIndex(): string
+    public function __construct(
+        protected ContainerInterface $container,
+        protected Twig $view
+    ) {}
+    public function index(Request $request, Response $response, array $args): ResponseInterface
     {
-        $branches = (new Branch)->fetchAllBranches();
-        return View::make('@tables/branch', ["branches" => $branches])->render();
+        $branches = $this->container->get(Branch::class)->fetchAllBranches();
+        return $this->view->render($response, '@tables/branch', ["branches" => $branches]);
     }
-    public function getBranch(): string
+    public function create(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new Branch)->fetchBranchById();
-        return json_encode($response);
+        $response = $this->container->get(Branch::class)->create();
+        $branches = $this->container->get(Branch::class)->fetchAllBranches();
+        return $this->view->render($response, '@tables/branch', ["branches" => $branches]);
     }
-    public function postBranch(): string
+    public function update(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new Branch)->create();
-        $branches = (new Branch)->fetchAllBranches();
-        return View::make('@tables/branch', ["branches" => $branches, "response" => $response])->render();
+        $response =  $this->container->get(Branch::class)->update();
+        $branches = $this->container->get(Branch::class)->fetchAllBranches();
+        return $this->view->render($response, '@tables/branch', ["branches" => $branches]);
     }
-    public function putBranch(): string
+    public function delete(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response =  (new Branch)->update();
-        $branches = (new Branch)->fetchAllBranches();
-        return View::make('@tables/branch', ["branches" => $branches, "response" => $response])->render();
+        $response =  $this->container->get(Branch::class)->delete();
+        $branches = $this->container->get(Branch::class)->fetchAllBranches();
+        return $this->view->render($response, '@tables/branch', ['branches' => $branches]);
     }
-    public function deleteBranch(): string
+    public function edit(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response =  (new Branch)->delete();
-        $branches = (new Branch)->fetchAllBranches();
-        return View::make('@tables/branch', ['branches' => $branches, "response" => $response])->render();
-    }
-    public function anyEdit(string $id): string
-    {
-        $bran = (new Branch)->fetchBranchById($id);
-        $loc = (new Location)->fetchList();
+        $bran = $this->container->get(Branch::class)->fetchBranchById(htmlspecialchars($request->getAttribute('id')));
+        $loc = $this->container->get(Location::class)->fetchList();
         if (empty($bran)) {
-            return json_encode(["error" => 'Id not found']);
+            return $this->view->render($response, '@panels/branchPanel', ["error" => 'Id not found']);
         }
         $arr['branches'] = $bran;
         $arr['locations'] = $loc;
         $arr['method'] = "PUT";
-        return View::make('@panels/branchPanel', $arr)->render();
+        return $this->view->render($response, '@panels/branchPanel', $arr);
     }
-    public function anyLocation(): string
+    public function anyLocation(Request $request, Response $response, array $args): ResponseInterface
     {
         $branchId = filter_input(INPUT_GET, 'branch', FILTER_VALIDATE_INT);
         if (empty($branchId)) {
-            return "";
+            return $this->view->render($response, '@lists/locationListForm', ["error" => 'Branch ID is not provided']);
         }
-        $branches = (new Branch)->fetchBranchById($branchId);
+        $branches = $this->container->get(Branch::class)->fetchBranchById($branchId);
         $locations = $branches[0]['locations'];
-        return View::make('@lists/locationListForm', ["locations" => $locations])->render();
+        return $this->view->render($response, '@lists/locationListForm', ["locations" => $locations]);
     }
 }

@@ -9,12 +9,18 @@ use App\Entities\Location;
 use App\Entities\Branch;
 use App\Entities\Category;
 use App\Enums\ComplaintStatus;
-use App\Model;
 use DateTime;
 use DateTimeZone;
+use Doctrine\ORM\EntityManager;
+use Psr\Container\ContainerInterface;
 
-class Complaint extends Model
+class Complaint
 {
+    public function __construct(
+        protected EntityManager $em,
+        protected ContainerInterface $container
+    ) {}
+
     public function create(): array
     {
         try {
@@ -31,7 +37,7 @@ class Complaint extends Model
                 'image' => FILTER_SANITIZE_URL
             ];
             $var = filter_var_array($input, $filters);
-            $user = (new \App\Models\User)->createUser();
+            $user = $this->container->get(User::class)->createUser();
             $locations = $_POST['locations'] ?? [];
             $branch = $_POST['branch'];
             $category = $_POST['category'];

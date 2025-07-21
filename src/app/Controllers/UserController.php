@@ -5,67 +5,73 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\User;
-use App\View;
+use Slim\Views\Twig;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Container\ContainerInterface;
 
 class UserController
 {
-    public function anyIndex()
+    public function __construct(
+        protected Twig $view,
+        protected ContainerInterface $container
+    ) {}
+
+    public function index(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new User)->fetchAllAdmin();
-        return json_encode($response);
+        $user = $this->container->get(User::class);
+        $response = $user->fetchUserById();
+        return $this->view->render($response, '@tables/admin.html.twig');
     }
 
-    public function anyUser(string $param): string
+    public function show(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new User)->fetchUserById($param);
-        return json_encode($response);
-    }
-    public function anyAdmin(): string
-    {
-        $admin = (new User)->fetchAllAdmin();
-        return View::make('@tables/admin', ["admins" => $admin])->render();
-    }
-    public function getUser(): string
-    {
-        $response = (new User)->fetchUserById();
-        return json_encode($response);
+        $user = $this->container->get(User::class);
+        $admin = $user->fetchAllAdmin();
+        return $this->view->render($response, '@tables/admin.html.twig', ["admins" => $admin]);
     }
 
-    public function postUser(): string
+    public function create(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new User)->createUser();
-        $admins = (new User)->fetchAllAdmin();
-        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
+        $user = $this->container->get(User::class);
+        $user->createUser();
+        $admins = $user->fetchAllAdmin();
+        return $this->view->render($response, '@tables/admin.html.twig', ["admins" => $admins]);
     }
 
-    public function postAdmin(): string
+    public function createAdmin(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response = (new User)->createAdmin();
-        $admins = (new User)->fetchAllAdmin();
-        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
+        $user = $this->container->get(User::class);
+        $user->createAdmin();
+        $admins = $user->fetchAllAdmin();
+        return $this->view->render($response, '@tables/admin.html.twig', ["admins" => $admins]);
     }
-    public function putUser(): string
+    public function update(Request $request, Response $response, array $args): ResponseInterface
     {
-        $response =  (new User)->update();
-        $admins = (new User)->fetchAllAdmin();
-        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
-    }
-
-    public function deleteUser(): string
-    {
-        $response =  (new User)->softDelete();
-        $admins = (new User)->fetchAllAdmin();
-        return View::make('@tables/admin', ["admins" => $admins, "response" => $response])->render();
+        $user = $this->container->get(User::class);
+        $user->update();
+        $admins = $user->fetchAllAdmin();
+        return $this->view->render($response, '@tables/admin.html.twig', ["admins" => $admins]);
     }
 
-    public function anyEdit(string $id): string
+    public function delete(Request $request, Response $response, array $args): ResponseInterface
     {
-        $user = (new User)->fetchUserById(htmlspecialchars($id));
+        $user = $this->container->get(User::class);
+        $user->softDelete();
+        $admins = $user->fetchAllAdmin();
+        return $this->view->render($response, '@tables/admin.html.twig', ["admins" => $admins]);
+    }
+
+    public function edit(Request $request, Response $response, array $args): ResponseInterface
+    {
+        $user = $this->container->get(User::class);
+        $user = $user->fetchUserById($request->getAttribute('id'));
         if (empty($user)) {
-            return json_encode(["error" => 'Id not found']);
+            return $this->view->render($response, '@panels/adminPanel.html.twig', ["error" => $user]);
         }
         $arr['admins'] = $user;
         $arr['method'] = "PUT";
-        return view::make('@panels/adminPanel', $arr)->render();
+        return $this->view->render($response, '@panels/adminPanel.html.twig', $arr);
     }
 }

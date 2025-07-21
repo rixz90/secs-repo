@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\Category as CategoryEntity;
-use App\Model;
+use Doctrine\ORM\EntityManager;
 
-class Category extends Model
+class Category
 {
+    public function __construct(protected EntityManager $em) {}
+
     public function createCategory(): bool | array
     {
         try {

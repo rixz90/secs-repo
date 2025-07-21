@@ -6,11 +6,13 @@ namespace App\Models;
 
 use App\Entities\Branch as BranchEntity;
 use App\Entities\Location;
-use App\Model;
+use Doctrine\ORM\EntityManager;
 use Throwable;
 
-class Branch extends Model
+class Branch
 {
+    public function __construct(protected EntityManager $em) {}
+
     public function create(): array
     {
         try {

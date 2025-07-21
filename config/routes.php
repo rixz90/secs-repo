@@ -36,8 +36,15 @@ return function (App $app) {
         $view = Twig::fromRequest($request);
         return $view->render($response, 'report.html.twig');
     });
+
+    $app->get("/users", [\App\Controllers\UserController::class, 'index']);
+    $app->get("/users/{id}", [\App\Controllers\UserController::class, 'show']);
+    $app->post("/users", [\App\Controllers\UserController::class, 'create']);
+    $app->post("/users/admin", [\App\Controllers\UserController::class, 'createAdmin']);
+    $app->get("/users/edit/{id}", [\App\Controllers\UserController::class, 'edit']);
+    $app->put("/users/{id}", [\App\Controllers\UserController::class, 'update']);
+    $app->delete("/users/{id}", [\App\Controllers\UserController::class, 'delete']);
 };
-//     ->controller("/users", UserController::class)
 //     ->controller("/locations", LocationController::class)
 //     ->controller("/branches", BranchController::class)
 //     ->controller("/categories", CategoryController::class)

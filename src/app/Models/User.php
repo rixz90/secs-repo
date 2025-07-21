@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\User as UserEntity;
-use App\Model;
 use DateTime;
+use Doctrine\ORM\EntityManager;
 
-class User extends Model
+class User
 {
+    public function __construct(protected EntityManager $em) {}
+
     public function createUser(): UserEntity | array
     {
         // Input array

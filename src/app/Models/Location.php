@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\Location as LocationEntity;
-use App\Model;
+use Doctrine\ORM\EntityManager;
 
-class Location extends Model
+class Location
 {
+    public function __construct(protected EntityManager $em) {}
+
     public function createLocation(): int | array
     {
         try {
