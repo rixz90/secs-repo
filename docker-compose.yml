@@ -9,7 +9,6 @@ services:
       restart: always
       working_dir: /var/www/
       volumes:
-         - /var/www/vendor
          - .:/var/www
          - ./docker/php/php.ini-development:/usr/local/etc/php/php.ini
       extra_hosts:
