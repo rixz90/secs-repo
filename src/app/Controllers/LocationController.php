@@ -18,48 +18,42 @@ class LocationController
         protected Twig $view,
         protected ContainerInterface $container
     ) {}
-
-    public function anyIndex(Request $request, Response $response): ResponseInterface
+    public function index(Request $request, Response $response): ResponseInterface
     {
         $loc = $this->container->get(Location::class)->fetchAllLocations();
-        return $this->view->render($response, '@tables/location', ["locations" => $loc]);
+        return $this->view->render($response, '@tables/location.html.twig', ["locations" => $loc]);
     }
-
-    public function getLocation(Request $request, Response $response): ResponseInterface
+    public function create(Request $request, Response $response): ResponseInterface
     {
-        $loc = $this->container->get(Location::class)->fetchList();
-        return $this->view->render($response, '@lists/locationListForm', ["locations" => $loc]);
-    }
-
-    public function postLocation(Request $request, Response $response): ResponseInterface
-    {
-        $response = $this->container->get(Location::class)->createLocation();
+        $this->container->get(Location::class)->createLocation();
         $loc = $this->container->get(Location::class)->fetchAllLocations();
-        return $this->view->render($response, '@tables/location', ["locations" => $loc, "response" => $response]);
+        return $this->view->render($response, '@tables/location.html.twig', ["locations" => $loc]);
     }
-
-    public function putLocation(Request $request, Response $response): ResponseInterface
+    public function update(Request $request, Response $response): ResponseInterface
     {
-        $response =  $this->container->get(Location::class)->update();
+        $this->container->get(Location::class)->update();
         $loc = $this->container->get(Location::class)->fetchAllLocations();
-        return $this->view->render($response, '@tables/location', ["locations" => $loc, "response" => $response]);
+        return $this->view->render($response, '@tables/location.html.twig', ["locations" => $loc]);
     }
-
-    public function deleteLocation(Request $request, Response $response): ResponseInterface
+    public function delete(Request $request, Response $response): ResponseInterface
     {
-        $response =  $this->container->get(Location::class)->delete();
+        $this->container->get(Location::class)->delete();
         $loc = $this->container->get(Location::class)->fetchAllLocations();
-        return $this->view->render($response, '@tables/location', ["locations" => $loc, "response" => $response]);
+        return $this->view->render($response, '@tables/location.html.twig', ["locations" => $loc]);
     }
-
-    public function anyEdit(Request $request, Response $response): ResponseInterface
+    public function edit(Request $request, Response $response): ResponseInterface
     {
         $loc = $this->container->get(Location::class)->fetchLocationById(htmlspecialchars($request->getAttribute('id')));
         if (empty($loc)) {
-            return $this->view->render($response, '@tables/location', ["error" => 'Id not found']);
+            return $this->view->render($response, '@tables/location.html.twig', ["error" => 'Id not found']);
         }
         $arr['locations'] = $loc;
         $arr['method'] = "PUT";
-        return $this->view->render($response, '@panels/locationPanel', $arr);
+        return $this->view->render($response, '@panels/locationPanel.html.twig', $arr);
+    }
+    public function list(Request $request, Response $response): ResponseInterface
+    {
+        $loc = $this->container->get(Location::class)->fetchList();
+        return $this->view->render($response, '@lists/locationListForm.html.twig', ["locations" => $loc]);
     }
 }

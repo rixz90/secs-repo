@@ -9,10 +9,10 @@
         <div class="container" style="text-align:center;">
             {% if method == 'PUT' is defined %}
             <input type="hidden" name="id" value="{{ location.id }}" />
-            <input type="submit" value="Update" hx-put="/locations/location" hx-target="#response" hx-swap="innerHTML"
+            <input type="submit" value="Update" hx-put="/locations/update" hx-target="#response" hx-swap="innerHTML"
                 hx-indicator="#indicator" style="width: fit-content;" />
             {% else %}
-            <input type="submit" value="Submit" hx-post="/locations/location" hx-target="#response" hx-swap="innerHTML"
+            <input type="submit" value="Submit" hx-post="/locations/create" hx-target="#response" hx-swap="innerHTML"
                 hx-indicator="#indicator" style="width: fit-content;" />
             {% endif %}
             <input type="reset" value="Reset" style="width: fit-content;">

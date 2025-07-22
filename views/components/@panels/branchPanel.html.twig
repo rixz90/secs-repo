@@ -27,17 +27,17 @@
                     {% endfor %}
                 </ul>
                 {% else %}
-                <ul hx-get="/locations/location" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></ul>
+                <ul hx-get="/locations/location/list" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></ul>
                 {% endif %}
             </details>
         </div>
         <div class="container" style="text-align:center;">
             {% if method == 'PUT' is defined %}
             <input type="hidden" name="id" value="{{ branch.id }}" />
-            <input type="submit" value="Update" hx-put="/branches/branch" hx-target="#response" hx-swap="innerHTML"
+            <input type="submit" value="Update" hx-put="/branches/update" hx-target="#response" hx-swap="innerHTML"
                 hx-indicator="#indicator" style="width: fit-content;" />
             {% else %}
-            <input type="submit" value="Submit" hx-post="/branches/branch" hx-target="#response" hx-swap="innerHTML"
+            <input type="submit" value="Submit" hx-post="/branches/create" hx-target="#response" hx-swap="innerHTML"
                 hx-indicator="#indicator" style="width: fit-content;" />
             {% endif %}
             <input type="reset" value="Reset" style="width: fit-content;">

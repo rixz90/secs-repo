@@ -1,5 +1,5 @@
 storage
 node_modules
-.env_example
+.env
 .prettierrc.json
 .vscode
