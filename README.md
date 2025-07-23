@@ -5,6 +5,7 @@ Build an MVC Pattern website that allows all employees, students, and guests to 
 ## Deployment
 
 To deploy this project run
+
 ### Install Git, docker, nodejs, composer
 
 - https://git-scm.com/downloads
@@ -43,10 +44,16 @@ DB_PASS=root
 docker-compose up -d
 ```
 
-### open terminal to the current directory copy paste this prompt to terminal for migrate database
+#### ssh container
 
 ```bash
-./vendor/bin/doctrine-migrations migrate
+docker exec -it secs-php bash
+```
+
+#### migrate database
+
+```bash
+php myapp.php migrations:migrate latest
 ```
 
 ### Open browser to **localhost:8000**

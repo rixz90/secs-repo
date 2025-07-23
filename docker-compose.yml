@@ -13,7 +13,6 @@ services:
          - ./docker/php/php.ini-development:/usr/local/etc/php/php.ini
       extra_hosts:
          - host.docker.internal:host-gateway
-
       depends_on:
          - db
    nginx:
