@@ -6,13 +6,6 @@ Build an MVC Pattern website that allows all employees, students, and guests to 
 
 To deploy this project run
 
-### Install Git, docker, nodejs, composer
-
-- https://git-scm.com/downloads
-- https://docs.docker.com/get-started/
-- https://getcomposer.org/doc/00-intro.md
-- https://nodejs.org/en/download
-
 ### Clone the repo.
 
 ```bash
