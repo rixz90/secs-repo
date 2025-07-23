@@ -38,6 +38,7 @@ services:
          MYSQL_DATABASE: secs
       ports:
          - 3306:3306
+
    phpmyadmin:
       container_name: secs-admin
       image: phpmyadmin

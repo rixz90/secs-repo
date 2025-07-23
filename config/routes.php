@@ -51,6 +51,7 @@ return function (App $app) {
         $group->get('/{id}', [\App\Controllers\LocationController::class, 'show']);
         $group->get('/location/list', [\App\Controllers\LocationController::class, 'list']);
         $group->post('/create', [\App\Controllers\LocationController::class, 'create']);
+        $group->get('/edit/{id}', [\App\Controllers\LocationController::class, 'edit']);
         $group->put('/{id}', [\App\Controllers\LocationController::class, 'update']);
         $group->delete('/{id}', [\App\Controllers\LocationController::class, 'delete']);
     });

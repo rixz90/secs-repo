@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Configuration\Migration\PhpFile;
+
+$app = require __DIR__ . '/bootstrap.php';
+$container = $app->getContainer();
+
+$config = new PhpFile(CONFIG_PATH . 'migrations.php'); // Or use one of the Doctrine\Migrations\Configuration\Configuration\* loaders
+$entityManager = $container->get(EntityManager::class);
+$dependencyFactory = DependencyFactory::fromEntityManager($config, new ExistingEntityManager($entityManager));
+$commands = [
+    new Doctrine\Migrations\Tools\Console\Command\CurrentCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\GenerateCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\LatestCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\MigrateCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\RollupCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\StatusCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\UpToDateCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\ListCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory)
+];
+ConsoleRunner::run(
+    new SingleManagerProvider($entityManager),
+    $commands
+);
