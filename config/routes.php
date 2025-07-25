@@ -29,14 +29,16 @@ return function (App $app) {
         $view = Twig::fromRequest($request);
         return $view->render($response, 'admin.html.twig');
     });
-    $app->get('/login', function (Request $request, Response $response, $args) {
-        $view = Twig::fromRequest($request);
-        return $view->render($response, 'admin.html.twig');
-    });
     $app->get('/report', function (Request $request, Response $response, $args) {
         $view = Twig::fromRequest($request);
         return $view->render($response, 'report.html.twig');
     });
+
+    $app->get('/register', [\App\Controllers\AuthController::class, 'registerView']);
+    $app->get('/login', [\App\Controllers\AuthController::class, 'loginView']);
+    $app->post('/register', [\App\Controllers\AuthController::class, 'register']);
+    $app->post('/login', [\App\Controllers\AuthController::class, 'login']);
+
     $app->group('/users', function (RouteCollectorProxy $group) {
         $group->get('/', [\App\Controllers\UserController::class, 'index']);
         $group->get('/{id}', [\App\Controllers\UserController::class, 'show']);

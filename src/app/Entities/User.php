@@ -13,9 +13,14 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Mapping\PrePersist;
 
-#[Entity]
-#[Table('users')]
+#[Entity, Table('users')]
+#[HasLifecycleCallbacks]
 class User
 {
     #[Id]
@@ -27,6 +32,9 @@ class User
 
     #[Column]
     private string $name;
+
+    #[Column]
+    private string $password;
 
     #[Column(name: 'employee_id', nullable: true, unique: true)]
     private ?string $employeeId = null;
@@ -134,26 +142,24 @@ class User
         return $this;
     }
 
+
+    #[PrePersist, PreUpdate]
+    public function updateTimestamps(PrePersistEventArgs|PreUpdateEventArgs $args): void
+    {
+        if (! isset($this->createdAt)) {
+            $this->createdAt = new DateTime();
+        }
+        $this->updatedAt = new DateTime();
+    }
+
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $created_at = new DateTime()): User
-    {
-        $this->createdAt = $created_at;
-        return $this;
-    }
-
     public function getUpdatedAt(): DateTime|null
     {
         return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTime|null $updated_at = null): User
-    {
-        $this->updatedAt = $updated_at;
-        return $this;
     }
 
     public function getDeletedAt(): DateTime|null
@@ -175,6 +181,17 @@ class User
     public function setIsAdmin(bool $is_admin = false): User
     {
         $this->isAdmin = $is_admin;
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): User
+    {
+        $this->password = $password;
         return $this;
     }
 

@@ -15,7 +15,7 @@ class CategoryController
 {
     public function __construct(
         protected ContainerInterface $container,
-        protected Twig $view
+        protected readonly Twig $view
     ) {}
 
     public function index(Request $request, Response $response, array $args): ResponseInterface

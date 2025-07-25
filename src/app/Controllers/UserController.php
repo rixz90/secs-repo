@@ -14,7 +14,7 @@ use Psr\Container\ContainerInterface;
 class UserController
 {
     public function __construct(
-        protected Twig $view,
+        protected readonly Twig $view,
         protected ContainerInterface $container
     ) {}
 

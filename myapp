@@ -8,8 +8,7 @@ use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Configuration\Migration\PhpFile;
 
-$app = require __DIR__ . '/bootstrap.php';
-$container = $app->getContainer();
+$container = require __DIR__ . '/bootstrap.php';
 
 $config = new PhpFile(CONFIG_PATH . 'migrations.php'); // Or use one of the Doctrine\Migrations\Configuration\Configuration\* loaders
 $entityManager = $container->get(EntityManager::class);

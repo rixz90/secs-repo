@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 class ComplaintController
 {
     public function __construct(
-        protected Twig $view,
+        protected readonly Twig $view,
         protected ContainerInterface $container
     ) {}
 

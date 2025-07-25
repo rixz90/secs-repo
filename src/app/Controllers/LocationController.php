@@ -15,7 +15,7 @@ use Psr\Container\ContainerInterface;
 class LocationController
 {
     public function __construct(
-        protected Twig $view,
+        protected readonly Twig $view,
         protected ContainerInterface $container
     ) {}
     public function index(Request $request, Response $response): ResponseInterface

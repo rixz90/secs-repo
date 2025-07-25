@@ -39,10 +39,10 @@ class User
             $user
                 ->setName($var['name'])
                 ->setEmail($var['email'])
-                ->setCreatedAt(new DateTime())
                 ->setStudentId(!empty($var['studentId']) ?  $var['studentId'] : null)
                 ->setEmployeeId(!empty($var['employeeId']) ? $var['employeeId'] : null)
-                ->setPhone($var['phone']);
+                ->setPhone($var['phone'])
+                ->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]));
             $this->em->persist($user);
             $this->em->flush();
             return $user;
@@ -116,7 +116,6 @@ class User
                 return ['error' => 'User not found'];
             }
             $name != $user->getName() ? $user->setName($name) : '';
-            $user->setUpdatedAt(new DateTime());
             $user->setEmail($email);
             $this->em->persist($user);
             $this->em->flush();
