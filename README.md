@@ -12,13 +12,6 @@ To deploy this project run
 git clone https://github.com/rixz90/secs-repo.git
 ```
 
-### Open terminal and run this command on current directory of this project:
-
-```bash
-npm install
-composer install
-```
-
 ### Copy the .env_example to .env(create new file) and add your missing database
 
 #### Example :
