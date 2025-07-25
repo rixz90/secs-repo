@@ -17,10 +17,10 @@ return [
     Slim\App::class => function (ContainerInterface $container) {
         AppFactory::setContainer($container);
         $router = require CONFIG_PATH . '/routes.php';
-        $addMidleware = require CONFIG_PATH . '/middleware.php';
+        $addMiddleware = require CONFIG_PATH . '/middleware.php';
         $app = AppFactory::create();
         $router($app);
-        $addMidleware($app);
+        $addMiddleware($app);
         return $app;
     },
     Config::class => create(Config::class)->constructor($_ENV),

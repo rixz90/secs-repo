@@ -6,12 +6,6 @@ namespace App\Exceptions;
 
 class ValidationException extends \RuntimeException
 {
-    /**
-     * @param array $errors
-     * @param string $message
-     * @param int $code
-     * @param \Throwable|null $previous
-     */
     public function __construct(
         public readonly array $errors,
         string $message = 'Validation Error(s)',
