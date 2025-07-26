@@ -12,56 +12,20 @@ class User
 {
     public function __construct(protected EntityManager $em) {}
 
-    public function createUser(): UserEntity | array
+    public function createUser(array $var): void
     {
-        // Input array
-        $input = [
-            'studentId' => !empty($_POST['studentId']) ? htmlspecialchars($_POST['studentId']) : '',
-            'employeeId' => !empty($_POST['employeeId']) ? htmlspecialchars($_POST['employeeId']) : '',
-            'name' => htmlspecialchars($_POST['name']),
-            'email' => $_POST['email'],
-            'phone' => $_POST['phone']
-        ];
-        // Define filters for each key
-        $filters = [
-            'studentId' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'employeeId' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'name' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'email' => FILTER_VALIDATE_EMAIL,
-            'phone' => FILTER_SANITIZE_NUMBER_INT
-        ];
-        $var = filter_var_array($input, $filters);
-        try {
-            if (empty($var['name']) || empty($var['email'])) {
-                return ['error' => 'name or email empty'];
-            }
-            $user = new UserEntity();
-            $user
-                ->setName($var['name'])
-                ->setEmail($var['email'])
-                ->setStudentId(!empty($var['studentId']) ?  $var['studentId'] : null)
-                ->setEmployeeId(!empty($var['employeeId']) ? $var['employeeId'] : null)
-                ->setPhone($var['phone'])
-                ->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]));
-            $this->em->persist($user);
-            $this->em->flush();
-            return $user;
-        } catch (\Throwable $e) {
-            return ['error' => $e->getMessage()];
-        }
+        $user = new UserEntity();
+        $user
+            ->setName($var['name'])
+            ->setEmail($var['email'])
+            ->setStudentId(!empty($var['studentId']) ?  $var['studentId'] : null)
+            ->setEmployeeId(!empty($var['employeeId']) ? $var['employeeId'] : null)
+            ->setPhone($var['phone'])
+            ->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]));
+        $this->em->persist($user);
+        $this->em->flush();
     }
-    public function createAdmin(): array
-    {
-        try {
-            $user = $this->createUser();
-            $user->setIsAdmin(true);
-            $this->em->persist($user);
-            $this->em->flush();
-            return ['message' => 'admin has been created'];
-        } catch (\Throwable $e) {
-            return ['error' => $e->getMessage()];
-        }
-    }
+
     public function fetchUserById($param = null): array
     {
         $id =  $param === null ? filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT)

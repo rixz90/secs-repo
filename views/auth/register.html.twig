@@ -3,37 +3,75 @@
 {% include '@common/user_navbar.html.twig' %}
 {% endblock %}
 {% block content %}
+
 <div class="container">
 	<h1>Register</h1>
 	<form action="/register" method="post">
 		<section>
 			<div x-id="['input']">
 				<label :for="$id('input')">Name : </label>
-				<input type="text" name="name" :id="$id('input')" value="{{ complaint.user.name }}" required />
+				<input type="text" name="name" :id="$id('input')" value="{{ old.name }}"
+					aria-invalid="{{ errors.name ? 'true' : '' }}" aria-describedby="invalid-helper" required />
+				{% if errors.name %}
+				<small id="invalid-helper">
+					{{ errors.name|first }}
+				</small>
+				{% endif %}
 			</div>
 			<div x-id="['input']">
 				<label :for="$id('input')">Email: </label>
-				<input type="text" name="email" :id="$id('input')" required />
+				<input type="text" name="email" :id="$id('input')" value="{{ old.email }}"
+					aria-invalid="{{ errors.email ? 'true' : '' }}" aria-describedby="invalid-helper" required />
+				{% if errors.email %}
+				<small id="invalid-helper">
+					{{ errors.email|first }}
+				</small>
+				{% endif %}
 			</div>
 			<div x-id="['input']">
 				<label :for="$id('input')">Staff ID : </label>
-				<input type="text" name="employeeId" :id="$id('input')" />
+				<input type="text" name="employeeId" :id="$id('input')" value="{{ old.employeeId }}"
+					aria-invalid="{{ errors.employeeId ? 'true' : '' }}" aria-describedby="invalid-helper" />
+				{% if errors.employeeId %}
+				<small id="invalid-helper">
+					{{ errors.employeeId|first }}
+				</small>
+				{% endif %}
 			</div>
 			<div x-id="['input']">
 				<label :for="$id('input')">Student ID : </label>
-				<input type="text" name="studentId" :id="$id('input')" />
+				<input type="text" name="studentId" :id="$id('input')" value="{{ old.studentId }}" />
 			</div>
 			<div x-id="['input']">
 				<label :for="$id('input')">Phone Number: </label>
-				<input type="text" name="phone" :id="$id('input')" required />
+				<input type="text" name="phone" :id="$id('input')" value="{{ old.phone }}"
+					aria-invalid="{{ errors.phone ? 'true' : '' }}" aria-describedby="invalid-helper" required />
+				{% if errors.phone %}
+				<small id="invalid-helper">
+					{{ errors.phone|first }}
+				</small>
+				{% endif %}
 			</div>
 			<div x-id="['input']">
 				<label :for="$id('input')">Password: </label>
-				<input type="password" name="password" :id="$id('input')" required />
+				<input type="password" name="password" :id="$id('input')"
+					aria-invalid="{{ errors.password ? 'true' : '' }}" aria-describedby="invalid-helper" required />
+				{% if errors.password %}
+				<small id="invalid-helper">
+					{{ errors.password|first }}
+				</small>
+				{% endif %}
 			</div>
 			<div x-id="['input']">
 				<label :for="$id('input')">Confirm Password: </label>
-				<input type="password" name="confirmPassword" :id="$id('input')" required />
+				<input type="password" name="confirmPassword" :id="$id('input')"
+					aria-invalid="{{ errors.confirmPassword ? 'true' : '' }}" aria-describedby="invalid-helper"
+					required />
+				{% if errors.password %}
+				<small id="invalid-helper">
+					{{ errors.confirmPassword|first }}
+				</small>
+				{% endif %}
 			</div>
 		</section>
 		<div class="container" style="text-align:center;">

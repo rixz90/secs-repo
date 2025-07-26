@@ -36,7 +36,8 @@ class AuthController
         $data = $request->getParsedBody();
 
         $v = new Validator($data);
-        $v->rule('required', ['name', 'email', 'password', 'confirmPassword']);
+        $v->rule('required', ['name', 'email', 'password', 'confirmPassword', 'phone']);
+        $v->rule('regex', 'phone', '/^(\+?\d{1,3}\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}$/');
         $v->rule('email', 'email');
         $v->rule('equals', 'password', 'confirmPassword');
         $v->rule(
@@ -44,11 +45,10 @@ class AuthController
             'email'
         )->message("{field} already taken...");
 
-        if ($v->validate()) {
-            echo "OK";
-        } else {
+        if (!$v->validate()) {
             throw new ValidationException($v->errors());
         }
-        return $response;
+        $this->container->get(\App\Models\User::class)->createUser($data);
+        return $response->withHeader('Location', '/login')->withStatus(302);
     }
 }
