@@ -3,6 +3,12 @@
 declare(strict_types=1);
 
 use App\Config;
+use App\Auth;
+use App\Session;
+use App\Contracts\AuthInterface;
+use App\Contracts\SessionInterface;
+use App\Contracts\UserProviderServiceInterface;
+use App\Services\UserProviderService;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
@@ -11,7 +17,6 @@ use Slim\Views\Twig;
 use Psr\Container\ContainerInterface;
 use Slim\Factory\AppFactory;
 use function DI\create;
-
 
 return [
     Slim\App::class => function (ContainerInterface $container) {
@@ -32,5 +37,8 @@ return [
     Twig::class => function (Config $config) {
         return Twig::create($config->twigPaths, $config->twigOption);
     },
-    ResponseFactoryInterface::class => fn(\Slim\App $app) => $app->getResponseFactory()
+    ResponseFactoryInterface::class => fn(\Slim\App $app) => $app->getResponseFactory(),
+    AuthInterface::class => fn(ContainerInterface $container) => $container->get(Auth::class),
+    UserProviderServiceInterface::class => fn(ContainerInterface $container) => $container->get(UserProviderService::class),
+    SessionInterface::class => fn(Config $config) => new Session($config->session),
 ];

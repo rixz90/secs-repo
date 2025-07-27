@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\Contracts\UserInterface;
 use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping\PrePersist;
 
 #[Entity, Table('users')]
 #[HasLifecycleCallbacks]
-class User
+class User implements UserInterface
 {
     #[Id]
     #[GeneratedValue]

@@ -33,7 +33,14 @@ class Config
                 'tables' => BASE_ROOT . $env['VIEW_PATH'] . '/components/@tables',
                 'forms' => BASE_ROOT . $env['VIEW_PATH'] . '/components/@forms',
                 'lists' => BASE_ROOT . $env['VIEW_PATH'] . '/components/@lists'
-            ]
+            ],
+            'session' => [
+                'name' => 'secs_session',
+                'flash_key' => 'flash',
+                'secure' => true,
+                'httponly' => true,
+                'samesite' => 'Lax' // Adjust as needed
+            ],
         ];
     }
 

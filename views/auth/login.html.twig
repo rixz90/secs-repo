@@ -5,15 +5,27 @@
 {% block content %}
 <div class="container">
 	<h1>Login</h1>
-	<form action="" method="post">
+	<form action="/login" method="post">
 		<section>
 			<div x-id="['input']">
 				<label :for="$id('input')">Email: </label>
-				<input type="text" name="email" :id="$id('input')" required />
+				<input type="text" name="email" :id="$id('input')" value="{{ old.email }}"
+					aria-invalid="{{ errors.email ? 'true' : '' }}" aria-describedby="invalid-helper" />
+				{% if errors.email %}
+				<small id="invalid-helper">
+					{{ errors.email|first }}
+				</small>
+				{% endif %}
 			</div>
 			<div x-id="['input']">
 				<label :for="$id('input')">Password: </label>
-				<input type="password" name="password" :id="$id('input')" required />
+				<input type="password" name="password" :id="$id('input')" value="{{ old.password }}"
+					aria-invalid="{{ errors.password ? 'true' : '' }}" aria-describedby="invalid-helper" />
+				{% if errors.password %}
+				<small id="invalid-helper">
+					{{ errors.password|first }}
+				</small>
+				{% endif %}
 			</div>
 		</section>
 		<div class="container" style="text-align:center;">

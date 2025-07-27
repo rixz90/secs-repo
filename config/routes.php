@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Middleware\AuthMiddleware;
+use App\Middleware\GuestMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -24,20 +26,22 @@ return function (App $app) {
     $app->get('/setting', function (Request $request, Response $response, $args) {
         $view = Twig::fromRequest($request);
         return $view->render($response, 'setting.html.twig');
-    });
+    })->add(AuthMiddleware::class);
     $app->get('/admin', function (Request $request, Response $response, $args) {
         $view = Twig::fromRequest($request);
         return $view->render($response, 'admin.html.twig');
-    });
+    })->add(AuthMiddleware::class);
+
     $app->get('/report', function (Request $request, Response $response, $args) {
         $view = Twig::fromRequest($request);
         return $view->render($response, 'report.html.twig');
-    });
+    })->add(AuthMiddleware::class);
 
-    $app->get('/register', [\App\Controllers\AuthController::class, 'registerView']);
-    $app->get('/login', [\App\Controllers\AuthController::class, 'loginView']);
-    $app->post('/register', [\App\Controllers\AuthController::class, 'register']);
-    $app->post('/login', [\App\Controllers\AuthController::class, 'login']);
+    $app->get('/register', [\App\Controllers\AuthController::class, 'registerView'])->add(GuestMiddleware::class);
+    $app->post('/register', [\App\Controllers\AuthController::class, 'register'])->add(GuestMiddleware::class);
+    $app->get('/login', [\App\Controllers\AuthController::class, 'loginView'])->add(GuestMiddleware::class);
+    $app->post('/login', [\App\Controllers\AuthController::class, 'login'])->add(GuestMiddleware::class);
+    $app->get('/logout', [\App\Controllers\AuthController::class, 'logOut'])->add(AuthMiddleware::class);
 
     $app->group('/users', function (RouteCollectorProxy $group) {
         $group->get('/', [\App\Controllers\UserController::class, 'index']);
