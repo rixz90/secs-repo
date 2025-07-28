@@ -9,10 +9,13 @@ use App\Middleware\ValidationExceptionMiddleware;
 use App\Middleware\StartSessionMiddleware;
 use App\Middleware\ValidationErrorsMiddleware;
 use App\Middleware\OldFormDataMiddleware;
+use App\Middleware\CsrfFieldMiddleware;
 
 return function (App $app) {
     $container = $app->getContainer();
 
+    $app->add(CsrfFieldMiddleware::class);
+    $app->add('csrf');
     // Twig
     $app->add(TwigMiddleware::create($app, $container->get(Twig::class)));
     // ValidationExceptionMiddleware

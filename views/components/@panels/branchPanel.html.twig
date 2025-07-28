@@ -2,6 +2,7 @@
 <section>
     <h3>Branch</h3>
     <form>
+        {{ csrf.fields|raw }}
         <div x-id="['input']">
             <label :for="$id('input')">Code:</label>
             <input type="text" name="code" :id="$id('input')" value="{{ branch.code }}" required />

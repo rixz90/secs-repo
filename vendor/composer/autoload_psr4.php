@@ -24,6 +24,7 @@ return array(
     'Symfony\\Component\\Cache\\' => array($vendorDir . '/symfony/cache'),
     'Slim\\Views\\' => array($vendorDir . '/slim/twig-view/src'),
     'Slim\\Psr7\\' => array($vendorDir . '/slim/psr7/src'),
+    'Slim\\Csrf\\' => array($vendorDir . '/slim/csrf/src'),
     'Slim\\' => array($vendorDir . '/slim/slim/Slim'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'Psr\\Http\\Server\\' => array($vendorDir . '/psr/http-server-middleware/src', $vendorDir . '/psr/http-server-handler/src'),

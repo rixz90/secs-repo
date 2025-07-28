@@ -14,16 +14,13 @@
                 Update
             </a></li>
         <li>
-            <form action="">
-                <input type="hidden" name="id" value="{{ id }}">
-                <a href="/" hx-delete="/{{ controller }}/{{ method }}" hx-target="#response" hx-swap="innerHTML"
-                    hx-indicator="#indicator">
-                    <svg style="width: 1.25rem;height:1.25rem;padding-bottom:5px;">
-                        <use xlink:href="assets/images/sprite.svg#icon-squared-minus"></use>
-                    </svg>
-                    Delete
-                </a>
-            </form>
+            <button href="#" hx-delete="/{{ controller }}/{{ id }}" hx-target="#response" hx-swap="innerHTML"
+                hx-indicator="#indicator">
+                <svg style="width: 1.25rem;height:1.25rem;padding-bottom:5px;">
+                    <use xlink:href="assets/images/sprite.svg#icon-squared-minus"></use>
+                </svg>
+                Delete
+            </button>
         </li>
     </ul>
 </details>

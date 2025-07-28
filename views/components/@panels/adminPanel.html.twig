@@ -1,6 +1,7 @@
 {% set admin = admins|first %}
 <section>
 	<form action="">
+		{{ csrf.fields|raw }}
 		<h3>Administrator</h3>
 		<div x-id="['input']">
 			<label :for="$id('input')">Name:</label>

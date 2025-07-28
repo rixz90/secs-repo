@@ -1,6 +1,7 @@
 {% set category = categories|first %}
 <section>
     <form action="">
+        {{ csrf.fields|raw }}
         <h3>Category</h3>
         <div x-id="['input']">
             <label :for="$id('input')">Name:</label>

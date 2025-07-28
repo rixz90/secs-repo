@@ -41,7 +41,7 @@ return function (App $app) {
     $app->post('/register', [\App\Controllers\AuthController::class, 'register'])->add(GuestMiddleware::class);
     $app->get('/login', [\App\Controllers\AuthController::class, 'loginView'])->add(GuestMiddleware::class);
     $app->post('/login', [\App\Controllers\AuthController::class, 'login'])->add(GuestMiddleware::class);
-    $app->get('/logout', [\App\Controllers\AuthController::class, 'logOut'])->add(AuthMiddleware::class);
+    $app->post('/logout', [\App\Controllers\AuthController::class, 'logOut'])->add(AuthMiddleware::class);
 
     $app->group('/users', function (RouteCollectorProxy $group) {
         $group->get('/', [\App\Controllers\UserController::class, 'index']);

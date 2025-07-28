@@ -28,12 +28,15 @@
         </ul>
         <ul class="icons">
             <li>
-                <a href="/logout" class="secondary">
-                    <svg style="width: 1.5rem;height:1.6rem">
-                        <use xlink:href="assets/images/sprite.svg#icon-log-out"></use>
-                    </svg>
-                    Logout
-                </a>
+                <form action="/logout" method="post">
+                    {{ csrf.fields|raw }}
+                    <button class="outline secondary" style="border:none">
+                        <svg style="width: 1.5rem;height:1.6rem">
+                            <use xlink:href="assets/images/sprite.svg#icon-log-out"></use>
+                        </svg>
+                        Logout
+                    </button>
+                </form>
             </li>
         </ul>
     </nav>

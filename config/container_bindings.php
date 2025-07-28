@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Views\Twig;
 use Psr\Container\ContainerInterface;
+use Slim\Csrf\Guard;
 use Slim\Factory\AppFactory;
 use function DI\create;
 
@@ -43,5 +44,6 @@ return [
     AuthInterface::class => fn(ContainerInterface $container) => $container->get(Auth::class),
     UserProviderServiceInterface::class => fn(ContainerInterface $container) => $container->get(UserProviderService::class),
     SessionInterface::class => fn(Config $config) => new Session($config->session),
-    RequestValidatorFactoryInterface::class => fn(ContainerInterface $container) => $container->get(RequestValidatorFactory::class)
+    RequestValidatorFactoryInterface::class => fn(ContainerInterface $container) => $container->get(RequestValidatorFactory::class),
+    'csrf' => fn(ResponseFactoryInterface $responseFactory) => new Guard($responseFactory, persistentTokenMode: true),
 ];

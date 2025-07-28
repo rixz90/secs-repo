@@ -1,6 +1,7 @@
 {% set complaint = complaints|first %}
 <section>
     <form action="/complaints/complaint" method="post">
+        {{ csrf.fields|raw }}
         <section>
             {% block personal %}
             <div x-id="['input']">

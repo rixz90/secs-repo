@@ -53,6 +53,7 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
             'Symfony\\Component\\Cache\\' => 24,
             'Slim\\Views\\' => 11,
             'Slim\\Psr7\\' => 10,
+            'Slim\\Csrf\\' => 10,
             'Slim\\' => 5,
         ),
         'P' => 
@@ -180,6 +181,10 @@ class ComposerStaticInit33383b5e09745eb650a3c971a7fc9aa5
         'Slim\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/psr7/src',
+        ),
+        'Slim\\Csrf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/slim/csrf/src',
         ),
         'Slim\\' => 
         array (
