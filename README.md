@@ -27,7 +27,7 @@ DB_PASS=root
 ### run docker-compose to build the all the container
 
 ```bash
-cd/docker
+cd docker
 docker-compose up -d
 ```
 
