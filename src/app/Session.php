@@ -9,7 +9,6 @@ class Session implements SessionInterface
 {
     public function __construct(private readonly array $options = []) {}
 
-
     public function start(): void
     {
         if ($this->isActive()) {
@@ -20,17 +19,14 @@ class Session implements SessionInterface
                 'Headers already sent in ' . $fileName . ' on line ' . $line
             );
         }
-
         if (! empty($this->options['name'])) {
             session_name($this->options['name']);
         }
-
         session_set_cookie_params([
             'secure' => $this->options['secure'] ?? true, // Set to true if using HTTPS
             'httponly' => $this->options['httponly'] ?? true,
             'samesite' => $this->options['samesite'] ?? 'Lax', // Adjust as needed
         ]);
-
         session_start();
     }
     public function save(): void

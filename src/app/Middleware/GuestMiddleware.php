@@ -10,12 +10,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Views\Twig;
+
 
 class GuestMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private readonly ResponseFactory $responseFactory,
-        private readonly Session $session
+        private readonly Session $session,
+        private readonly Twig $twig
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

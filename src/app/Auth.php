@@ -14,7 +14,6 @@ class Auth implements AuthInterface
         private readonly UserProviderServiceInterface $userProviderService,
         private readonly SessionInterface $session,
     ) {}
-
     public function user(): ?UserInterface
     {
         if ($this->user !== null) {
@@ -31,18 +30,15 @@ class Auth implements AuthInterface
         $this->user = $user;
         return $this->user;
     }
-
     public function attemptLogin(array $credentials): bool
     {
         $user = $this->userProviderService->getByCredentials($credentials);
         if (! $user || !$this->checkCredentials($credentials, $user)) {
             return false;
         }
-        $this->session->put('user', $user->getId());
-        $this->session->regenerate();
+        $this->login($user);
         return true;
     }
-
     public function logout(): void
     {
         $this->session->forget('user');
@@ -50,8 +46,20 @@ class Auth implements AuthInterface
         $this->user = null;
     }
 
+    public function login(UserInterface $user): void
+    {
+        $this->session->put('user', $user->getId());
+        $this->session->regenerate();
+    }
     public function checkCredentials(array $credentials, UserInterface $user): bool
     {
         return password_verify($credentials['password'], $user->getPassword());
+    }
+
+    public function register(array $data): UserInterface
+    {
+        $user = $this->userProviderService->createUser($data);
+        $this->login($user);
+        return $user;
     }
 }

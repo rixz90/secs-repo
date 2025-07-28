@@ -10,6 +10,8 @@
             <li><a href="/aduan" class="secondary">Create</a></li>
             <li><a href="/semakan" class="secondary">Review</a></li>
         </ul>
+
+        {% if user is not defined %}
         <ul class="icons">
             <li>
                 <a href="/login" class="secondary">
@@ -28,5 +30,25 @@
                 </a>
             </li>
         </ul>
+        {% else %}
+        <ul class="icons">
+            <li>
+                <a href="/admin" class="secondary">
+                    <svg style="width: 1.35rem;height:1.35rem">
+                        <use xlink:href="assets/images/sprite.svg#icon-list"></use>
+                    </svg>
+                    Admin
+                </a>
+            </li>
+            <li>
+                <a href="/logout" class="secondary">
+                    <svg style="width: 1.35rem;height:1.35rem">
+                        <use xlink:href="assets/images/sprite.svg#icon-log-out"></use>
+                    </svg>
+                    Logout
+                </a>
+            </li>
+        </ul>
+        {% endif %}
     </nav>
 </div>

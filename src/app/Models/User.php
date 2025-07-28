@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\UserInterface;
 use App\Entities\User as UserEntity;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -12,7 +13,7 @@ class User
 {
     public function __construct(protected EntityManager $em) {}
 
-    public function createUser(array $var): void
+    public function createUser(array $var): UserInterface
     {
         $user = new UserEntity();
         $user
@@ -24,6 +25,8 @@ class User
             ->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]));
         $this->em->persist($user);
         $this->em->flush();
+
+        return $user;
     }
 
     public function fetchUserById($param = null): array

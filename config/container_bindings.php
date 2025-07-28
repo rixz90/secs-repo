@@ -6,6 +6,8 @@ use App\Config;
 use App\Auth;
 use App\Session;
 use App\Contracts\AuthInterface;
+use App\Contracts\RequestValidatorFactoryInterface;
+use App\RequestValidators\RequestValidatorFactory;
 use App\Contracts\SessionInterface;
 use App\Contracts\UserProviderServiceInterface;
 use App\Services\UserProviderService;
@@ -41,4 +43,5 @@ return [
     AuthInterface::class => fn(ContainerInterface $container) => $container->get(Auth::class),
     UserProviderServiceInterface::class => fn(ContainerInterface $container) => $container->get(UserProviderService::class),
     SessionInterface::class => fn(Config $config) => new Session($config->session),
+    RequestValidatorFactoryInterface::class => fn(ContainerInterface $container) => $container->get(RequestValidatorFactory::class)
 ];
