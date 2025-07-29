@@ -37,10 +37,13 @@ return function (App $app) {
         return $view->render($response, 'report.html.twig');
     })->add(AuthMiddleware::class);
 
-    $app->get('/register', [\App\Controllers\AuthController::class, 'registerView'])->add(GuestMiddleware::class);
-    $app->post('/register', [\App\Controllers\AuthController::class, 'register'])->add(GuestMiddleware::class);
-    $app->get('/login', [\App\Controllers\AuthController::class, 'loginView'])->add(GuestMiddleware::class);
-    $app->post('/login', [\App\Controllers\AuthController::class, 'login'])->add(GuestMiddleware::class);
+    $app->group('', function (RouteCollectorProxy $group) {
+        $group->get('/register', [\App\Controllers\AuthController::class, 'registerView']);
+        $group->post('/register', [\App\Controllers\AuthController::class, 'register']);
+        $group->get('/login', [\App\Controllers\AuthController::class, 'loginView']);
+        $group->post('/login', [\App\Controllers\AuthController::class, 'login']);
+    })->add(GuestMiddleware::class);
+
     $app->post('/logout', [\App\Controllers\AuthController::class, 'logOut'])->add(AuthMiddleware::class);
 
     $app->group('/users', function (RouteCollectorProxy $group) {
